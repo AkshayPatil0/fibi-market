@@ -1,0 +1,15 @@
+POST http://fibimarket.dev/api/users/signup
+content-type: application/json
+
+{
+    "email": "test1@test.com",
+		"password": "123456"
+}
+
+POST http://fibimarket.dev/api/users/signin
+content-type: application/json
+
+{
+    "email": "test1@test.com",
+		"password": "123456"
+}
