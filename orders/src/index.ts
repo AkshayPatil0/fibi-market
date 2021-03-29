@@ -41,7 +41,12 @@ const run = async () => {
     });
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
+  } catch (err) {
+    console.error(err);
+    // process.exit();
+  }
 
+  try {
     new ProductCreatedListener(nats.client).listen();
     new ProductUpdatedListener(nats.client).listen();
     new ProductDeletedListener(nats.client).listen();

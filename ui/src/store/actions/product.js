@@ -1,9 +1,12 @@
 import * as api from "../../api";
+import { getImagesFormData } from "../../utils";
 
 export const SET_CATEGORIES = "set-categories";
 export const SET_PRODUCTS = "set-products";
-export const SET_PRODUCT = "set-product";
-export const SET_CART = "set-cart";
+export const SET_PRODUCT_DETAILS = "set-product-details";
+export const SET_PRODUCT_IMAGES = "set-product-images";
+export const NEW_PRODUCT = "new-product";
+export const UPDATE_PRODUCT = "update-product";
 
 const setCategories = (categories) => {
   return {
@@ -35,17 +38,10 @@ export const deleteCategory = (id) => {
   };
 };
 
-const setProducts = (products) => {
+export const setProducts = (products) => {
   return {
     type: SET_PRODUCTS,
     payload: products,
-  };
-};
-
-export const setProduct = (product) => {
-  return {
-    type: SET_PRODUCT,
-    payload: product,
   };
 };
 
@@ -56,40 +52,75 @@ export const getProducts = (query) => {
   };
 };
 
-export const getProduct = (id) => {
+export const setProduct = (product) => {
+  return {
+    type: SET_PRODUCT_DETAILS,
+    payload: product,
+  };
+};
+
+export const setProductImages = (images) => {
+  return {
+    type: SET_PRODUCT_IMAGES,
+    payload: images,
+  };
+};
+
+export const getProduct = (id = null) => {
+  if (!id) return setProduct({});
   return async (dispatch) => {
     const res = await api.fetchProduct(id);
     dispatch(setProduct(res.data));
   };
 };
 
-const setCart = (cart) => {
-  return {
-    type: SET_CART,
-    payload: cart
-  }
-}
+export const newProduct = (onSuccess) => {
+  return async (dispatch, getState) => {
+    let res;
+    const product = getState().product.product;
+    const productImages = getState().product.productImages;
+    res = await api.createProduct(product);
+    const imagesFormData = getImagesFormData(productImages);
+    if (imagesFormData) {
+      res = await api.updateProductImages(res.data.id, imagesFormData);
+    }
 
-export const getCart = () => {
-  return async dispatch => {
+    dispatch(
+      setProduct({
+        ...res.data,
+        priceMrp: res.data.price.mrp,
+        priceRetail: res.data.price.retail,
+      })
+    );
+    onSuccess(res.data.id);
+  };
+};
 
-    const res = await api.fetchCart();
-    dispatch(setCart(res.data));
-  }
-}
+export const updateProduct = () => {
+  return async (dispatch, getState) => {
+    let res;
+    const product = getState().product.product;
+    const productImages = getState().product.productImages;
+    res = await api.updateProduct(product.id, product);
+    const imagesFormData = getImagesFormData(productImages);
+    if (imagesFormData) {
+      res = await api.updateProductImages(res.data.id, imagesFormData);
+    }
 
-export const addToCart = (productId, quantity) => {
-  return async dispatch => {
-    const res = await api.addToCart({ productId, quantity });
-    dispatch(setCart(res.data));
+    dispatch(
+      setProduct({
+        ...res.data,
+        priceMrp: res.data.price.mrp,
+        priceRetail: res.data.price.retail,
+      })
+    );
+  };
+};
 
-  }
-}
-
-export const removeFromCart = (productId, quantity) => {
-  return async dispatch => {
-    const res = await api.removeFromCart({ productId, quantity });
-    dispatch(setCart(res.data));
-
-  }
-}
+export const deleteProduct = (id) => {
+  return async (dispatch, getState) => {
+    const products = getState().product.products;
+    await api.deleteProduct(id);
+    dispatch(setProducts(products.filter((val) => val.id !== id)));
+  };
+};

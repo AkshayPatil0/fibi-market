@@ -9,15 +9,42 @@ class ProductUpdatedListener extends Listener<ProductUpdatedEvent> {
 
   async onMessage(data: ProductUpdatedEvent["data"], msg: Message) {
     try {
-      const product = await Product.findById(data.id);
       console.log(msg.getSequence(), data);
+      const product = await Product.findOne({
+        _id: data.id,
+        // version: data.version - 1,
+      });
       if (!product) return;
 
+      const {
+        title,
+        price,
+        description,
+        sku,
+        vendor,
+        stock,
+        specs,
+        category,
+        location,
+        images,
+        hasVariants,
+        variations,
+        variants,
+      } = data;
       product.set({
-        title: data.title,
-        price: data.price,
-        stock: data.stock,
-        vendor: data.vendor,
+        title,
+        price,
+        description,
+        sku,
+        vendor,
+        stock,
+        specs,
+        category,
+        location,
+        images,
+        hasVariants,
+        variations,
+        variants,
       });
 
       await product.save();

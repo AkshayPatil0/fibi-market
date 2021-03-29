@@ -8,16 +8,17 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import NavBar from "./NavBar";
+import NavBar from "./navbar";
 import TopBar from "./TopBar";
-import Products from "../products/products";
 import { useSelector } from "react-redux";
 
-import Orders from "../orders/orders";
-import Cart from "../cart/cart";
-import Profile from "../profile/profile";
-import NewProduct from "../products/new";
-import Users from "../users/users";
+import Orders from "./orders/orders";
+import Cart from "./cart/cart";
+import Profile from "./profile/profile";
+import Products from "./products/products";
+import EditProduct from "./products/edit-product";
+import Users from "./users/users";
+import Categories from "./categories/categories";
 
 const DashboardLayout = () => {
   const classes = useStyles();
@@ -55,18 +56,20 @@ const DashboardLayout = () => {
               <Route exact path={`${path}/products`}>
                 <Products />
               </Route>
-              <Route path={`${path}/products/new`} component={NewProduct} />
+              <Route path={`${path}/products/new`} component={EditProduct} />
               <Route
                 path={`${path}/products/update/:id`}
-                component={NewProduct}
+                component={EditProduct}
               />
               <Route path={`${path}/orders`} component={Orders} />
               <Route path={`${path}/cart`} component={Cart} />
               <Route path={`${path}/account`} component={Profile} />
               <Route path={`${path}/users`} component={Users} />
+              <Route path={`${path}/categories`} component={Categories} />
 
               <Route path={`${path}/*`}>
-                <Redirect to={`${path}`} />
+                {/* <Redirect to={`${path}`} /> */}
+                <div></div>
               </Route>
             </Switch>
           </div>
@@ -81,7 +84,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     display: "flex",
     height: "100%",
-    // overflow: 'hidden',
     width: "100%",
   },
   wrapper: {
@@ -97,12 +99,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flex: "1 1 auto",
     overflow: "hidden",
+    flexDirection: "column",
   },
   content: {
     flex: "1 1 auto",
-    height: "100%",
     overflow: "auto",
-    padding: theme.spacing(2, 0, 0, 0),
+    padding: theme.spacing(2, 0),
   },
 }));
 

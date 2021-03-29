@@ -12,15 +12,15 @@ import {
   Divider,
 } from "@material-ui/core";
 import Slider from "react-slick";
-import { useProductHook } from "./product-hook";
+// import { useProductHook } from "./product-hook";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import { isAdmin, isVendor } from "../../utils";
 
 import defaultImg from "../../assets/images/image.png";
 
-function Product({ product }) {
-  const { addToCart, deleteProduct } = useProductHook();
+function ProductGridItem({ product }) {
+  // const { addToCart, deleteProduct } = useProductHook();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -37,6 +37,9 @@ function Product({ product }) {
     }
   };
 
+  const onAddToCart = () => {};
+
+  // deleteProduct;
   const cartActions = (
     <div className={classes.actions}>
       {isAdmin(user) || isVendor(user) ? (
@@ -50,18 +53,18 @@ function Product({ product }) {
           >
             Edit
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             onClick={() => deleteProduct(product.id)}
           >
             Delete
-          </Button>
+          </Button> */}
         </>
       ) : (
         <Button
           variant={"contained"}
-          onClick={() => addToCart(product.id, quantity)}
+          onClick={() => onAddToCart(product.id, quantity)}
         >
           Add to cart
         </Button>
@@ -101,7 +104,10 @@ function Product({ product }) {
             {product.title}
           </Typography>
           <Typography variant="subtitle2" color="textSecondary">
-            {`₹ ${product.price}`}
+            ₹ <span>{product.price.retail}</span>{" "}
+            <span style={{ textDecoration: "line-through" }}>
+              {product.price.mrp}
+            </span>
           </Typography>
           <Box flex="1" />
           <Typography
@@ -114,7 +120,6 @@ function Product({ product }) {
           </Typography>
         </div>
       </CardContent>
-      {/* <Divider /> */}
       {cartActions}
     </Card>
   );
@@ -142,4 +147,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default Product;
+export default ProductGridItem;

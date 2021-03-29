@@ -4,6 +4,7 @@ export interface CategoryAttrs {
   title: string;
   parent: string;
   slug: string;
+  isLocation?: boolean;
 }
 
 interface CategoryModel extends mongoose.Model<CategoryDoc> {
@@ -14,6 +15,7 @@ export interface CategoryDoc extends mongoose.Document {
   title: string;
   parent: string;
   slug: string;
+  isLocation: boolean
 }
 
 const categorySchema = new mongoose.Schema(
@@ -30,6 +32,10 @@ const categorySchema = new mongoose.Schema(
     parent: {
       type: mongoose.Types.ObjectId,
       ref: "categories",
+    },
+    isLocation: {
+      type: Boolean,
+      default: false
     },
   },
   {

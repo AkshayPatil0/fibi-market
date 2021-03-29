@@ -41,7 +41,7 @@ router.post(
     req.session = {
       jwt: token,
     };
-    console.log(req.session);
+
     res.status(200).json(user);
   }
 );

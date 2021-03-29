@@ -6,11 +6,8 @@ import cookieSession from "cookie-session";
 import morgan from "morgan";
 import { currentUser, errorHandler, NotFoundError } from "@fibimarket/common";
 
-import { getRoute } from "./routes/get";
-import { newProductRoute } from "./routes/new";
-import { updateProductRoute } from "./routes/update";
-import { deleteProductRoute } from "./routes/delete";
-import { categoryRoute } from "./routes/category";
+import { categoryRoutes } from "./routes/category";
+import { productRoutes } from "./routes/product";
 
 const app = express();
 
@@ -27,11 +24,9 @@ app.use(
 app.use(morgan("dev"));
 app.use(currentUser);
 
-app.use(categoryRoute);
-app.use(getRoute);
-app.use(newProductRoute);
-app.use(updateProductRoute);
-app.use(deleteProductRoute);
+
+app.use("/api/products/categories", categoryRoutes);
+app.use("/api/products/", productRoutes);
 
 app.all("*", () => {
   throw new NotFoundError("route");

@@ -1,10 +1,29 @@
-import { SET_CART, SET_CATEGORIES, SET_PRODUCT, SET_PRODUCTS } from "../actions/product";
+import {
+  SET_CATEGORIES,
+  SET_PRODUCT_DETAILS,
+  SET_PRODUCT_IMAGES,
+  SET_PRODUCTS,
+} from "../actions/product";
 
+const initialProductState = {
+  title: "",
+  sku: "",
+  description: "",
+  price: { mrp: "", retail: "" },
+  specs: [],
+  variations: null,
+  variants: [],
+  stock: "",
+  category: "",
+  location: "",
+  hasVariants: false,
+  selectedVariant: null,
+};
 const initialState = {
   categories: [],
   products: [],
-  product: {},
-  cart: {}
+  product: initialProductState,
+  productImages: [],
 };
 
 export default function (state = initialState, action) {
@@ -21,18 +40,27 @@ export default function (state = initialState, action) {
         products: action.payload,
       };
 
-    case SET_PRODUCT:
+    case SET_PRODUCT_DETAILS:
       return {
         ...state,
-        product: action.payload,
+        product: action.payload || initialProductState,
       };
 
-    case SET_CART:
+    case SET_PRODUCT_IMAGES:
       return {
         ...state,
-        cart: action.payload
-      }
+        productImages: action.payload,
+      };
+
     default:
       return state;
   }
 }
+
+// const resolvePath = (path, value, product) => {
+//   const pathArr = path.split(".");
+
+//   let newProduct = {...product};
+
+//   // pathArr.map()
+// }

@@ -12,6 +12,8 @@ class ProductCreatedListener extends Listener<ProductCreatedEvent> {
       const product = await Product.build({
         _id: data.id,
         title: data.title,
+        description: data.description,
+        sku: data.sku,
         price: data.price,
         vendor: data.vendor,
         stock: data.stock,

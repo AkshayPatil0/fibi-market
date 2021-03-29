@@ -31,64 +31,8 @@ const homePage = () => {
   return (
     <div>
       <Typography variant="button">Hello {user?.firstName}</Typography>
-      <Categories categories={categories} />
     </div>
   );
 };
 
 export default homePage;
-
-function Categories({ categories, parent }) {
-  const [category, setCategory] = useState("");
-
-  const dispatch = useDispatch();
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    dispatch(addCategory({ title: category, parent }));
-  };
-  return (
-    <List component="nav" style={{ paddingLeft: "20px" }}>
-      {categories.map((cat) => {
-        return <Category key={cat.id} category={cat} />;
-      })}
-      <ListItem>
-        <form onSubmit={onSubmit}>
-          <TextInput
-            type="text"
-            name="category"
-            label="Add category"
-            handleChange={(e) => setCategory(e.target.value)}
-          />
-        </form>
-      </ListItem>
-    </List>
-  );
-}
-
-function Category({ category }) {
-  const [open, setOpen] = useState(false);
-
-  const router = useHistory();
-  const dispatch = useDispatch();
-  return (
-    <>
-      <ListItem button onClick={() => setOpen(!open)}>
-        <ListItemText
-          primary={category.title}
-          // onClick={() => router.push(`/products?category=${category.id}`)}
-        ></ListItemText>
-        <Link to={`/products?category=${category.id}`}>products</Link>
-        <Delete
-          color="error"
-          onClick={() => dispatch(deleteCategory(category.id))}
-        />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <Categories categories={category.childrens} parent={category.id} />
-      </Collapse>
-    </>
-  );
-}

@@ -9,8 +9,11 @@ class ProductDeletedListener extends Listener<ProductDeletedEvent> {
 
   async onMessage(data: ProductDeletedEvent["data"], msg: Message) {
     try {
-      const product = await Product.findById(data.id);
       console.log(msg.getSequence(), data);
+      const product = await Product.findOne({
+        _id: data.id,
+        version: data.version - 1,
+      });
       if (!product) {
         return;
       }

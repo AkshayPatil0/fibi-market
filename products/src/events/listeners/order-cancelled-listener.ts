@@ -1,7 +1,7 @@
 import { Message } from "node-nats-streaming";
 import { Listener, OrderCancelledEvent, Subjects } from "@fibimarket/common";
 import { Product } from "../../models/product";
-import { updateProduct } from "../../routes/update";
+import { updateProduct } from "../../helpers";
 
 class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
@@ -16,15 +16,19 @@ class OrderCancelledListener extends Listener<OrderCancelledEvent> {
 
         if (!product) return;
 
-        await updateProduct(product, {
-          title: product.title,
-          price: product.price,
-          vendor: product.vendor,
-          stock: product.stock + val.quantity,
-          images: product.images,
-          category: product.category,
-          location: product.location,
-        });
+        // await updateProduct(product, {
+        //   title: product.title,
+        //   description: product.description,
+        //   vendor: product.vendor,
+        //   price: product.price,
+        //   specs: product.specs,
+        //   category: product.category,
+        //   location: product.location,
+        //   images: product.images,
+        //   hasVariants: product.hasVariants,
+        //   variants: product.variants,
+        //   stock: product.stock + val.quantity,
+        // });
       });
       msg.ack();
     } catch (err) {

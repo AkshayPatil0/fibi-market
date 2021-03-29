@@ -1,53 +1,93 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import {
-  Button,
-  CssBaseline,
   LinearProgress,
   Box,
   Container,
-  Grid,
   makeStyles,
+  Avatar,
+  Typography,
+  IconButton,
+  Grid,
 } from "@material-ui/core";
-import { Pagination } from "@material-ui/lab";
+import { Filter } from "react-feather";
 
-import ProductToolbar from "../toolbar/product-toolbar";
-import Product from "./product-grid-item";
-
-import { useProductsHook } from "./product-hook";
-import ProductFilter from "../filter/product-filter";
+import ProductGridItem from "./product-grid-item";
+import { getCurrentUserState, getProductsState } from "../../utils";
+import { deleteProduct, getProducts } from "../../store/actions/product";
+import FilterBar from "./filter-bar";
 
 export default function Products() {
   const classes = useStyles();
+  const user = getCurrentUserState();
 
-  const { isLoading } = useProductsHook();
-  const products = useSelector((state) => state.product.products);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
-  if (!products || isLoading) {
+  const products = getProductsState();
+
+  const [rows, setRows] = useState([]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const run = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(
+          getProducts({ vendor: user.role === "vendor" ? user.id : undefined })
+        );
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (!products.length > 0) run();
+  }, []);
+
+  const onDelete = async (id) => {
+    try {
+      await dispatch(deleteProduct(id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const router = useHistory();
+
+  if (isLoading) {
     return <LinearProgress />;
   }
 
   return (
     <div className={classes.root}>
-      <Container maxWidth={false}>
-        <ProductToolbar />
-        <ProductFilter />
-        <Box mt={3}>
-          <Grid container spacing={3}>
-            {products.map((product) => (
-              <Grid item key={product.id} lg={4} md={6} xs={12}>
-                <Product className={classes.productCard} product={product} />
+      <IconButton className={classes.filterButton}>
+        <Filter className={classes.filterIcon} />
+      </IconButton>
+      <FilterBar
+        onMobileClose={() => setMobileNavOpen(false)}
+        openMobile={isMobileNavOpen}
+      />
+      <div className={classes.wrapper}>
+        <div className={classes.contentContainer}>
+          <div className={classes.content}>
+            <Container maxWidth={false}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={4} md={4}>
+                  {products.map((product) => (
+                    <ProductGridItem product={product} />
+                  ))}
+                </Grid>
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Box mt={3} display="flex" justifyContent="center">
-          <Pagination color="primary" count={3} size="small" />
-        </Box>
-        <Box p={3} />
-      </Container>
+              <Box p={3} />
+            </Container>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -55,12 +95,42 @@ export default function Products() {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    minHeight: "100%",
-    paddingBottom: theme.spacing(3),
+    display: "flex",
+    height: "100%",
+    minHeight: "100vh",
+    width: "100%",
+  },
+  filterButton: {
+    position: "fixed",
+    bottom: "10px",
+    right: "10px",
+    // backgroundColor: theme.palette.primary.main,
+  },
+  filterIcon: {
+    color: theme.palette.secondary.main,
+    fill: theme.palette.secondary.main,
+  },
+  wrapper: {
+    display: "flex",
+    flex: "1 1 auto",
+    overflow: "hidden",
+    // paddingTop: 64,
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: 256,
+    },
+  },
+  contentContainer: {
+    display: "flex",
+    flex: "1 1 auto",
+    overflow: "hidden",
+    flexDirection: "column",
+  },
+  content: {
+    flex: "1 1 auto",
+    overflow: "auto",
+    padding: theme.spacing(2, 0),
   },
   productCard: {
     height: "100%",
   },
 }));
-
-// export default ProductList;

@@ -1,6 +1,14 @@
-*{
+* {
   margin: 0;
 }
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus {
+  color: black;
 }
