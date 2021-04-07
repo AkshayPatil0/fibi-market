@@ -38,6 +38,7 @@ export function useEditProductHook() {
     const run = async () => {
       try {
         dispatch(getProduct(id));
+        // dispatch(get)
       } catch (err) {
         console.error(err);
       }

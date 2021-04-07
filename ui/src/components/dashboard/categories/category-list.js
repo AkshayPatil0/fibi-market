@@ -24,20 +24,22 @@ function CategoryList({ categories, parent }) {
         return <CategoryItem key={cat.id} category={cat} />;
       })}
       <ListItem>
-        <ListItemText>
-          <form onSubmit={onSubmit}>
-            <TextInput
-              type="text"
-              name="category"
-              placeholder={`Add category${
-                parent ? ` in ${parent.title}` : ""
-              }...`}
-              value={category}
-              handleChange={(e) => setCategory(e.target.value)}
-              margin="dense"
-            />
-          </form>
-        </ListItemText>
+        {/* <ListItemText
+          primary={ */}
+        <form onSubmit={onSubmit}>
+          <TextInput
+            type="text"
+            name="category"
+            placeholder={`Add category${
+              parent ? ` in ${parent.title}` : ""
+            }...`}
+            value={category}
+            handleChange={(e) => setCategory(e.target.value)}
+            margin="dense"
+          />
+        </form>
+        {/* }
+        ></ListItemText> */}
       </ListItem>
     </List>
   );

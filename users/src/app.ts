@@ -3,17 +3,12 @@ import { json } from "body-parser";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
 import { errorHandler, NotFoundError } from "@fibimarket/common";
 
-import { signinRoute } from "./routes/signin";
-import { googleSigninRoute } from "./routes/google-signin";
-import { signupRoute } from "./routes/signup";
-import { signoutRoute } from "./routes/signout";
-import {getUsersRoute} from './routes/get';
-import { getProfileRoute } from "./routes/profile";
-import { updateProfileRoute } from "./routes/update";
-import { setRoleRoute } from "./routes/set-role";
-import { deleteRoute } from "./routes/delete";
+import { authRoutes } from "./routes/auth";
+import { usersRoute } from "./routes/users";
+import { profileRoute } from "./routes/profile";
 
 const app = express();
 
@@ -26,17 +21,14 @@ app.use(
     // secure: process.env.NODE_ENV !== 'test'
   })
 );
+
+app.use(morgan("dev"));
+
 app.use(cookieParser());
 
-app.use(signinRoute);
-app.use(googleSigninRoute);
-app.use(signupRoute);
-app.use(signoutRoute);
-app.use(getProfileRoute);
-app.use(updateProfileRoute);
-app.use(setRoleRoute);
-app.use(deleteRoute);
-app.use(getUsersRoute)
+app.use("/api/users/profile", profileRoute);
+app.use("/api/users/", authRoutes);
+app.use("/api/users/", usersRoute);
 
 app.all("*", () => {
   throw new NotFoundError("route");

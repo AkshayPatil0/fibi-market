@@ -94,16 +94,9 @@ const ProductToolbar = () => {
       </Box>
       <Modal open={open} onClose={() => setOpen(false)}>
         <div className={classes.modal}>
-          <Card>
-            <CardHeader
-              title="Create product"
-              titleTypographyProps={{ variant: "h6" }}
-            />
-            <Divider />
-            <CardContent className={classes.products}>
-              <ProductDetailsForm />
-            </CardContent>
-            <CardActions>
+          <ProductDetailsForm
+            header="Create product"
+            action={
               <Button
                 variant="contained"
                 color="primary"
@@ -112,8 +105,8 @@ const ProductToolbar = () => {
               >
                 Continue
               </Button>
-            </CardActions>
-          </Card>
+            }
+          />
         </div>
       </Modal>
     </ToolbarLayout>

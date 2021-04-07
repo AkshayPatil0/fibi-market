@@ -5,7 +5,7 @@ import slugify from "slugify";
 import { BadRequestError, NotFoundError } from "@fibimarket/common";
 
 export const createCategoryController = async (req: Request, res: Response) => {
-  const { title, parent } = req.body;
+  const { title, parent, location } = req.body;
 
   let parentDoc;
   let slug = "";
@@ -26,6 +26,7 @@ export const createCategoryController = async (req: Request, res: Response) => {
     title,
     parent: parentDoc?.id,
     slug,
+    isLocation: !!location,
   });
 
   await category.save();

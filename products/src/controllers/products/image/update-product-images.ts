@@ -8,6 +8,7 @@ import {
 } from "@fibimarket/common";
 import { Product } from "../../../models/product";
 import { v1 as uuidv1 } from "uuid";
+import { updateProduct } from "../../../helpers/update-product";
 
 export const updateProductImagesController = async (
   req: Request,
@@ -40,8 +41,21 @@ export const updateProductImagesController = async (
     })
   );
 
-  product.set("images", images);
-  await product.save();
+  await updateProduct(product, {
+    images,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    sku: product.sku,
+    vendor: product.vendor,
+    category: product.category,
+    location: product.location,
+    specs: product.specs,
+    stock: product.stock,
+    hasVariants: product.hasVariants,
+    variants: product.variants,
+    variations: product.variations,
+  });
 
   res.status(200).json(product);
 };

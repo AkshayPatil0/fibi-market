@@ -40,7 +40,7 @@ const MultipleImagePicker = ({ previews, onAdd, onRemove }) => {
           <GridList cellHeight={160} className={classes.gridList} cols={2}>
             {previews.map((img) => (
               <GridListTile key={img} cols={1}>
-                <img src={img} alt={img} />
+                <img className={classes.image} src={img} alt={img} />
                 <IconButton
                   className={classes.delete}
                   onClick={() => handleRemove(img)}
@@ -80,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     padding: theme.spacing(2),
+  },
+  image: {
+    objectFit: "contain",
+    height: "100%",
   },
   delete: {
     position: "absolute",

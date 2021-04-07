@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { NotAuthorizedError, NotFoundError } from "@fibimarket/common";
 import { Product, ProductDoc } from "../../models/product";
-import { updateProduct } from "../../helpers";
+import { updateProduct } from "../../helpers/update-product";
 
 export const updateProductController = async (req: Request, res: Response) => {
   let product = await Product.findById(req.params.id);
@@ -32,7 +32,6 @@ export const updateProductController = async (req: Request, res: Response) => {
 
   let newVariants = new Array<ProductVariant>();
 
-  console.log(variants);
   variants.map((variant: ProductVariant) => {
     if (variant.id) {
       newVariants.push(variant);

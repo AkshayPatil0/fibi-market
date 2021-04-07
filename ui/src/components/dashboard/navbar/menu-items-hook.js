@@ -1,3 +1,4 @@
+import { LocationCity, LocationOn } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import {
   Settings,
@@ -32,6 +33,11 @@ export const useMenuItems = (user) => {
       href: "/dashboard/categories",
       icon: Grid,
       title: "Categories",
+    },
+    {
+      href: "/dashboard/locations",
+      icon: LocationOn,
+      title: "Locations",
     },
     {
       href: "/dashboard/orders",

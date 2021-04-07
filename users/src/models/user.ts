@@ -5,17 +5,26 @@ import { UserRoles } from "@fibimarket/common";
 import { Password } from "../services/password";
 
 //type definition of user attributes
-interface UserAttrs {
+export interface UserAttrs {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+  addresses?: {
+    name: string;
+    phone: string;
+    address: string;
+    locality: string;
+    pincode: string;
+    city: string;
+    state: string;
+  }[];
   phoneNo?: string;
   avatar?: string;
   role: UserRoles;
 }
 //type definition of user model
-interface UserModel extends mongoose.Model<UserDoc> {
+export interface UserModel extends mongoose.Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;
 }
 
@@ -25,6 +34,15 @@ export interface UserDoc extends mongoose.Document {
   lastName: string;
   email: string;
   password: string;
+  addresses: {
+    name: string;
+    phone: string;
+    address: string;
+    locality: string;
+    pincode: string;
+    city: string;
+    state: string;
+  }[];
   phoneNo?: string;
   avatar?: string;
   role: UserRoles;
@@ -53,6 +71,7 @@ const userSchema = new mongoose.Schema(
     phoneNo: {
       type: String,
     },
+    addresses: [Object],
     role: {
       type: String,
       required: true,

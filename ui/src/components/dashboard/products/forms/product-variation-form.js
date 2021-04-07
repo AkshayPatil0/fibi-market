@@ -6,6 +6,8 @@ import {
   Collapse,
   makeStyles,
   IconButton,
+  Chip,
+  Box,
 } from "@material-ui/core";
 import { Cancel, ExpandLess, ExpandMore } from "@material-ui/icons";
 
@@ -44,11 +46,14 @@ const ProductVariationForm = ({
       <Collapse in={showChildren} timeout="auto" unmountOnExit>
         {variation && variation.length > 0
           ? variation.map((value) => (
-              <ListItem key={value}>
-                <ListItemText>
-                  <Typography variant="body2">{value}</Typography>
-                </ListItemText>
-              </ListItem>
+              // <ListItem key={value}>
+              //   <ListItemText>
+              //     <Typography variant="body2">{value}</Typography>
+              //   </ListItemText>
+              // </ListItem>
+              <Box p={1} fontSize={12}>
+                <Chip size="small" label={value} onDelete={() => {}} />
+              </Box>
             ))
           : null}
         <ListItem>

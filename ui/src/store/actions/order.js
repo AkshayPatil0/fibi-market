@@ -2,6 +2,7 @@ import * as api from "../../api";
 
 export const SET_ORDERS = "set-orders";
 export const SET_CART = "set-cart";
+export const SET_ORDER = "set-order";
 
 const setOrders = (orders) => {
   return {
@@ -49,5 +50,58 @@ export const removeFromCart = (productId, quantity, variantId) => {
   return async (dispatch) => {
     const res = await api.removeFromCart({ productId, quantity, variantId });
     dispatch(setCart(res.data));
+  };
+};
+
+export const setOrder = (order) => {
+  return {
+    type: SET_ORDER,
+    payload: order,
+  };
+};
+
+export const createOrder = () => {
+  return async (dispatch, getState) => {
+    const cart = getState().order.cart;
+    if (!cart) return;
+
+    let totalPrice = { mrp: 0, retail: 0 };
+    const orders = await Promise.all(
+      cart.products.map(({ product, quantity }) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const price = {
+              mrp: product.price.mrp * quantity,
+              retail: product.price.retail * quantity,
+            };
+            const res = await api.placeOrder({
+              productId: product.id,
+              quantity,
+              price,
+            });
+            totalPrice = {
+              mrp: totalPrice.mrp + price.mrp,
+              retail: totalPrice.retail + price.retail,
+            };
+            resolve(res.data.id);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      })
+    );
+    const res = await api.placeOrder({ orders, price: totalPrice });
+    dispatch(setOrder(res.data));
+  };
+};
+
+export const updateOrder = () => {
+  return async (dispatch, getState) => {
+    const order = getState().order.order;
+
+    if (!order) throw new Error("Order state is not defined");
+
+    const res = await api.updateOrder(order.id, order);
+    dispatch(setOrder(res.data));
   };
 };

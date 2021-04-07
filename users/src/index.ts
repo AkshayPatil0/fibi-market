@@ -34,13 +34,13 @@ const run = async () => {
 
     nats.client.on("close", () => {
       console.log("closing NATS connection !");
-      // process.exit();
+      process.exit();
     });
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
   } catch (err) {
     console.error(err);
-    // process.exit();
+    process.exit();
   }
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -51,7 +51,7 @@ const run = async () => {
     console.log("connected to db !!");
   } catch (err) {
     console.error(err);
-    // process.exit();
+    process.exit();
   }
 
   if (!process.env.AWS_ID) {

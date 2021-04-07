@@ -1,17 +1,49 @@
 import express from "express";
-import { currentUser, requireAuth } from "@fibimarket/common";
+import multer from "multer";
+
+import { body } from "express-validator";
+import { validateRequest, currentUser, requireAuth } from "@fibimarket/common";
 import { User } from "../models/user";
+import { updateProfileController } from "../controllers/profile/update-profile";
+import { updateProfileAvatarController } from "../controllers/profile/update-profile-avatar";
+import { deleteProfileAvatarController } from "../controllers/profile/delete-profile-avatar";
 
 const router = express();
 
-router.get("/api/users/profile", currentUser, async (req, res) => {
-  const user = await User.findById(req.currentUser?.id);
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-  // await new Promise<void>((resolve, reject) => {
-  //   setTimeout(() => resolve(), 2000);
-  // });
+router.get("/", currentUser, async (req, res) => {
+  const user = await User.findById(req.currentUser?.id);
 
   res.status(200).json(user);
 });
 
-export { router as getProfileRoute };
+router.put(
+  "/",
+  currentUser,
+  requireAuth,
+  [
+    body("firstName").not().isEmpty().withMessage("First name is not valid !"),
+    body("lastName").not().isEmpty().withMessage("Last name is not valid !"),
+  ],
+  validateRequest,
+  updateProfileController
+);
+
+router.put(
+  "/avatar",
+  currentUser,
+  requireAuth,
+  upload.single("avatar"),
+  updateProfileAvatarController
+);
+
+router.delete(
+  "/avatar",
+  currentUser,
+  requireAuth,
+  deleteProfileAvatarController
+);
+
+export { router as profileRoute };

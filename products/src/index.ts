@@ -38,7 +38,7 @@ const run = async () => {
 
     nats.client.on("close", () => {
       console.log("closing NATS connection !");
-      // process.exit();
+      process.exit();
     });
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
@@ -50,7 +50,7 @@ const run = async () => {
     new VendorUpdatedListener(nats.client).listen();
   } catch (err) {
     console.error(err);
-    // process.exit();
+    process.exit();
   }
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -61,7 +61,7 @@ const run = async () => {
     console.log("connected to mongoDB !!");
   } catch (err) {
     console.error(err);
-    // process.exit();
+    process.exit();
   }
   if (!process.env.AWS_ID) {
     throw new Error("AWS_ID must be provided !");

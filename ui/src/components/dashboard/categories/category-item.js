@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ListItem, ListItemText, Collapse } from "@material-ui/core";
+import {
+  ListItem,
+  ListItemText,
+  Collapse,
+  Typography,
+} from "@material-ui/core";
 import { ExpandLess, ExpandMore, Delete } from "@material-ui/icons";
 
 import { deleteCategory } from "../../../store/actions/product";
@@ -14,7 +19,9 @@ function CategoryItem({ category }) {
     <>
       <ListItem button onClick={() => setShowChildren(!showChildren)}>
         {showChildren ? <ExpandLess /> : <ExpandMore />}
-        <ListItemText primary={category.title}></ListItemText>
+        <ListItemText
+          primary={<Typography variant="h6">{category.title}</Typography>}
+        ></ListItemText>
         <Delete
           color="error"
           onClick={() => dispatch(deleteCategory(category.id))}

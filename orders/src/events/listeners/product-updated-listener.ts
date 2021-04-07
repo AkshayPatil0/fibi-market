@@ -14,7 +14,12 @@ class ProductUpdatedListener extends Listener<ProductUpdatedEvent> {
         _id: data.id,
         // version: data.version - 1,
       });
-      if (!product) return;
+      if (!product) {
+        throw new Error(
+          `Product with id ${data.id} and title ${data.title} not found !`
+        );
+        return;
+      }
 
       const {
         title,

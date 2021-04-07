@@ -24,7 +24,6 @@ app.use(
 app.use(morgan("dev"));
 app.use(currentUser);
 
-
 app.use("/api/products/categories", categoryRoutes);
 app.use("/api/products/", productRoutes);
 

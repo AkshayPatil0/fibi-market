@@ -6,6 +6,7 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#556cd6",
+      light: "#556cd62b",
     },
     secondary: {
       main: red.A400,
@@ -21,11 +22,36 @@ const theme = createMuiTheme({
       dark: "#F4F6F8",
     },
   },
-  // typography: {
-  //   fontSize: "16px",
-  // },
+  typography: {
+    fontSize: 16,
+  },
 
   overrides: {
+    MuiButton: {
+      root: {
+        fontSize: ["1em", "!important"],
+      },
+    },
+    MuiInputBase: {
+      root: {
+        fontSize: ["1em", "!important"],
+      },
+    },
+    MuiInputLabel: {
+      root: {
+        fontSize: ["inherit", "!important"],
+      },
+    },
+    MuiIconButton: {
+      root: {
+        fontSize: ["1em", "!important"],
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        fontSize: ["1.5em", "!important"],
+      },
+    },
     MuiTypography: {
       h2: {
         fontSize: ["1.5em", "!important"],
@@ -38,6 +64,7 @@ const theme = createMuiTheme({
       },
       h5: {
         fontSize: ["1.125em", "!important"],
+        fontWeight: "bold",
       },
       h6: {
         fontSize: ["1em", "!important"],

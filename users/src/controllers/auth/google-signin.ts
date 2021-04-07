@@ -1,22 +1,13 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { body } from "express-validator";
-import {
-  validateRequest,
-  BadRequestError,
-  UserRoles,
-} from "@fibimarket/common";
+import { UserRoles } from "@fibimarket/common";
 
-import { User } from "../models/user";
-import { Password } from "../services/password";
+import { User } from "../../models/user";
 
-const router = express();
-
-router.post("/api/users/googlesignin", async (req, res) => {
+export const googleSigninController = async (req: Request, res: Response) => {
   const { profile } = req.body;
 
-  // console.log(profile)
   let user = await User.findOne({ email: profile.email });
 
   if (!user) {
@@ -41,6 +32,4 @@ router.post("/api/users/googlesignin", async (req, res) => {
   };
 
   res.status(200).json(user);
-});
-
-export { router as googleSigninRoute };
+};

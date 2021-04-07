@@ -8,7 +8,7 @@ import "./app.css";
 
 import Header from "./components/header/header";
 import { getProfile } from "./store/actions/auth";
-import { getCategories } from "./store/actions/product";
+import { getCategories, getLocations } from "./store/actions/product";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -27,7 +27,8 @@ const App = (props) => {
       setIsLoading(true);
       try {
         await dispatch(getProfile());
-        await dispatch(getCategories());
+        dispatch(getCategories());
+        dispatch(getLocations());
       } catch (err) {
         console.log(err);
       } finally {
@@ -46,6 +47,7 @@ const App = (props) => {
   }
   return (
     <div className={classes.root}>
+      {/* {isLoading && <LinearProgress />} */}
       <Switch>
         <Route path="/auth" component={AuthLayout} />
         <Route path="/dashboard" component={DashboardLayout} />

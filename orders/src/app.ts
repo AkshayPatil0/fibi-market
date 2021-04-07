@@ -3,6 +3,8 @@ import { json } from "body-parser";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 
+import morgon from "morgan";
+
 import {
   currentUser,
   errorHandler,
@@ -10,11 +12,8 @@ import {
   requireAuth,
 } from "@fibimarket/common";
 
-import { getOrdersRoute } from "./routes/get";
-import { newOrderRoute } from "./routes/new";
-import { showOrderRoute } from "./routes/show";
 import { cartRoutes } from "./routes/cart";
-import { cancelOrderRoute } from "./routes/delete";
+import { orderRoutes } from "./routes/order";
 
 const app = express();
 
@@ -28,14 +27,13 @@ app.use(
   })
 );
 
+app.use(morgon("dev"));
+
 app.use(currentUser);
 app.use(requireAuth);
 
-app.use(getOrdersRoute);
-app.use(newOrderRoute);
-app.use(showOrderRoute);
-app.use(cancelOrderRoute);
-app.use(cartRoutes);
+app.use("/api/orders/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.all("*", () => {
   throw new NotFoundError("route");

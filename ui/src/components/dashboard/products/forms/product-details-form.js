@@ -3,14 +3,23 @@ import { Grid, makeStyles } from "@material-ui/core";
 
 import TextInput from "../../../common/input";
 
-import { getProductState } from "../../../../utils";
+import {
+  getCategoriesState,
+  getLocationsState,
+  getProductState,
+} from "../../../../utils";
 import { useDispatch } from "react-redux";
 import { setProduct } from "../../../../store/actions/product";
+import Select from "../../../common/select";
+import { getCategoryOptions } from "../../../common/select/options";
+import EditCardLayout from "../../../common/edit-card-layout";
 
-const ProductDetailsForm = () => {
+const ProductDetailsForm = ({ header, action }) => {
   const classes = useStyles();
 
   const product = getProductState();
+  const categories = getCategoriesState();
+  const locations = getLocationsState();
 
   const dispatch = useDispatch();
 
@@ -30,7 +39,7 @@ const ProductDetailsForm = () => {
   };
 
   return (
-    <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
+    <EditCardLayout header={header}>
       <Grid container spacing={1}>
         <TextInput
           label="Title"
@@ -86,8 +95,27 @@ const ProductDetailsForm = () => {
           margin="dense"
           required
         />
+        <Grid item xs={12}>
+          <Select
+            name="category"
+            placeholder="Select category "
+            value={product.category}
+            options={getCategoryOptions(categories)}
+            handleChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Select
+            name="location"
+            placeholder="Select location "
+            value={product.location}
+            options={getCategoryOptions(locations)}
+            handleChange={handleChange}
+          />
+        </Grid>
       </Grid>
-    </form>
+      <>{action}</>
+    </EditCardLayout>
   );
 };
 

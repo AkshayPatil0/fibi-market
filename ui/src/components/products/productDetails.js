@@ -54,9 +54,11 @@ const ProductDetails = () => {
         alert("Select variant first !");
         return;
       }
+      console.log(product.selectedVariant);
+      dispatch(addToCart(product.id, 1, product.selectedVariant.id));
+      return;
     }
-    console.log(product.selectedVariant);
-    dispatch(addToCart(product.id, 1, product.selectedVariant.id));
+    dispatch(addToCart(product.id, 1));
   };
 
   const buttonActions = (
@@ -141,14 +143,35 @@ const ProductDetails = () => {
             ) : (
               <Pricing {...product.price} />
             )}
-            {
+
+            {product.hasVariants && (
               <Box>
                 <Box pb={1}>
                   <Typography variant="button">select variant :</Typography>
                 </Box>
                 <VariantsList variants={product?.variants} />
               </Box>
-            }
+            )}
+            {product.hasVariants ? (
+              product.selectedVariant &&
+              (product.selectedVariant.stock < 10 ? (
+                <Typography variant="body1" color="secondary">
+                  hurry up only {product.selectedVariant.stock} left !
+                </Typography>
+              ) : (
+                <Typography variant="body1" style={{ color: "green" }}>
+                  in stock !
+                </Typography>
+              ))
+            ) : product.stock < 10 ? (
+              <Typography variant="body1" color="secondary">
+                hurry up only {product.stock} left !
+              </Typography>
+            ) : (
+              <Typography variant="body1" style={{ color: "green" }}>
+                in stock !
+              </Typography>
+            )}
             {buttonActions}
           </Box>
         </Grid>

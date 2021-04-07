@@ -12,8 +12,8 @@ import {
 } from "@material-ui/core";
 import { AddCircle, RemoveCircle, Delete } from "@material-ui/icons";
 
-import { addToCart, removeFromCart } from "../../../store/actions/order";
-import Pricing from "../../common/pricing";
+import { addToCart, removeFromCart } from "../../store/actions/order";
+import Pricing from "../common/pricing";
 
 function ProductListItem({ product, quantity, variant }) {
   const classes = useStyles();

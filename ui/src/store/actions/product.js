@@ -2,6 +2,7 @@ import * as api from "../../api";
 import { getImagesFormData } from "../../utils";
 
 export const SET_CATEGORIES = "set-categories";
+export const SET_LOCATIONS = "set-locations";
 export const SET_PRODUCTS = "set-products";
 export const SET_PRODUCT_DETAILS = "set-product-details";
 export const SET_PRODUCT_IMAGES = "set-product-images";
@@ -35,6 +36,36 @@ export const deleteCategory = (id) => {
     await api.deleteCategory(id);
     const res = await api.fetchCategories();
     dispatch(setCategories(res.data));
+  };
+};
+
+const setLocations = (locations) => {
+  return {
+    type: SET_LOCATIONS,
+    payload: locations,
+  };
+};
+
+export const getLocations = () => {
+  return async (dispatch) => {
+    const res = await api.fetchLocations();
+    dispatch(setLocations(res.data));
+  };
+};
+
+export const addLocation = (body) => {
+  return async (dispatch) => {
+    await api.addLocation(body);
+    const res = await api.fetchLocations();
+    dispatch(setLocations(res.data));
+  };
+};
+
+export const deleteLocation = (id) => {
+  return async (dispatch) => {
+    await api.deleteLocation(id);
+    const res = await api.fetchLocations();
+    dispatch(setLocations(res.data));
   };
 };
 

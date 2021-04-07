@@ -28,6 +28,7 @@ module.exports = {
   ],
   devServer: {
     // public: '/',
+    host: "0.0.0.0",
     contentBase: "./public",
     // hot: true,
     historyApiFallback: true,

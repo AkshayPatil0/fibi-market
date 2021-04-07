@@ -42,11 +42,6 @@ const VariantsList = ({ variants }) => {
                     {name} : {opt}
                   </Typography>
                 ))}
-              {variant.stock < 10 && (
-                <Typography variant="body1" color="secondary">
-                  only {variant.stock} left !
-                </Typography>
-              )}
             </Box>
             {selectedIndex == i && (
               <IconButton size="small" className={classes.checked}>

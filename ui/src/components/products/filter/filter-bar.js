@@ -12,14 +12,15 @@ import {
   Typography,
   makeStyles,
   ListItem,
+  Slider,
 } from "@material-ui/core";
 
 import { Input as InputIcon } from "@material-ui/icons";
 
 // import NavItem from "./nav-item";
 import { useDispatch, useSelector } from "react-redux";
-// import { useMenuItems } from "./menu-items-hook";
-import { signout } from "../../store/actions/auth";
+
+import PriceFilter from "./price";
 
 const FilterBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
@@ -45,52 +46,19 @@ const FilterBar = ({ onMobileClose, openMobile }) => {
     }
   };
 
-  const content = <div />;
-  // (
-  //   <Box height="100%" display="flex" flexDirection="column">
-  //     <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-  //       <Avatar
-  //         className={classes.avatar}
-  //         component={RouterLink}
-  //         src={user.avatar}
-  //         to="/dashboard/account"
-  //       />
-  //       <Typography className={classes.name} color="textPrimary" variant="h6">
-  //         {user.firstName + " " + user.lastName}
-  //       </Typography>
-  //       <Typography color="textSecondary" variant="body2">
-  //         {user.role}
-  //       </Typography>
-  //     </Box>
-  //     <Divider />
-  //     <Box p={2}>
-  //       <List>
-  //         {items.map((item) => (
-  //           <NavItem
-  //             href={item.href}
-  //             key={item.title}
-  //             title={item.title}
-  //             icon={item.icon}
-  //           />
-  //         ))}
-  //       </List>
-  //     </Box>
-  //     <Box flexGrow={1} />
-  //     <Box p={2} pb={0}>
-  //       <List>
-  //         <ListItem disableGutters>
-  //           <Button className={classes.button} onClick={onSignout}>
-  //             <InputIcon className={classes.icon} size="20" />
-  //             <span className={classes.title}>Signout</span>
-  //           </Button>
-  //         </ListItem>
-  //       </List>
-  //     </Box>
-  //   </Box>
-  // );
+  const content = (
+    <Box>
+      <Box px={2} py={4}>
+        <Typography variant="h5">Filter</Typography>
+      </Box>
+      <Box px={2} py={4}>
+        <PriceFilter />
+      </Box>
+    </Box>
+  );
 
   return (
-    <>
+    <Box>
       <Hidden lgUp>
         <Drawer
           anchor="left"
@@ -114,7 +82,7 @@ const FilterBar = ({ onMobileClose, openMobile }) => {
           {content}
         </Drawer>
       </Hidden>
-    </>
+    </Box>
   );
 };
 
@@ -126,10 +94,11 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   desktopDrawer: {
-    width: 256,
+    width: 300,
     // top: 64,
     position: "absolute",
     // height: "calc(100% - 64px)",
+    minHeight: "100vh",
   },
   button: {
     color: theme.palette.text.secondary,

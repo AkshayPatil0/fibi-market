@@ -10,6 +10,8 @@ import {
   CardActions,
   makeStyles,
   Divider,
+  IconButton,
+  useTheme,
 } from "@material-ui/core";
 import Slider from "react-slick";
 // import { useProductHook } from "./product-hook";
@@ -18,131 +20,86 @@ import { useSelector } from "react-redux";
 import { isAdmin, isVendor } from "../../utils";
 
 import defaultImg from "../../assets/images/image.png";
+import { Favorite, FavoriteBorder, ShoppingCart } from "@material-ui/icons";
+import Pricing from "../common/pricing";
 
 function ProductGridItem({ product }) {
   // const { addToCart, deleteProduct } = useProductHook();
-
-  const [quantity, setQuantity] = useState(1);
 
   const classes = useStyles();
 
   const user = useSelector((state) => state.auth.currentUser);
 
   const router = useHistory();
-  const handleChange = (e) => {
-    if (e.target.value > 0) {
-      setQuantity(e.target.value);
-    } else {
-      setQuantity("");
-    }
+
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  const onWishlist = () => {
+    setIsWishlisted(!isWishlisted);
   };
 
-  const onAddToCart = () => {};
-
-  // deleteProduct;
-  const cartActions = (
-    <div className={classes.actions}>
-      {isAdmin(user) || isVendor(user) ? (
-        <>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              router.push(`/dashboard/products/update/${product.id}`)
-            }
-          >
-            Edit
-          </Button>
-          {/* <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => deleteProduct(product.id)}
-          >
-            Delete
-          </Button> */}
-        </>
-      ) : (
-        <Button
-          variant={"contained"}
-          onClick={() => onAddToCart(product.id, quantity)}
-        >
-          Add to cart
-        </Button>
-      )}
-    </div>
-  );
-
-  const carousel = (
-    <Slider
-      dots
-      infinite={false}
-      speed={500}
-      slidesToShow={1}
-      slidesToScroll={1}
-      lazyLoad
-    >
-      {product.images && product.images.length > 0 ? (
-        product.images.map((url) => (
-          <div className={classes.imageDiv} key={url}>
-            <img src={url} className={classes.image} />
-          </div>
-        ))
-      ) : (
-        <div className={classes.imageDiv}>
-          <img src={defaultImg} className={classes.image} />
-        </div>
-      )}
-    </Slider>
-  );
-
   return (
-    <Card>
-      <CardMedia children={carousel} title={product.title} />
+    <Card className={classes.root}>
+      <CardMedia
+        onClick={() => router.push(`/products/${product.id}`)}
+        children={
+          product.images && product.images.length > 0 ? (
+            <img src={product.images[0]} className={classes.image} />
+          ) : (
+            <img src={defaultImg} className={classes.image} />
+          )
+        }
+        title={product.title}
+      />
       <CardContent>
         <div className={classes.details}>
           <Typography component="h6" variant="body1">
             {product.title}
           </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            ₹ <span>{product.price.retail}</span>{" "}
-            <span style={{ textDecoration: "line-through" }}>
-              {product.price.mrp}
-            </span>
-          </Typography>
+          <Pricing {...product.price} small />
           <Box flex="1" />
-          <Typography
-            component="p"
-            variant="subtitle2"
-            color="textSecondary"
-            className={classes.quantityText}
-          >
-            {`stock - ${product.stock}`}
-          </Typography>
         </div>
       </CardContent>
-      {cartActions}
+      <IconButton
+        size="small"
+        className={classes.wishlistButton}
+        onClick={onWishlist}
+      >
+        {isWishlisted ? <Favorite color="secondary" /> : <Favorite />}
+      </IconButton>
     </Card>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    position: "relative",
+  },
   details: {},
   imageDiv: {
-    height: theme.spacing(30),
+    height: theme.spacing(20),
     overflow: "hidden",
+    cursor: "pointer",
   },
   image: {
     height: "100%",
     width: "100%",
     objectFit: "contain",
   },
-  actions: {
+  wishlistButton: {
+    height: 30,
+    width: 30,
+    borderRadius: "50%",
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    backgroundColor: "#fff",
     display: "flex",
-    width: "100%",
-    "& button": {
-      flex: "1",
-      margin: theme.spacing(1),
+    alignItems: "center",
+    justifyContent: "center",
+
+    "&:hover, &:focus": {
+      backgroundColor: "#fff",
     },
   },
 }));

@@ -23,12 +23,9 @@ export default function Categories() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Card>
-              <CardHeader
-                title="All categories"
-                titleTypographyProps={{ variant: "h6" }}
-              />
+              <CardHeader title="All categories" />
               <Divider />
-              <CardContent className={classes.categories}>
+              <CardContent>
                 <CategoryList categories={categories} />
               </CardContent>
             </Card>

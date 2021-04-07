@@ -10,6 +10,7 @@ const Input = ({
   value,
   handleChange,
   handleShowPassword,
+  xs,
   sm,
   autoFocus,
   error,
@@ -17,7 +18,7 @@ const Input = ({
   ...rest
 }) => {
   return (
-    <Grid item xs={12} sm={sm ? sm : 12}>
+    <Grid item xs={xs ? xs : 12} sm={sm ? sm : 12}>
       <TextField
         variant="outlined"
         required={error !== undefined}

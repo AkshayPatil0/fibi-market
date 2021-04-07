@@ -4,11 +4,17 @@ import qs from "qs";
 
 const API = axios.create();
 
+// ------------------
+//  Auth
+// ------------------
 export const signin = (body) => API.post("/api/users/signin", body);
 export const googleSignin = (body) => API.post("/api/users/googlesignin", body);
 export const signup = (body) => API.post("/api/users/signup", body);
 export const signout = () => API.get("/api/users/signout");
 
+// ------------------
+//  Users
+// ------------------
 export const fetchUsers = (query) =>
   API.get(`/api/users?${qs.stringify(query)}`);
 
@@ -19,6 +25,9 @@ export const updateProfileAvatar = (body) =>
 export const deleteProfileAvatar = () =>
   API.delete("/api/users/profile/avatar");
 
+// ------------------
+//  Products
+// ------------------
 export const fetchProducts = (query) =>
   API.get(`/api/products?${qs.stringify(query)}`);
 export const fetchProduct = (id) => API.get(`/api/products/${id}`);
@@ -42,17 +51,38 @@ export const removeProductVariant = (id, body) =>
 export const updateProductVariant = (productId, variantId, body) =>
   API.put(`/api/products/${productId}/variants/${variantId}`, body);
 
+// ------------------
+//  Categories
+// ------------------
 export const fetchCategories = () => API.get("/api/products/categories");
 export const addCategory = (body) => API.post("/api/products/categories", body);
 export const deleteCategory = (id) =>
   API.delete(`/api/products/categories/${id}`);
 
+// ------------------
+//  Locations
+// ------------------
+export const fetchLocations = () =>
+  API.get("/api/products/categories?location=true");
+export const addLocation = (body) =>
+  API.post("/api/products/categories", { ...body, location: true });
+export const deleteLocation = (id) =>
+  API.delete(`/api/products/categories/${id}`);
+
+// ------------------
+//  Orders
+// ------------------
 export const fetchOrders = (query) =>
   API.get(`/api/orders?${qs.stringify(query)}`);
-export const fetchMyOrders = () => API.get(`/api/myorders`);
-export const placeOrder = () => API.post("/api/orders");
+export const fetchMyOrders = () => API.get(`/api/orders/myorders`);
+export const placeOrder = (body) => API.post("/api/orders", body);
+export const fetchOrder = (id) => API.get(`/api/orders/${id}`);
+export const updateOrder = (id, body) => API.put(`/api/orders/${id}`, body);
 export const cancelOrder = (id) => API.delete(`/api/orders/${id}`);
 
+// ------------------
+//  Cart
+// ------------------
 export const fetchCart = () => API.get("/api/orders/cart");
 export const addToCart = (body) => API.post("/api/orders/cart", body);
 export const removeFromCart = (body) =>

@@ -1,8 +1,9 @@
-import { SET_ORDERS, SET_CART } from "../actions/order";
+import { SET_ORDERS, SET_ORDER, SET_CART } from "../actions/order";
 
 const initialState = {
   orders: [],
   cart: {},
+  order: {},
 };
 
 export default function OrderReducer(state = initialState, action) {
@@ -17,6 +18,12 @@ export default function OrderReducer(state = initialState, action) {
       return {
         ...state,
         cart: action.payload,
+      };
+
+    case SET_ORDER:
+      return {
+        ...state,
+        order: action.payload,
       };
     default:
       return state;

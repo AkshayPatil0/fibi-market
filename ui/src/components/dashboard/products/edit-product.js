@@ -25,10 +25,7 @@ export default function EditProduct() {
           </Grid>
           <Grid container item md={6} xs={12} spacing={2}>
             <Grid item xs={12}>
-              <EditCardLayout header="Product details">
-                <ProductDetailsForm />
-                <></>
-              </EditCardLayout>
+              <ProductDetailsForm header="Product details" />
             </Grid>
             <Grid item xs={12}>
               <ProductSpecsForm header="Product specifications" />

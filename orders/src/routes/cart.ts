@@ -6,7 +6,7 @@ import { Cart } from "../models/cart";
 
 const router = express.Router();
 
-router.get("/api/orders/cart", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   const cart = await Cart.findOne({ userId: req.currentUser!.id }).populate({
     path: "products",
     populate: {
@@ -19,7 +19,7 @@ router.get("/api/orders/cart", async (req: Request, res: Response) => {
 });
 
 router.post(
-  "/api/orders/cart",
+  "/",
   // [
   //   body("productId").not().isEmpty().withMessage("product id is not valid"),
   //   body("quantity").isInt({ gt: 0 }).withMessage("quantity is not valid"),
@@ -28,6 +28,6 @@ router.post(
   addToCartController
 );
 
-router.post("/api/orders/cart/remove", removeFromCartController);
+router.post("/remove", removeFromCartController);
 
 export { router as cartRoutes };

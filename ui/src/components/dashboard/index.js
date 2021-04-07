@@ -13,12 +13,13 @@ import TopBar from "./TopBar";
 import { useSelector } from "react-redux";
 
 import Orders from "./orders/orders";
-import Cart from "./cart/cart";
+// import Cart from "./cart/cart";
 import Profile from "./profile/profile";
 import Products from "./products/products";
 import EditProduct from "./products/edit-product";
 import Users from "./users/users";
 import Categories from "./categories/categories";
+import Locations from "./locations/locations";
 
 const DashboardLayout = () => {
   const classes = useStyles();
@@ -62,10 +63,11 @@ const DashboardLayout = () => {
                 component={EditProduct}
               />
               <Route path={`${path}/orders`} component={Orders} />
-              <Route path={`${path}/cart`} component={Cart} />
+              {/* <Route path={`${path}/cart`} component={Cart} /> */}
               <Route path={`${path}/account`} component={Profile} />
               <Route path={`${path}/users`} component={Users} />
               <Route path={`${path}/categories`} component={Categories} />
+              <Route path={`${path}/locations`} component={Locations} />
 
               <Route path={`${path}/*`}>
                 {/* <Redirect to={`${path}`} /> */}
@@ -105,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 1 auto",
     overflow: "auto",
     padding: theme.spacing(2, 0),
+    fontSize: 14,
   },
 }));
 

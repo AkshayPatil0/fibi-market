@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "../../../store/actions/order";
+import { getCart } from "../../store/actions/order";
 
 export function useCartHook() {
   const cart = useSelector((state) => state.product.cart);

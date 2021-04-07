@@ -3,6 +3,7 @@ import {
   SET_PRODUCT_DETAILS,
   SET_PRODUCT_IMAGES,
   SET_PRODUCTS,
+  SET_LOCATIONS,
 } from "../actions/product";
 
 const initialProductState = {
@@ -21,6 +22,7 @@ const initialProductState = {
 };
 const initialState = {
   categories: [],
+  locations: [],
   products: [],
   product: initialProductState,
   productImages: [],
@@ -32,6 +34,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         categories: action.payload,
+      };
+
+    case SET_LOCATIONS:
+      return {
+        ...state,
+        locations: action.payload,
       };
 
     case SET_PRODUCTS:

@@ -46,7 +46,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   };
 
   const content = (
-    <Box height="100%" display="flex" flexDirection="column">
+    <Box height="100%" display="flex" flexDirection="column" fontSize={14}>
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}

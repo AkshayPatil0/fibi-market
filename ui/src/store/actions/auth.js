@@ -1,5 +1,4 @@
 import * as api from "../../api";
-import { setIsLoading } from "./app";
 
 export const SET_USER = "signin";
 export const SIGNOUT = "signout";
@@ -25,6 +24,14 @@ export function signout() {
 export function getProfile() {
   return async (dispatch) => {
     const res = await api.fetchProfile();
+    dispatch(setUser(res.data));
+  };
+}
+
+export function updateProfile() {
+  return async (dispatch, getState) => {
+    const user = getState().auth.currentUser;
+    const res = await api.updateProfile(user);
     dispatch(setUser(res.data));
   };
 }
