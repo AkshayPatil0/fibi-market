@@ -8,7 +8,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
   Container,
   makeStyles,
@@ -17,18 +16,12 @@ import {
   StepLabel,
 } from "@material-ui/core";
 
-import {
-  getCartState,
-  getCartTotal,
-  getCurrentUserState,
-  getOrderState,
-} from "../../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createOrder,
   getCart,
-  setOrder,
-  updateOrder,
+  placeOrder,
+  setOrderField,
 } from "../../store/actions/order";
 import { useHistory } from "react-router";
 import MyCartCard from "./my-cart";
@@ -56,8 +49,8 @@ function getStepAction(stepIndex) {
 export default function Cart() {
   const classes = useStyles();
 
-  const cart = getCartState();
-  const user = getCurrentUserState();
+  const cart = useSelector((state) => state.order.cart);
+  const user = useSelector((state) => state.auth.currentUser);
   const router = useHistory();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -67,26 +60,30 @@ export default function Cart() {
 
   const steps = getSteps();
   const dispatch = useDispatch();
-
-  const order = getOrderState();
   const handleNext = async () => {
     switch (activeStep) {
       case 0:
         await dispatch(createOrder());
-        return;
+        break;
       case 1:
-        await dispatch(updateOrder());
-        return;
+        await dispatch(
+          setOrderField({ address: user.addresses[addressIndex] })
+        );
+        break;
       case 2:
-        await dispatch(updateOrder());
-        return;
+        await dispatch(setOrderField({ payment: { method: paymentMethod } }));
+        await dispatch(placeOrder());
+        router.push("/dashboard/orders");
+        break;
+      default:
+        break;
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setIsNextValid(false);
   };
+
   useEffect(() => {
     dispatch(getCart());
-  }, []);
+  }, [dispatch]);
 
   if (!cart?.products || cart.products.length < 1) {
     return (
@@ -110,7 +107,7 @@ export default function Cart() {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={() => router.push("/auth/login")}
+                          onClick={() => router.push("/auth/signin")}
                         >
                           Login
                         </Button>
@@ -138,6 +135,8 @@ export default function Cart() {
         return addressIndex === -1;
       case 2:
         return paymentMethod !== "cod";
+      default:
+        return;
     }
   };
 
@@ -166,7 +165,7 @@ export default function Cart() {
 
   return (
     <div className={classes.root}>
-      <Container maxWidth="lg" className={classes.container}>
+      <Box className={classes.container}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Card>
@@ -186,7 +185,7 @@ export default function Cart() {
             <PriceDetails />
           </Grid>
         </Grid>
-      </Container>
+      </Box>
       <Card className={classes.bottomCard}>
         <Button
           disabled={activeStep === 0}
@@ -210,7 +209,6 @@ export default function Cart() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingTop: theme.spacing(2),
     paddingBottom: `calc(64px + ${theme.spacing(2)}px)`,
@@ -237,7 +235,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     position: "fixed",
     bottom: "0",
-    // right: "0",
+    right: "0",
     width: "100%",
     height: 64,
     display: "flex",

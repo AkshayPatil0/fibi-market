@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import clsx from "clsx";
-import PropTypes from "prop-types";
 import { Button, ListItem, makeStyles } from "@material-ui/core";
 
 const NavItem = ({ className, href, icon: Icon, onClick, title, ...rest }) => {
@@ -30,8 +29,7 @@ const NavItem = ({ className, href, icon: Icon, onClick, title, ...rest }) => {
 const useStyles = makeStyles((theme) => ({
   item: {
     display: "flex",
-    paddingTop: 0,
-    paddingBottom: 0,
+    padding: theme.spacing(0),
     fontSize: 14,
   },
   button: {
@@ -39,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightMedium,
     justifyContent: "flex-start",
     letterSpacing: 0,
-    padding: "10px 8px",
+    padding: theme.spacing(1, 4),
     textTransform: "none",
     width: "100%",
   },

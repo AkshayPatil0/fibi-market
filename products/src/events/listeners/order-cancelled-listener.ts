@@ -10,11 +10,11 @@ class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
     console.log(msg.getSequence(), data);
     try {
-      if (data.product && data.product.product) {
-        const product = await Product.findById(data.product.product);
+      if (data.productId) {
+        const product = await Product.findById(data.productId);
 
         if (!product) {
-          console.log(`Product with id ${data.product.product} not found`);
+          console.log(`Product with id ${data.productId} not found`);
           return;
         }
         await updateProduct(product, {
@@ -29,7 +29,7 @@ class OrderCancelledListener extends Listener<OrderCancelledEvent> {
           images: product.images,
           hasVariants: product.hasVariants,
           variants: product.variants,
-          stock: product.stock + data.product.quantity,
+          stock: product.stock + data.quantity!,
         });
       }
       msg.ack();

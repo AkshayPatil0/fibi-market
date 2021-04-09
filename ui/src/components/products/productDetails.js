@@ -18,9 +18,8 @@ import {
   ShoppingCart,
 } from "@material-ui/icons";
 import { useParams } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../store/actions/product";
-import { getProductState } from "../../utils";
 import { addToCart } from "../../store/actions/order";
 import Pricing from "../common/pricing";
 import Slider from "react-slick";
@@ -30,7 +29,7 @@ const ProductDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
 
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,7 +41,7 @@ const ProductDetails = () => {
       }
     };
     run();
-  }, []);
+  }, [id, dispatch]);
 
   if (!product) {
     return <LinearProgress />;
@@ -120,7 +119,11 @@ const ProductDetails = () => {
                   {product.images && product.images.length > 0 ? (
                     product.images.map((url) => (
                       <div className={classes.imageDiv} key={url}>
-                        <img src={url} className={classes.image} />
+                        <img
+                          src={url}
+                          alt={product.title}
+                          className={classes.image}
+                        />
                       </div>
                     ))
                   ) : (

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
   makeStyles,
@@ -12,14 +12,13 @@ import { Cancel } from "@material-ui/icons";
 
 import TextInput from "../../../common/input";
 
-import { getProductState } from "../../../../utils";
 import { setProduct } from "../../../../store/actions/product";
 import EditCardLayout from "../../../common/edit-card-layout";
 
 const ProductSpecsForm = ({ header }) => {
   const classes = useStyles();
 
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
 
   const dispatch = useDispatch();
 
@@ -29,7 +28,7 @@ const ProductSpecsForm = ({ header }) => {
       setProduct({
         ...product,
         specs: product.specs.map((spec, i) => {
-          if (index == i) {
+          if (index === i) {
             return { ...spec, [name]: e.target.value };
           }
           return spec;

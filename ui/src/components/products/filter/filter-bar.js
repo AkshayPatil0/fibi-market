@@ -1,35 +1,62 @@
-import React, { useEffect } from "react";
-import { Link as RouterLink, useHistory, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import QueryString from "qs";
+import clsx from "clsx";
 import {
-  Avatar,
   Box,
-  Button,
-  Divider,
   Drawer,
   Hidden,
-  List,
   Typography,
   makeStyles,
-  ListItem,
-  Slider,
+  Button,
+  Grid,
+  useTheme,
+  useMediaQuery,
+  Modal,
+  Card,
+  CardHeader,
+  IconButton,
+  Divider,
+  CardContent,
+  Chip,
+  CardActions,
 } from "@material-ui/core";
 
-import { Input as InputIcon } from "@material-ui/icons";
-
-// import NavItem from "./nav-item";
-import { useDispatch, useSelector } from "react-redux";
-
+import EditCardLayout from "../../common/edit-card-layout";
 import PriceFilter from "./price";
+import { Close } from "@material-ui/icons";
+import { Filter } from "react-feather";
 
-const FilterBar = ({ onMobileClose, openMobile }) => {
+import { fetchCategory } from "../../../api";
+import AppliedFilters from "./applied-filters";
+
+const FilterBar = () => {
   const classes = useStyles();
   const location = useLocation();
   const router = useHistory();
   // const user = useSelector((state) => state.auth.currentUser);
   // const items = useMenuItems(user);
+  const [openMobile, setOpenMobile] = useState(false);
 
-  const dispatch = useDispatch();
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [filterQuery, setFilterQuery] = useState({});
+
+  useEffect(() => {
+    const getCategory = async (id) => {
+      const res = await fetchCategory(id);
+      setSelectedCategory(res.data);
+    };
+    const query = QueryString.parse(location.search, {
+      ignoreQueryPrefix: true,
+    });
+    if (query.category) {
+      getCategory(query.category);
+    }
+    setFilterQuery({ ...filterQuery, ...query });
+  }, [location]);
+
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
@@ -37,92 +64,93 @@ const FilterBar = ({ onMobileClose, openMobile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  const onSignout = async () => {
-    try {
-      await dispatch(signout());
-      router.push("/");
-    } catch (err) {
-      console.error(err);
-    }
+  const onMobileClose = () => {
+    setOpenMobile(false);
   };
-
-  const content = (
-    <Box>
-      <Box px={2} py={4}>
-        <Typography variant="h5">Filter</Typography>
-      </Box>
-      <Box px={2} py={4}>
-        <PriceFilter />
-      </Box>
-    </Box>
-  );
-
+  console.log({ filterQuery });
   return (
-    <Box>
-      <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          className={classes.mobileDrawerWrapper}
-          classes={{ paper: classes.mobileDrawer }}
-          onClose={onMobileClose}
-          open={openMobile}
-          variant="temporary"
-        >
-          {content}
-        </Drawer>
-      </Hidden>
-      <Hidden mdDown>
-        <Drawer
-          anchor="left"
-          className={classes.desktopDrawerWrapper}
-          classes={{ paper: classes.desktopDrawer }}
-          open
-          variant="persistent"
-        >
-          {content}
-        </Drawer>
-      </Hidden>
-    </Box>
+    <>
+      <Modal open={openMobile} onClose={onMobileClose}>
+        <Card className={classes.mobileFilterCard}>
+          <CardHeader
+            title="Filter"
+            action={
+              <IconButton onClick={onMobileClose}>
+                <Close />
+              </IconButton>
+            }
+          />
+          <Divider />
+          <CardContent></CardContent>
+        </Card>
+      </Modal>
+      <IconButton
+        className={clsx(classes.filterButton, classes.sectionMobile)}
+        onClick={() => setOpenMobile(true)}
+      >
+        <Filter className={classes.filterIcon} />
+      </IconButton>
+      <Grid item md={3} className={classes.sectionDesktop}>
+        <Card>
+          <CardHeader title="Filter" />
+          <Divider />
+
+          <AppliedFilters filter={filterQuery} setFilter={setFilterQuery} />
+          <Divider />
+          {selectedCategory && (
+            <Box>
+              <PriceFilter
+                category={selectedCategory}
+                filter={filterQuery}
+                setFilter={setFilterQuery}
+              />
+              <Divider />
+            </Box>
+          )}
+          <CardActions>
+            <Button
+              variant="text"
+              color="primary"
+              fullWidth
+              onClick={() =>
+                router.push(`/products/?${QueryString.stringify(filterQuery)}`)
+              }
+            >
+              Apply filters
+            </Button>
+          </CardActions>
+        </Card>
+      </Grid>
+    </>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  mobileDrawer: {
-    width: 256,
+  mobileFilterCard: {
+    margin: "10px",
+    outline: 0,
   },
-  desktopDrawerWrapper: {
-    position: "relative",
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "unset",
+    },
   },
-  desktopDrawer: {
-    width: 300,
-    // top: 64,
-    position: "absolute",
-    // height: "calc(100% - 64px)",
-    minHeight: "100vh",
+  sectionMobile: {
+    display: "unset",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
   },
-  button: {
-    color: theme.palette.text.secondary,
-    fontWeight: theme.typography.fontWeightMedium,
-    justifyContent: "flex-start",
-    letterSpacing: 0,
-    padding: "10px 8px",
-    textTransform: "none",
-    width: "100%",
+  filterButton: {
+    position: "fixed",
+    bottom: "10px",
+    right: "10px",
+    // backgroundColor: theme.palette.primary.main,
   },
-  icon: {
-    marginRight: theme.spacing(1),
-  },
-  title: {
-    marginRight: "auto",
-  },
-  avatar: {
-    cursor: "pointer",
-    width: 64,
-    height: 64,
-  },
-  name: {
-    fontSize: theme.spacing(2),
-    paddingTop: 10,
+  filterIcon: {
+    color: theme.palette.secondary.main,
+    fill: theme.palette.secondary.main,
   },
 }));
 

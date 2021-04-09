@@ -29,7 +29,9 @@ export const createOrderController = async (req: Request, res: Response) => {
     if (!product) {
       throw new NotFoundError("product");
     }
-    orderAttrs.product = { product: product.id, quantity };
+    orderAttrs.product = product.id;
+    orderAttrs.quantity = quantity;
+    orderAttrs.isGroup = false;
   }
 
   if (orders) {
@@ -52,9 +54,8 @@ export const createOrderController = async (req: Request, res: Response) => {
         model: "products",
       },
     })
+    .populate("orders")
     .execPopulate();
-
-  // console.log(order.);
 
   new OrderCreatedPublisher(nats.client).publish({
     id: order.id,
@@ -63,13 +64,11 @@ export const createOrderController = async (req: Request, res: Response) => {
     status: order.status,
     price: order.price,
     payment: order.payment,
-    product: {
-      product: product?.id,
-      quantity: order.product?.quantity,
-    },
+    productId: product?.id,
+    quantity: order.quantity,
     isGroup: order.isGroup,
     orders: order.orders,
   });
 
-  res.status(201).json({ ...order });
+  res.status(201).json(order);
 };

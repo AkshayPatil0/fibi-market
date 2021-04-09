@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, TextField, InputAdornment, IconButton } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-const Input = ({
+const TextInput = ({
   id,
   name,
   label,
@@ -58,4 +58,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default TextInput;

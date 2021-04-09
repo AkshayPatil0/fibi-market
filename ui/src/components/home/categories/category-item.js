@@ -5,20 +5,15 @@ import {
   ListItemText,
   Collapse,
   Typography,
-  Box,
-  Popover,
   makeStyles,
-  Card,
 } from "@material-ui/core";
-import { ExpandLess, ExpandMore, Delete } from "@material-ui/icons";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
-import { deleteCategory } from "../../../store/actions/product";
 import CategoryList from "./category-list";
 
 function CategoryItem({ category }) {
   const [showChildren, setShowChildren] = useState(false);
 
-  const dispatch = useDispatch();
   return (
     <>
       <ListItem button onClick={() => setShowChildren(!showChildren)}>

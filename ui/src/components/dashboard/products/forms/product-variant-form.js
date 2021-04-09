@@ -5,12 +5,12 @@ import { Cancel } from "@material-ui/icons";
 import TextInput from "../../../common/input";
 import Select from "../../../common/select";
 
-import { getProductState } from "../../../../utils";
+import { useSelector } from "react-redux";
 
 const ProductVariantForm = ({ variant, onRemove, setVariant }) => {
   const classes = useStyles();
 
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
 
   /* 
   product.variants : [

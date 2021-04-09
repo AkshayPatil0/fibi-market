@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import * as api from "../../../api";
 import {
@@ -9,19 +9,15 @@ import {
   setProductImages,
   updateProduct,
 } from "../../../store/actions/product";
-import {
-  getCurrentUserState,
-  getImagesFormData,
-  getProductState,
-} from "../../../utils";
+import { getImagesFormData } from "../../../utils";
 
 export function useEditProductHook() {
   const location = useLocation();
   const router = useHistory();
   const dispatch = useDispatch();
 
-  const user = getCurrentUserState();
-  const product = getProductState();
+  const user = useSelector((state) => state.auth.currentUser);
+  const product = useSelector((state) => state.product.product);
 
   const { id } = useParams();
 
@@ -29,7 +25,7 @@ export function useEditProductHook() {
     return () => {
       dispatch(setProduct(null));
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!user) {
@@ -46,7 +42,7 @@ export function useEditProductHook() {
     if (id) {
       run();
     }
-  }, [location]);
+  }, [location, router, dispatch, id, user]);
 
   const addProductImage = async (e) => {
     const res = await api.addProductImage(

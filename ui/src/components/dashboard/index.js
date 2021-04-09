@@ -34,7 +34,7 @@ const DashboardLayout = () => {
     if (!user) {
       router.push("/auth/signin");
     }
-  }, [location]);
+  }, [location, user, router]);
 
   if (!user) {
     return <div />;

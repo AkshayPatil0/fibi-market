@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import PropTypes from "prop-types";
 // import moment from 'moment';
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -14,15 +11,10 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
-  Container,
   makeStyles,
-  Button,
 } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUsers } from "../../../store/actions/user";
-import UserFilter from "../filter/user-filter";
-import { getInitials, getName } from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

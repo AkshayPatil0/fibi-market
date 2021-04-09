@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Grid,
   Card,
@@ -10,8 +10,7 @@ import {
   Box,
 } from "@material-ui/core";
 
-import { getProductState } from "../../../../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProduct } from "../../../../store/actions/product";
 import ProductVariantForm from "./product-variant-form";
 import EditCardLayout from "../../../common/edit-card-layout";
@@ -19,16 +18,16 @@ import ProductVariationsForm from "./product-variations-form";
 
 const ProductVariantsForm = ({ header }) => {
   const classes = useStyles();
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
 
   const initialVariation = {};
 
-  useEffect(() => {
-    product?.variations &&
-      Object.keys(product.variations).map((k) => {
-        initialVariant[k] = "";
-      });
-  }, [product.variations]);
+  // useEffect(() => {
+  //   product?.variations &&
+  //     Object.keys(product.variations).forEach((k) => {
+  //       initialVariant[k] = "";
+  //     });
+  // }, [product.variations]);
 
   const initialVariant = {
     variation: initialVariation,

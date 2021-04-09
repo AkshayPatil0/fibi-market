@@ -4,7 +4,6 @@ import { Category } from "../../models/category";
 
 export const getCategoriesController = async (req: Request, res: Response) => {
   const { location } = req.query;
-  console.log({ location });
   const categories = await Category.find({ isLocation: !!location });
 
   const categoryTree = getChildrenTree(categories);

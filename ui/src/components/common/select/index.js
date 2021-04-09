@@ -15,7 +15,7 @@ const Select = ({ name, value, placeholder, handleChange, options }) => {
         (sOpt) => options.find((opt) => opt.value === value) || sOpt
       );
     }
-  }, [value]);
+  }, [value, options]);
 
   return (
     <ReactSelect

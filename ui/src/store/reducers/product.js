@@ -28,7 +28,7 @@ const initialState = {
   productImages: [],
 };
 
-export default function (state = initialState, action) {
+export default function productReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CATEGORIES:
       return {

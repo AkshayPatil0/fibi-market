@@ -95,13 +95,24 @@ export const createOrder = () => {
   };
 };
 
-export const updateOrder = () => {
+export const setOrderField = (field) => {
   return async (dispatch, getState) => {
     const order = getState().order.order;
 
     if (!order) throw new Error("Order state is not defined");
 
-    const res = await api.updateOrder(order.id, order);
+    const res = await api.updateOrder(order.id, { ...order, ...field });
+    dispatch(setOrder(res.data));
+  };
+};
+
+export const placeOrder = () => {
+  return async (dispatch, getState) => {
+    const order = getState().order.order;
+
+    if (!order) throw new Error("Order state is not defined");
+
+    const res = await api.updateOrder(order.id, { ...order, status: "placed" });
     dispatch(setOrder(res.data));
   };
 };

@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-
 export const isAdmin = (user) => user?.role === "admin";
 export const isVendor = (user) => user?.role === "vendor";
 export const isUser = (user) => user?.role === "user";
@@ -18,7 +16,7 @@ export const getCartTotal = (products) => {
   let totalCost = 0,
     totalDiscount = 0,
     totalPrice = 0;
-  products.map(({ product, quantity, variantId }) => {
+  products.forEach(({ product, quantity, variantId }) => {
     if (variantId) {
       let variant = getObjectById(variantId, product.variants);
       totalCost += variant.price.mrp * quantity;
@@ -33,34 +31,6 @@ export const getCartTotal = (products) => {
 
   return { totalCost, totalPrice, totalDiscount };
 };
-
-export const getCurrentUserState = () =>
-  useSelector((state) => state.auth.currentUser);
-
-export const getCategoriesState = () =>
-  useSelector((state) => state.product.categories);
-
-export const getLocationsState = () =>
-  useSelector((state) => state.product.locations);
-
-export const getProductFilterState = () =>
-  useSelector((state) => state.filter.product);
-
-export const getOrderFilterState = () =>
-  useSelector((state) => state.filter.order);
-
-export const getUserFilterState = () =>
-  useSelector((state) => state.filter.user);
-
-export const getProductsState = () =>
-  useSelector((state) => state.product.products);
-
-export const getProductState = () =>
-  useSelector((state) => state.product.product);
-
-export const getCartState = () => useSelector((state) => state.order.cart);
-
-export const getOrderState = () => useSelector((state) => state.order.order);
 
 export const getImageFormData = (image) => {
   if (!image) return null;

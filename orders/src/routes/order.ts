@@ -9,10 +9,10 @@ import { updateOrderController } from "../controllers/order/update-order";
 const router = express.Router();
 
 router.post("/", createOrderController);
-router.get("/:id", getOrderController);
-router.put("/:id", updateOrderController);
 router.get("/", getOrdersController);
 router.get("/myorders", getMyOrdersController);
+router.get("/:id", getOrderController);
+router.put("/:id", updateOrderController);
 router.delete("/:id", cancelOrderController);
 
 export { router as orderRoutes };

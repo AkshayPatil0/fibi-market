@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 
-import { getProductState } from "../../../../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProduct } from "../../../../store/actions/product";
 import Input from "../../../common/input";
 import ProductVariationForm from "./product-variation-form";
@@ -10,7 +9,7 @@ import ProductVariationForm from "./product-variation-form";
 const ProductVariationsForm = () => {
   const classes = useStyles();
 
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
 
   const dispatch = useDispatch();
   const [newVariation, setNewVariation] = useState("");
@@ -51,7 +50,7 @@ const ProductVariationsForm = () => {
   };
 
   return (
-    <Grid item container xs={12}>
+    <Grid item container xs={12} className={classes.root}>
       {product.variations && Object.keys(product.variations).length > 0 ? (
         Object.entries(product.variations).map(([name, variation]) => {
           return (

@@ -10,12 +10,12 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import CategoryList from "./category-list";
-import { getCategoriesState } from "../../../utils";
+import { useSelector } from "react-redux";
 
 export default function Categories() {
   const classes = useStyles();
 
-  const categories = getCategoriesState();
+  const categories = useSelector((state) => state.product.categories);
 
   return (
     <div className={classes.root}>

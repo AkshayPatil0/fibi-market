@@ -30,10 +30,7 @@ export function getChildrenTree(
 
   parents.forEach((par) => {
     tree.push({
-      id: par.id,
-      title: par.title,
-      slug: par.slug,
-      isLocation: par.isLocation,
+      ...JSON.parse(JSON.stringify(par)),
       childrens: getChildrenTree(values, par.id),
     });
   });

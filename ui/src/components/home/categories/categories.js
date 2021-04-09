@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Typography,
@@ -8,13 +8,13 @@ import {
   CardContent,
 } from "@material-ui/core";
 
-import { getCategoriesState } from "../../../utils";
+// import { getCategoriesState } from "../../../utils";
 import { useHistory } from "react-router";
 
 export default function Categories({ categories }) {
   const classes = useStyles();
 
-  // const categories = getCategoriesState();
+  // const categories = getCategoriesState()();
 
   const router = useHistory();
 

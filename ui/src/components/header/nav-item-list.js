@@ -5,6 +5,7 @@ import NavItem from "./nav-item";
 import { Input as InputIcon } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { useMenuItems } from "./menu-items-hook";
+import { signout } from "../../store/actions/auth";
 
 const NavItemList = () => {
   const dispatch = useDispatch();
@@ -20,24 +21,24 @@ const NavItemList = () => {
   const items = useMenuItems();
   return (
     <>
-      <Box px={2}>
-        <List>
-          {items.map((item) => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
-        </List>
-      </Box>
+      {/* <Box px={2}> */}
+      <List>
+        {items.map((item) => (
+          <NavItem
+            href={item.href}
+            key={item.title}
+            title={item.title}
+            icon={item.icon}
+          />
+        ))}
+      </List>
+      {/* </Box> */}
       <Box flexGrow={1} />
-      <Box px={2}>
-        <List>
-          <NavItem onClick={onSignout} title="Signout" icon={InputIcon} />
-        </List>
-      </Box>
+      {/* <Box px={2}> */}
+      <List>
+        <NavItem onClick={onSignout} title="Signout" icon={InputIcon} />
+      </List>
+      {/* </Box> */}
     </>
   );
 };

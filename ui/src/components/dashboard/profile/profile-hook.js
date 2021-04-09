@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { getProfile, setUser, signinAction } from "../../../store/actions/auth";
+import { getProfile, setUser } from "../../../store/actions/auth";
 
 import * as api from "../../../api";
 
@@ -11,7 +11,7 @@ export function useProfileHook() {
 
   useEffect(() => {
     dispatch(getProfile());
-  }, []);
+  }, [dispatch]);
 
   const Router = useHistory();
   useEffect(() => {

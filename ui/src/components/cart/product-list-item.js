@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -18,7 +17,7 @@ import Pricing from "../common/pricing";
 function ProductListItem({ product, quantity, variant }) {
   const classes = useStyles();
 
-  const router = useHistory();
+  const dispatch = useDispatch();
 
   const onAdd = async () => {
     await dispatch(addToCart(product.id, 1, variant?.id));
@@ -68,7 +67,12 @@ function ProductListItem({ product, quantity, variant }) {
           </Box>
           <Box flex="1" />
           <div className={classes.quantity}>
-            <IconButton size="small" color="primary" onClick={onRemove}>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={onRemove}
+              disabled={quantity === 1}
+            >
               <RemoveCircle />
             </IconButton>
             <Typography
@@ -79,7 +83,12 @@ function ProductListItem({ product, quantity, variant }) {
             >
               {quantity}
             </Typography>
-            <IconButton size="small" color="primary" onClick={onAdd}>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={onAdd}
+              disabled={quantity === 10}
+            >
               <AddCircle />
             </IconButton>
           </div>

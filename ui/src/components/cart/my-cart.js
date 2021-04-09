@@ -1,23 +1,18 @@
 import React from "react";
 import {
-  Button,
-  Grid,
   Box,
-  Typography,
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
-  Container,
   makeStyles,
 } from "@material-ui/core";
-import { getCartState } from "../../utils";
 import ProductListItem from "./product-list-item";
+import { useSelector } from "react-redux";
 
 const MyCartCard = () => {
   const classes = useStyles();
-  const cart = getCartState();
+  const cart = useSelector((state) => state.order.cart);
 
   return (
     <Card>

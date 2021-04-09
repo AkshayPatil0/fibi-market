@@ -10,12 +10,12 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import LocationList from "./location-list";
-import { getLocationsState } from "../../../utils";
+import { useSelector } from "react-redux";
 
 export default function Locations() {
   const classes = useStyles();
 
-  const locations = getLocationsState();
+  const locations = useSelector((state) => state.product.locations);
 
   return (
     <div className={classes.root}>

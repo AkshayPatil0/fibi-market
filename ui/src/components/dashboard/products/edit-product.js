@@ -8,7 +8,6 @@ import EditProductToolbar from "../toolbar/edit-product-toolbar";
 import ProductDetailsForm from "./forms/product-details-form";
 import ProductSpecsForm from "./forms/product-specs-form";
 import ProductVariantsForm from "./forms/product-variants-form";
-import EditCardLayout from "../../common/edit-card-layout";
 import MultipleImagePicker from "../../common/multiple-image-picker";
 
 export default function EditProduct() {

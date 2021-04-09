@@ -55,7 +55,10 @@ export const updateProductVariant = (productId, variantId, body) =>
 //  Categories
 // ------------------
 export const fetchCategories = () => API.get("/api/products/categories");
+export const fetchCategory = (id) => API.get(`/api/products/categories/${id}`);
 export const addCategory = (body) => API.post("/api/products/categories", body);
+export const editCategory = (id, body) =>
+  API.put(`/api/products/categories/${id}`, body);
 export const deleteCategory = (id) =>
   API.delete(`/api/products/categories/${id}`);
 

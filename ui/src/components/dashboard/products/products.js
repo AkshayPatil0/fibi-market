@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -18,16 +18,15 @@ import ProductToolbar from "../toolbar/product-toolbar";
 
 import ProductFilter from "../filter/product-filter";
 import Table from "../../common/table";
-import { getCurrentUserState, getProductsState } from "../../../utils";
 import { deleteProduct, getProducts } from "../../../store/actions/product";
 
 export default function Products() {
   const classes = useStyles();
-  const user = getCurrentUserState();
+  const user = useSelector((state) => state.auth.currentUser);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const products = getProductsState();
+  const products = useSelector((state) => state.product.products);
 
   const [rows, setRows] = useState([]);
 
@@ -47,7 +46,7 @@ export default function Products() {
       }
     };
     if (!products.length > 0) run();
-  }, []);
+  }, [dispatch, user.role, user.id, products.length]);
 
   const options = [
     { head: "Title", key: "title" },
@@ -59,19 +58,18 @@ export default function Products() {
     { head: "Delete", key: "delete" },
   ];
 
-  const onDelete = async (id) => {
-    try {
-      await dispatch(deleteProduct(id));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const router = useHistory();
 
   useEffect(() => {
+    const onDelete = async (id) => {
+      try {
+        await dispatch(deleteProduct(id));
+      } catch (err) {
+        console.error(err);
+      }
+    };
     let newRows = [];
-    products.map((product) => {
+    products.forEach((product) => {
       let row = {};
 
       row.id = product.id;
@@ -112,7 +110,7 @@ export default function Products() {
     });
 
     setRows(newRows);
-  }, [products]);
+  }, [products, router, dispatch]);
 
   if (isLoading) {
     return <LinearProgress />;

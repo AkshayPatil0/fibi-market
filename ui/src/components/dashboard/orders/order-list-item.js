@@ -10,6 +10,7 @@ import {
   makeStyles,
   Divider,
 } from "@material-ui/core";
+import Pricing from "../../common/pricing";
 
 function OrderListItem({ order }) {
   const classes = useStyles();
@@ -17,7 +18,7 @@ function OrderListItem({ order }) {
   return (
     <Card>
       <CardContent className={classes.products}>
-        {order.products.map(({ product, quantity }) => {
+        {order.orders?.map(({ product, quantity }) => {
           return (
             <Box mt={1} mb={1} key={product.id}>
               <div className={classes.root}>
@@ -35,9 +36,7 @@ function OrderListItem({ order }) {
                     <Typography component="h6" variant="body1">
                       {product.title}
                     </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {`₹ ${product.price}`}
-                    </Typography>
+                    <Pricing {...product.price} />
                     <Box flex="1" />
                     <Typography
                       component="p"
@@ -82,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     minWidth: theme.spacing(15),
     minHeight: theme.spacing(15),
+    objectFit: "contain",
   },
   quantity: {
     display: "flex",

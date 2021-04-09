@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import {
   Button,
@@ -7,33 +7,23 @@ import {
   Typography,
   Card,
   CardHeader,
-  CardContent,
-  CardActions,
   Divider,
-  Container,
   makeStyles,
-  IconButton,
   RadioGroup,
   FormControlLabel,
   Radio,
 } from "@material-ui/core";
-import { getCartState, getCurrentUserState } from "../../utils";
 
 import TextInput from "../common/input";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../store/actions/auth";
-import { CheckCircle } from "@material-ui/icons";
 
 const PaymentMethods = ({ selectedMethod, setSelectedMethod }) => {
   const classes = useStyles();
 
-  const user = getCurrentUserState();
-
-  const [] = useState("");
-
   const [formData, setFormData] = useState({});
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const cardMethod = (
     <Box p={1} pr={2}>

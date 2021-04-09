@@ -1,12 +1,11 @@
 import { LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./app.css";
 
-import Header from "./components/header/header";
 import { getProfile } from "./store/actions/auth";
 import { getCategories, getLocations } from "./store/actions/product";
 

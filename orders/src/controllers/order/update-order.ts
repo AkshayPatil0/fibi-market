@@ -6,28 +6,33 @@ import { Order } from "../../models/order";
 import { updateOrder } from "../../helpers/update-order";
 
 export const updateOrderController = async (req: Request, res: Response) => {
-  const { address, price, payment } = req.body;
+  const { address, price, payment, status } = req.body;
 
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id)
+    .populate({
+      path: "product",
+      populate: {
+        path: "product",
+        model: "products",
+      },
+    })
+    .populate("orders");
 
   if (!order) {
     throw new NotFoundError("order");
   }
 
-  updateOrder(order, {
+  await updateOrder(order, {
     userId: order.userId,
     address: address || order.address,
-    status: order.status,
+    status: status || order.status,
     price: price || order.price,
     payment: payment || order.payment,
-    product: {
-      product: order.product.product?.id,
-      quantity: order.product?.quantity,
-    },
+    product: order.product?.id,
+    quantity: order.quantity,
     isGroup: order.isGroup,
     orders: order.orders,
   });
-  await order.save();
 
   res.status(201).json(order);
 };

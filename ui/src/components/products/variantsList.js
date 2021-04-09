@@ -10,14 +10,13 @@ import {
 
 import { CheckCircle } from "@material-ui/icons";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProduct } from "../../store/actions/product";
-import { getProductState } from "../../utils";
 
 const VariantsList = ({ variants }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const product = getProductState();
+  const product = useSelector((state) => state.product.product);
 
   const [selectedIndex, setSelectedIndex] = useState(null);
 
@@ -43,7 +42,7 @@ const VariantsList = ({ variants }) => {
                   </Typography>
                 ))}
             </Box>
-            {selectedIndex == i && (
+            {selectedIndex === i && (
               <IconButton size="small" className={classes.checked}>
                 <CheckCircle color="inherit" />
               </IconButton>

@@ -1,4 +1,4 @@
-import { Box, Typography, makeStyles, Grid } from "@material-ui/core";
+import { Typography, makeStyles, Grid } from "@material-ui/core";
 import React from "react";
 import { getSavingPercentage } from "../../utils";
 

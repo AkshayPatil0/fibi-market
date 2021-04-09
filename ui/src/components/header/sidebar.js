@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link as RouterLink, useHistory, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -10,15 +10,13 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { getCurrentUserState } from "../../utils";
-import { useMenuItems } from "./menu-items-hook";
 import NavItemList from "./nav-item-list";
+import { useSelector } from "react-redux";
 
 const SideBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-  const user = getCurrentUserState();
+  const user = useSelector((state) => state.auth.currentUser);
 
   useEffect(() => {
     if (openMobile && onMobileClose) {

@@ -40,10 +40,8 @@ export const cancelOrderController = async (req: Request, res: Response) => {
     status: order.status,
     price: order.price,
     payment: order.payment,
-    product: {
-      product: order.product.product.id,
-      quantity: order.product.quantity,
-    },
+    productId: order.product?.id,
+    quantity: order.quantity,
     isGroup: order.isGroup,
     orders: order.orders,
   });

@@ -1,33 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import {
   Button,
-  Grid,
   Box,
   Typography,
   Card,
   CardHeader,
-  CardContent,
   CardActions,
   Divider,
-  Container,
   makeStyles,
-  IconButton,
   Radio,
   RadioGroup,
   FormControlLabel,
 } from "@material-ui/core";
-import { getCartState, getCurrentUserState } from "../../utils";
 
 import AddressForm from "./address-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../store/actions/auth";
-import { CheckCircle } from "@material-ui/icons";
 
 const Addresses = ({ selectedIndex, setSelectedIndex }) => {
   const classes = useStyles();
 
-  const user = getCurrentUserState();
+  const user = useSelector((state) => state.auth.currentUser);
 
   const dispatch = useDispatch();
   const addNewAddress = () => {
@@ -54,7 +48,7 @@ const Addresses = ({ selectedIndex, setSelectedIndex }) => {
                 <Box
                   className={clsx(
                     classes.address,
-                    selectedIndex == i && classes.selectAddress
+                    selectedIndex === i && classes.selectAddress
                   )}
                 >
                   <FormControlLabel

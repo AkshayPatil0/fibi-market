@@ -3,12 +3,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 
 import TextInput from "../../../common/input";
 
-import {
-  getCategoriesState,
-  getLocationsState,
-  getProductState,
-} from "../../../../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProduct } from "../../../../store/actions/product";
 import Select from "../../../common/select";
 import { getCategoryOptions } from "../../../common/select/options";
@@ -17,15 +12,14 @@ import EditCardLayout from "../../../common/edit-card-layout";
 const ProductDetailsForm = ({ header, action }) => {
   const classes = useStyles();
 
-  const product = getProductState();
-  const categories = getCategoriesState();
-  const locations = getLocationsState();
+  const product = useSelector((state) => state.product.product);
+  const categories = useSelector((state) => state.product.categories);
+  const locations = useSelector((state) => state.product.locations);
 
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const [path, subpath] = e.target.name.split(".");
-    console.log({ path, subpath });
     if (subpath) {
       dispatch(
         setProduct({
@@ -40,7 +34,7 @@ const ProductDetailsForm = ({ header, action }) => {
 
   return (
     <EditCardLayout header={header}>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} className={classes.root}>
         <TextInput
           label="Title"
           name="title"

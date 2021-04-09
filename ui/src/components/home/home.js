@@ -1,45 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
   Grid,
   Paper,
   Typography,
-  Button,
-  Avatar,
   makeStyles,
   Box,
 } from "@material-ui/core";
-import { ExpandLess, ExpandMore, Delete } from "@material-ui/icons";
-
-import TextInput from "../common/input";
-import {
-  addCategory,
-  getCategories,
-  deleteCategory,
-  getLocations,
-} from "../../store/actions/product";
-import { useHistory } from "react-router";
-import qs from "qs";
-import { Link } from "react-router-dom";
+import { getCategories, getLocations } from "../../store/actions/product";
 import Categories from "./categories/categories";
-import {
-  getCategoriesState,
-  getCurrentUserState,
-  getLocationsState,
-} from "../../utils";
 
 const HomePage = () => {
   const classes = useStyles();
-  const user = getCurrentUserState();
-  const categories = getCategoriesState();
-  const locations = getLocationsState();
-
+  const categories = useSelector((state) => state.product.categories);
+  const locations = useSelector((state) => state.product.locations);
+  console.log({ categories });
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getLocations());
-  }, []);
+  }, [dispatch]);
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={4}>

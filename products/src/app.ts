@@ -11,6 +11,7 @@ import { productRoutes } from "./routes/product";
 
 const app = express();
 
+app.disable("etag");
 app.use(json());
 
 app.set("trust proxy", true);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { List, ListItem, ListItemText } from "@material-ui/core";
+import { List, ListItem } from "@material-ui/core";
 
 import TextInput from "../../common/input";
 import { addCategory } from "../../../store/actions/product";

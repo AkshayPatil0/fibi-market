@@ -19,7 +19,8 @@ export interface OrderAttrs {
     method: string;
     transactionId?: string;
   };
-  product?: { product: ProductDoc; quantity: number };
+  product?: string;
+  quantity?: number;
   isGroup?: boolean;
   orders?: any[];
 }
@@ -45,7 +46,8 @@ export interface OrderDoc extends mongoose.Document {
     method: string;
     transactionId: string;
   };
-  product: { product: ProductDoc; quantity: number };
+  product: ProductDoc;
+  quantity: number;
   isGroup: boolean;
   orders: any[];
 }
@@ -72,12 +74,10 @@ const orderSchema = new mongoose.Schema(
       },
     },
     product: {
-      product: {
-        type: mongoose.Types.ObjectId,
-        ref: "products",
-      },
-      quantity: Number,
+      type: mongoose.Types.ObjectId,
+      ref: "products",
     },
+    quantity: Number,
     payment: {
       method: String,
       transactionId: String,

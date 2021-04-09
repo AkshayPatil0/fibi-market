@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Results = () => {
+const Users = () => {
   const classes = useStyles();
 
   const users = useSelector((state) => state.user.users);
@@ -39,7 +39,7 @@ const Results = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     let newRows = [];
-    users.map((user) => {
+    users.forEach((user) => {
       let row = {};
 
       row.name = (
@@ -70,14 +70,14 @@ const Results = () => {
     });
     console.log({ newRows, users });
     setRows(newRows);
-  }, [users]);
+  }, [users, classes.avatar]);
 
   useEffect(() => {
     const run = async () => {
       await dispatch(getUsers({}));
     };
     run();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container maxWidth={false}>
@@ -89,4 +89,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default Users;

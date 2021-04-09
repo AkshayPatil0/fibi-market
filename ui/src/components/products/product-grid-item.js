@@ -1,34 +1,24 @@
 import React, { useState } from "react";
 import {
-  Button,
-  Grid,
   Box,
   Typography,
   Card,
   CardMedia,
   CardContent,
-  CardActions,
   makeStyles,
-  Divider,
   IconButton,
-  useTheme,
 } from "@material-ui/core";
-import Slider from "react-slick";
 // import { useProductHook } from "./product-hook";
 import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
-import { isAdmin, isVendor } from "../../utils";
 
 import defaultImg from "../../assets/images/image.png";
-import { Favorite, FavoriteBorder, ShoppingCart } from "@material-ui/icons";
+import { Favorite } from "@material-ui/icons";
 import Pricing from "../common/pricing";
 
 function ProductGridItem({ product }) {
   // const { addToCart, deleteProduct } = useProductHook();
 
   const classes = useStyles();
-
-  const user = useSelector((state) => state.auth.currentUser);
 
   const router = useHistory();
 
@@ -44,9 +34,17 @@ function ProductGridItem({ product }) {
         onClick={() => router.push(`/products/${product.id}`)}
         children={
           product.images && product.images.length > 0 ? (
-            <img src={product.images[0]} className={classes.image} />
+            <img
+              src={product.images[0]}
+              alt={product.title}
+              className={classes.image}
+            />
           ) : (
-            <img src={defaultImg} className={classes.image} />
+            <img
+              src={defaultImg}
+              alt={product.title}
+              className={classes.image}
+            />
           )
         }
         title={product.title}

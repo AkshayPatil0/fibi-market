@@ -31,6 +31,14 @@ export const addCategory = (body) => {
   };
 };
 
+export const editCategory = (id, body) => {
+  return async (dispatch) => {
+    await api.editCategory(id, body);
+    const res = await api.fetchCategories();
+    dispatch(setCategories(res.data));
+  };
+};
+
 export const deleteCategory = (id) => {
   return async (dispatch) => {
     await api.deleteCategory(id);

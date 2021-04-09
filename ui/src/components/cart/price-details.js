@@ -1,28 +1,20 @@
 import React from "react";
 import {
-  Button,
-  Grid,
   Box,
   Typography,
   Card,
   CardHeader,
   CardContent,
-  CardActions,
   Divider,
-  Container,
   makeStyles,
 } from "@material-ui/core";
 
-import ProductListItem from "./product-list-item";
-
-import { getCartState, getCartTotal, getCurrentUserState } from "../../utils";
-import { useDispatch } from "react-redux";
-import { getCart } from "../../store/actions/order";
-import { useHistory } from "react-router";
+import { getCartTotal } from "../../utils";
+import { useSelector } from "react-redux";
 
 const PriceDetails = () => {
   const classes = useStyles();
-  const cart = getCartState();
+  const cart = useSelector((state) => state.order.cart);
   const { totalCost, totalPrice, totalDiscount } = getCartTotal(cart.products);
   return (
     <Card>

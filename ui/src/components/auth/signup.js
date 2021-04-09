@@ -7,7 +7,7 @@ import {
   CssBaseline,
   Select,
   MenuItem,
-  Link,
+  Box,
   Grid,
   Typography,
   Container,
@@ -66,13 +66,15 @@ export default function SignUp() {
       router.push("/");
     } catch (err) {
       let newError = {};
-      err.response.data.errors.map((err) => {
-        if (err.field) {
-          newError[err.field] = err.message;
-        } else {
-          newError.global = err.message;
-        }
-      });
+      err.response?.data?.errors
+        ? err.response.data.errors.forEach((err) => {
+            if (err.field) {
+              newError[err.field] = err.message;
+            } else {
+              newError.global = err.message;
+            }
+          })
+        : (newError.global = "Something went wrong !");
       setError(newError);
     }
   };
@@ -81,17 +83,25 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign Up
-        </Typography>
-        <Typography variant="caption" color="error">
-          {error.global}
-        </Typography>
+        <Box
+          pb={3}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Avatar className={classes.avatar}>
+            <LockOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+          <Typography variant="caption" color="error">
+            {error.global}
+          </Typography>
+        </Box>
         <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             <Input
               name="firstName"
               label="First name"
@@ -167,28 +177,36 @@ export default function SignUp() {
                 </Select>
               </FormControl>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container spacing={3}>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/auth/signin" variant="body2">
-                  {"have an account? Sign in"}
-                </Link>
-              </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
             </Grid>
           </Grid>
+          <Box display="flex" justifyContent="space-between" pt={1}>
+            <Typography
+              onClick={() => router.push("")}
+              color="primary"
+              variant="body2"
+              style={{ cursor: "pointer" }}
+            >
+              Forgot password?
+            </Typography>
+            <Typography
+              onClick={() => router.push("/auth/signin")}
+              variant="body2"
+              color="primary"
+              style={{ cursor: "pointer" }}
+            >
+              {"have an account? Sign in"}
+            </Typography>
+          </Box>
         </form>
       </div>
     </Container>

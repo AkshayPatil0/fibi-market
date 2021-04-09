@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  Container,
-  Grid,
   Card,
   CardHeader,
   CardContent,
@@ -14,11 +12,11 @@ const EditCardLayout = ({ header, children }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardHeader title={header} titleTypographyProps={{ variant: "h6" }} />
+      <CardHeader title={header} />
       <Divider />
       <CardContent>{children[0]}</CardContent>
       <Divider />
-      <CardActions>{children[1]}</CardActions>
+      <CardActions className={classes.actions}>{children[1]}</CardActions>
     </Card>
   );
 };
@@ -26,6 +24,9 @@ const EditCardLayout = ({ header, children }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     overflow: "visible",
+  },
+  actions: {
+    fontSize: "0.9em",
   },
 }));
 

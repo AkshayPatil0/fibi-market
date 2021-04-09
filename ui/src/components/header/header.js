@@ -1,100 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { Grid, Button } from "@material-ui/core";
-// import { useDispatch, useSelector } from "react-redux";
-// import { signout } from "../../store/actions/auth";
-// import { useGoogleLogout } from "react-google-login";
-// const HeaderComponent = () => {
-//   const user = useSelector((state) => state.auth.currentUser);
-//   // const preventDefault = (event) => event.preventDefault();
-//   const preventDefault = (event) => {};
-
-//   const { signOut, loaded } = useGoogleLogout({
-//     clientId:
-//       "246767929126-2lb3hs7qu531bl5jt1hb427sgnni0dob.apps.googleusercontent.com",
-//     onLogoutSuccess: () => dispatch(signout()),
-//     onFailure: (err) => console.error(err),
-//     cookiePolicy: "single_host_origin",
-//   });
-
-//   const dispatch = useDispatch();
-
-//   const onSignout = () => {
-//     if (loaded) {
-//       signOut();
-//     } else {
-//       dispatch(signout());
-//     }
-//   };
-
-//   const authMenu = user ? (
-//     <>
-//       <Grid>
-//         <Button m={2} variant="text">
-//           <Link to="/dashboard">{user.firstName}</Link>
-//         </Button>
-//       </Grid>
-
-//       <Grid>
-//         <Button m={2} variant="text" onClick={onSignout}>
-//           Signout
-//         </Button>
-//       </Grid>
-//     </>
-//   ) : (
-//     <>
-//       <Grid>
-//         <Link to="/auth/signin">
-//           <Button m={2} variant="text">
-//             Signin
-//           </Button>
-//         </Link>
-//       </Grid>
-
-//       <Grid>
-//         <Link to="/auth/signup">
-//           <Button m={2} variant="text">
-//             Signup
-//           </Button>
-//         </Link>
-//       </Grid>
-//     </>
-//   );
-
-//   return (
-//     <Grid container>
-//       <Grid>
-//         <Link to="/" onClick={preventDefault}>
-//           <Button m={2} variant="text">
-//             FIBI
-//           </Button>
-//         </Link>
-//       </Grid>
-//       <Grid>
-//         <Link to="/products" onClick={preventDefault}>
-//           <Button m={2} variant="text">
-//             Products
-//           </Button>
-//         </Link>
-//       </Grid>
-
-//       <Grid>
-//         <Link to="/cart" onClick={preventDefault}>
-//           <Button m={2} variant="text">
-//             Cart
-//           </Button>
-//         </Link>
-//       </Grid>
-
-//       <Grid>
-//         <Link to="/orders" onClick={preventDefault}>
-//           <Button m={2} variant="text">
-//             Orders
-//           </Button>
-//         </Link>
-//       </Grid>
-//       {authMenu}
-//     </Grid>
 import React, { useState } from "react";
 import clsx from "clsx";
 import {
@@ -107,40 +10,36 @@ import {
   Typography,
   InputBase,
   Badge,
-  MenuItem,
   Menu,
+  Avatar,
 } from "@material-ui/core";
 import {
   ShoppingCart,
   Favorite,
-  AccountCircle,
   Search as SearchIcon,
   Menu as MenuIcon,
   ExpandLess,
-  Input as InputIcon,
   ExpandMore,
 } from "@material-ui/icons";
 
 import SideBar from "./sidebar";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Box } from "@material-ui/core";
-import { getCurrentUserState } from "../../utils";
+import { getInitials } from "../../utils";
 import { useMenuItems } from "./menu-items-hook";
 import NavItemList from "./nav-item-list";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const classes = useStyles();
 
-  const user = getCurrentUserState();
+  const user = useSelector((state) => state.auth.currentUser);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-
-  const dispatch = useDispatch();
 
   const menuItems = useMenuItems();
 
@@ -152,10 +51,13 @@ export default function Header() {
       aria-haspopup="true"
       color="inherit"
       className={classes.sectionDesktop}
-      onMouseEnter={(event) => setAnchorEl(event.currentTarget)}
       onClick={(event) => setAnchorEl(event.currentTarget)}
     >
       <Box display="flex" alignItems="center">
+        <Avatar style={{ height: "1.5em", width: "1.5em" }} src={user.avatar}>
+          {getInitials(user)}
+        </Avatar>
+        <Box p={0.5} />
         <Typography variant="h6">{user.firstName}</Typography>
         {anchorEl ? <ExpandLess /> : <ExpandMore />}
       </Box>
@@ -185,17 +87,38 @@ export default function Header() {
         vertical: "top",
       }}
       keepMounted
+      onClick={handleCloseMenu}
       open={Boolean(anchorEl)}
       onClose={handleCloseMenu}
     >
       <NavItemList />
     </Menu>
   );
+
+  const searchBar = (
+    <Toolbar color="transparent" className={classes.sectionMobile}>
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ "aria-label": "search" }}
+        />
+      </div>
+    </Toolbar>
+  );
+
+  const location = useLocation();
   const router = useHistory();
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             edge="start"
@@ -243,21 +166,9 @@ export default function Header() {
           </div>
         </Toolbar>
       </AppBar>
-      <Toolbar color="transparent" className={classes.sectionMobile}>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </div>
-      </Toolbar>
+      {/* <Toolbar /> */}
+      {location.pathname === "/" && searchBar}
+
       <SideBar
         onMobileClose={() => setIsMobileNavOpen(false)}
         openMobile={isMobileNavOpen}

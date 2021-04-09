@@ -5,24 +5,24 @@ import { getMyOrders, getOrders } from "../../../store/actions/order";
 
 export function useOrderHook() {
   const orders = useSelector((state) => state.order.orders);
-  const user = useSelector((state) => state.auth.currentUser);
+  // const user = useSelector((state) => state.auth.currentUser);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const run = async () => {
       try {
-        if (user.role === "user") {
-          await dispatch(getMyOrders());
-        }
+        // if (user.role === "user") {
+        await dispatch(getMyOrders());
+        // }
 
-        await dispatch(getOrders({}));
+        // await dispatch(getOrders({}));
       } catch (err) {
         console.error(err);
       }
     };
     run();
-  }, []);
+  }, [dispatch]);
 
   const cancelOrder = async (id) => {
     try {

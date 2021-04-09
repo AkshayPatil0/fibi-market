@@ -7,13 +7,8 @@ import {
   InputAdornment,
   SvgIcon,
   Box,
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
   makeStyles,
   Modal,
-  CardActions,
   CircularProgress,
 } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";

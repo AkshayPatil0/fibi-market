@@ -6,6 +6,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import {
   Route,
@@ -14,22 +15,21 @@ import {
   useLocation,
   useRouteMatch,
 } from "react-router-dom";
-import { getCurrentUserState } from "../../utils";
 import SignIn from "./signin";
 import SignUp from "./signup";
 
 const AuthLayout = () => {
   const classes = useStyles();
-  const { path, url } = useRouteMatch();
+  const { path } = useRouteMatch();
 
   const router = useHistory();
   const location = useLocation();
-  const user = getCurrentUserState();
+  const user = useSelector((state) => state.auth.currentUser);
   useEffect(() => {
     if (user) {
       router.push("/dashboard");
     }
-  }, [location]);
+  }, [location, router, user]);
 
   return (
     <div className={classes.root}>

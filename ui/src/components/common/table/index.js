@@ -28,7 +28,7 @@ const Table = ({ rows, options }) => {
       await dispatch(getUsers({}));
     };
     run();
-  }, []);
+  }, [dispatch]);
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
