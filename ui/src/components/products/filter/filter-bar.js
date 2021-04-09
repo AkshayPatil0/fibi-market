@@ -5,25 +5,17 @@ import QueryString from "qs";
 import clsx from "clsx";
 import {
   Box,
-  Drawer,
-  Hidden,
-  Typography,
   makeStyles,
   Button,
   Grid,
-  useTheme,
-  useMediaQuery,
   Modal,
   Card,
   CardHeader,
   IconButton,
   Divider,
-  CardContent,
-  Chip,
   CardActions,
 } from "@material-ui/core";
 
-import EditCardLayout from "../../common/edit-card-layout";
 import PriceFilter from "./price";
 import { Close } from "@material-ui/icons";
 import { Filter } from "react-feather";
@@ -35,8 +27,6 @@ const FilterBar = () => {
   const classes = useStyles();
   const location = useLocation();
   const router = useHistory();
-  // const user = useSelector((state) => state.auth.currentUser);
-  // const items = useMenuItems(user);
   const [openMobile, setOpenMobile] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -54,20 +44,37 @@ const FilterBar = () => {
     if (query.category) {
       getCategory(query.category);
     }
-    setFilterQuery({ ...filterQuery, ...query });
+    setFilterQuery((filterQuery) => ({ ...filterQuery, ...query }));
   }, [location]);
 
   useEffect(() => {
-    if (openMobile && onMobileClose) {
+    if (openMobile) {
       onMobileClose();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location]);
 
   const onMobileClose = () => {
     setOpenMobile(false);
   };
-  console.log({ filterQuery });
+
+  const content = (
+    <>
+      <AppliedFilters filter={filterQuery} setFilter={setFilterQuery} />
+      <Divider />
+      {selectedCategory && (
+        <Box>
+          <PriceFilter
+            category={selectedCategory}
+            filter={filterQuery}
+            setFilter={setFilterQuery}
+          />
+          <Divider />
+        </Box>
+      )}
+    </>
+  );
+
   return (
     <>
       <Modal open={openMobile} onClose={onMobileClose}>
@@ -81,7 +88,19 @@ const FilterBar = () => {
             }
           />
           <Divider />
-          <CardContent></CardContent>
+          {content}
+          <Box display="flex" justifyContent="flex-end" px={2} py={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() =>
+                router.push(`/products/?${QueryString.stringify(filterQuery)}`)
+              }
+            >
+              Apply
+            </Button>
+          </Box>
         </Card>
       </Modal>
       <IconButton
@@ -94,19 +113,8 @@ const FilterBar = () => {
         <Card>
           <CardHeader title="Filter" />
           <Divider />
+          {content}
 
-          <AppliedFilters filter={filterQuery} setFilter={setFilterQuery} />
-          <Divider />
-          {selectedCategory && (
-            <Box>
-              <PriceFilter
-                category={selectedCategory}
-                filter={filterQuery}
-                setFilter={setFilterQuery}
-              />
-              <Divider />
-            </Box>
-          )}
           <CardActions>
             <Button
               variant="text"

@@ -7,13 +7,10 @@ import {
   LinearProgress,
   Box,
   makeStyles,
-  IconButton,
   Grid,
-  Hidden,
   useTheme,
   useMediaQuery,
 } from "@material-ui/core";
-import { Filter } from "react-feather";
 
 import ProductGridItem from "./product-grid-item";
 import { getProducts } from "../../store/actions/product";
@@ -37,7 +34,6 @@ export default function Products() {
   useEffect(() => {
     const run = async () => {
       const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-      console.log({ query });
       setIsLoading(true);
       try {
         await dispatch(getProducts(query));
@@ -47,26 +43,27 @@ export default function Products() {
         setIsLoading(false);
       }
     };
-    // if (!products.length > 0)
     run();
   }, [location.search, dispatch]);
-
-  if (isLoading) {
-    return <LinearProgress />;
-  }
 
   return (
     <div className={classes.root}>
       <Grid container spacing={isMobile ? 0 : 2}>
         <FilterBar />
         <Grid item container xs={12} md={9} spacing={isMobile ? 0 : 1}>
-          {products.map((product) => (
-            <Grid item xs={6} sm={4} md={3} key={product.id}>
-              <div className={classes.productCard}>
-                <ProductGridItem product={product} />
-              </div>
-            </Grid>
-          ))}
+          {isLoading && (
+            <Box width="100%" pt={0.5}>
+              <LinearProgress />
+            </Box>
+          )}
+          {!isLoading &&
+            products.map((product) => (
+              <Grid item xs={6} sm={4} md={3} key={product.id}>
+                <div className={classes.productCard}>
+                  <ProductGridItem product={product} />
+                </div>
+              </Grid>
+            ))}
         </Grid>
       </Grid>
       <Box p={3} />

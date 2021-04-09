@@ -8,7 +8,6 @@ import {
   makeStyles,
   IconButton,
 } from "@material-ui/core";
-// import { useProductHook } from "./product-hook";
 import { useHistory } from "react-router";
 
 import defaultImg from "../../assets/images/image.png";
@@ -16,8 +15,6 @@ import { Favorite } from "@material-ui/icons";
 import Pricing from "../common/pricing";
 
 function ProductGridItem({ product }) {
-  // const { addToCart, deleteProduct } = useProductHook();
-
   const classes = useStyles();
 
   const router = useHistory();
@@ -72,6 +69,10 @@ function ProductGridItem({ product }) {
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
+    [theme.breakpoints.down("md")]: {
+      borderRadius: "0px",
+      boxShadow: "none",
+    },
   },
   details: {},
   imageDiv: {
@@ -80,7 +81,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   image: {
-    height: "100%",
+    // height: "100%",
+    height: theme.spacing(30),
     width: "100%",
     objectFit: "contain",
   },

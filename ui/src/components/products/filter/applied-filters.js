@@ -1,96 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
 import QueryString from "qs";
-import clsx from "clsx";
-import {
-  Box,
-  Drawer,
-  Hidden,
-  Typography,
-  makeStyles,
-  Button,
-  Grid,
-  useTheme,
-  useMediaQuery,
-  Modal,
-  Card,
-  CardHeader,
-  IconButton,
-  Divider,
-  CardContent,
-  Chip,
-  CardActions,
-} from "@material-ui/core";
-
-import EditCardLayout from "../../common/edit-card-layout";
-import PriceFilter from "./price";
-import { Close } from "@material-ui/icons";
-import { Filter } from "react-feather";
-
-import { fetchCategory } from "../../../api";
+import { Box, Typography, makeStyles, Chip } from "@material-ui/core";
 
 const AppliedFilters = () => {
   const classes = useStyles();
-  const [filter, setFilter] = useState({});
+  const [query, setQuery] = useState({});
 
   const location = useLocation();
+  const router = useHistory();
 
   useEffect(() => {
-    const query = QueryString.parse(location.search, {
+    const queryParams = QueryString.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    setFilter({ ...query });
+    setQuery({ ...queryParams });
   }, [location]);
+
+  const onDelete = (names) => {
+    let newQuery = query;
+    names.forEach((name) => {
+      delete newQuery[name];
+      //  = undefined;
+    });
+
+    console.log({ newQuery });
+    router.push(`/products/?${QueryString.stringify(newQuery)}`);
+  };
+
   return (
-    <Box p={2}>
+    <Box p={2} className={classes.root}>
       <Typography variant="h6" gutterBottom>
         <b>Applied filters</b>
       </Typography>
       <Box pb={2}>
-        {(filter.minPrice || filter.maxPrice) && (
+        {(query.minPrice || query.maxPrice) && (
           <Chip
-            label={`₹ ${filter.minPrice} - ₹ ${filter.maxPrice}`}
-            onDelete={() => {}}
+            label={`₹ ${query.minPrice} - ₹ ${query.maxPrice}`}
+            onDelete={() => onDelete(["minPrice", "maxPrice"])}
             size="small"
             variant="outlined"
           />
         )}
-        {/* {Object.keys(filterQuery).map((query) => {
-                  console.log(query, filterQuery[query]);
-                  return <Chip label={`${query}-${filterQuery[query]}`} />;
-                })} */}
+        {Object.keys(query).length < 2 && (
+          <Typography>No filters applied !</Typography>
+        )}
       </Box>
     </Box>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  mobileFilterCard: {
-    margin: "10px",
-    outline: 0,
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "unset",
-    },
-  },
-  sectionMobile: {
-    display: "unset",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-  filterButton: {
-    position: "fixed",
-    bottom: "10px",
-    right: "10px",
-    // backgroundColor: theme.palette.primary.main,
-  },
-  filterIcon: {
-    color: theme.palette.secondary.main,
-    fill: theme.palette.secondary.main,
-  },
+  root: {},
 }));
 export default AppliedFilters;

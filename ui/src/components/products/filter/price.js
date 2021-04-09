@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import { useLocation } from "react-router";
 import { Box } from "@material-ui/core";
 
 export default function PriceFilter({ category, filter, setFilter }) {
   const classes = useStyles();
-  // const [value, setValue] = React.useState([0, category.maxPrice]);
 
   const handleChange = (event, newValue) => {
-    // setValue(newValue);
     setFilter((filter) => ({
       ...filter,
       minPrice: newValue[0],
@@ -26,7 +23,7 @@ export default function PriceFilter({ category, filter, setFilter }) {
     return `${n}${value === category.maxPrice ? "+" : ""}`;
   }
 
-  console.log(category.maxPrice / 20);
+  console.log({ filter });
   return (
     <div className={classes.root}>
       <Typography id="range-slider" variant="h6" gutterBottom>
@@ -34,11 +31,14 @@ export default function PriceFilter({ category, filter, setFilter }) {
       </Typography>
       <Box px={2}>
         <Slider
-          value={[+filter.minPrice, +filter.maxPrice]}
+          value={[
+            +filter.minPrice || category.minPrice,
+            +filter.maxPrice || category.maxPrice,
+          ]}
           onChange={handleChange}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
-          step={category.maxPrice / 10}
+          step={category.minPrice}
           min={0}
           max={category.maxPrice}
           getAriaValueText={valuetext}
@@ -46,11 +46,11 @@ export default function PriceFilter({ category, filter, setFilter }) {
         />
         <Box display="flex" justifyContent="space-between">
           <Typography>
-            <b>{`Rs. ${filter.minPrice} `}</b>
+            <b>{`Rs. ${filter.minPrice || category.minPrice} `}</b>
           </Typography>
           <Typography>to</Typography>
           <Typography>
-            <b>{`Rs. ${filter.maxPrice}`}</b>
+            <b>{`Rs. ${filter.maxPrice || category.maxPrice}`}</b>
           </Typography>
         </Box>
       </Box>
