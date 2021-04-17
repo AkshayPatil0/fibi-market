@@ -8,23 +8,46 @@ import {
   makeStyles,
   IconButton,
 } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 import defaultImg from "../../assets/images/image.png";
 import { Favorite } from "@material-ui/icons";
 import Pricing from "../common/pricing";
 import { useDispatch, useSelector } from "react-redux";
 import { onWishlist } from "../../store/actions/auth";
+import { setAlert } from "../../store/actions/app";
+import QueryString from "qs";
 
 function ProductGridItem({ product }) {
   const classes = useStyles();
-
+  const location = useLocation();
   const router = useHistory();
+  const user = useSelector((state) => state.auth.currentUser);
   const wishlist = useSelector((state) => state.auth.wishlist);
 
   const dispatch = useDispatch();
 
   const handleWishlist = () => {
+    if (!user) {
+      dispatch(
+        setAlert(
+          "Login required",
+          "you need to login to add product to wishlist",
+          [
+            {
+              title: "Login",
+              onClick: () =>
+                router.push(
+                  `/auth/signin?${QueryString.stringify({
+                    redirectUrl: location.pathname,
+                  })}`
+                ),
+            },
+          ]
+        )
+      );
+      return;
+    }
     dispatch(onWishlist(product.id));
 
     // setIsWishlisted(!isWishlisted);

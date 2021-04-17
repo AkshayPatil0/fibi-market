@@ -45,7 +45,7 @@ export default function Header() {
   const menuItems = useMenuItems();
 
   const menuButton = user ? (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" className={classes.sectionDesktop}>
       <Typography variant="h6">Hi, {user.firstName}</Typography>
       <IconButton
         variant="text"
@@ -53,7 +53,6 @@ export default function Header() {
         aria-label="account of current user"
         aria-haspopup="true"
         color="inherit"
-        className={classes.sectionDesktop}
         onClick={(event) => setAnchorEl(event.currentTarget)}
       >
         <Person />
@@ -96,14 +95,16 @@ export default function Header() {
   const router = useHistory();
 
   const appbarRef = useRef(null);
-  const [appbarHeight, setAppbarHeight] = useState();
+  const rootRef = useRef();
+  // const [appbarHeight, setAppbarHeight] = useState();
+  // let appbarHeight;
 
   useEffect(() => {
-    setAppbarHeight(appbarRef.current?.offsetHeight);
-  }, [appbarRef]);
+    rootRef.current.style.height = `${appbarRef.current?.offsetHeight}px`;
+  });
 
   return (
-    <div className={classes.root} style={{ height: appbarHeight }}>
+    <div className={classes.root} ref={rootRef}>
       <AppBar position="fixed" ref={appbarRef}>
         <Toolbar>
           <IconButton

@@ -3,13 +3,15 @@ import { Box, List } from "@material-ui/core";
 import NavItem from "./nav-item";
 
 import { Input as InputIcon } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMenuItems } from "./menu-items-hook";
 import { signout } from "../../store/actions/auth";
 import { useGoogleLogout } from "react-google-login";
 
 const NavItemList = () => {
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth.currentUser);
 
   const { signOut, loaded } = useGoogleLogout({
     clientId:
@@ -44,9 +46,11 @@ const NavItemList = () => {
         ))}
       </List>
       <Box flexGrow={1} />
-      <List>
-        <NavItem onClick={onSignout} title="Signout" icon={InputIcon} />
-      </List>
+      {user && (
+        <List>
+          <NavItem onClick={onSignout} title="Signout" icon={InputIcon} />
+        </List>
+      )}
     </>
   );
 };

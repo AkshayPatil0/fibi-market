@@ -23,9 +23,11 @@ const Profile = () => {
   const user = useSelector((state) => state.auth.currentUser);
   const router = useHistory();
 
-  console.log({ user });
   useEffect(() => {
     if (!user) {
+      if (router.action === "POP") {
+        router.goBack();
+      }
       router.push("/auth/signin");
     }
   });

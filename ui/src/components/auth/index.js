@@ -26,12 +26,12 @@ const AuthLayout = () => {
   const router = useHistory();
   const location = useLocation();
   const user = useSelector((state) => state.auth.currentUser);
+
   useEffect(() => {
     if (user) {
       const { redirectUrl } = QueryString.parse(location.search, {
         ignoreQueryPrefix: true,
       });
-      console.log({ redirectUrl });
       router.push(redirectUrl || "/");
     }
   }, [location, router, user]);
