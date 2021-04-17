@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
 import QueryString from "qs";
 import clsx from "clsx";
 import {
@@ -17,34 +16,27 @@ import {
 } from "@material-ui/core";
 
 import PriceFilter from "./price";
+import LocationFilter from "./location";
 import { Close } from "@material-ui/icons";
 import { Filter } from "react-feather";
 
-import { fetchCategory } from "../../../api";
 import AppliedFilters from "./applied-filters";
+import Subcategories from "./subcategories";
+import SelectCategory from "./select-category";
 
-const FilterBar = () => {
+const FilterBar = ({ selectedCategory, selectedLocation }) => {
   const classes = useStyles();
   const location = useLocation();
   const router = useHistory();
   const [openMobile, setOpenMobile] = useState(false);
 
-  const [selectedCategory, setSelectedCategory] = useState("");
-
   const [filterQuery, setFilterQuery] = useState({});
 
   useEffect(() => {
-    const getCategory = async (id) => {
-      const res = await fetchCategory(id);
-      setSelectedCategory(res.data);
-    };
     const query = QueryString.parse(location.search, {
       ignoreQueryPrefix: true,
     });
-    if (query.category) {
-      getCategory(query.category);
-    }
-    setFilterQuery((filterQuery) => ({ ...filterQuery, ...query }));
+    setFilterQuery(query);
   }, [location]);
 
   useEffect(() => {
@@ -58,20 +50,36 @@ const FilterBar = () => {
     setOpenMobile(false);
   };
 
-  const content = (
+  const filters = (
     <>
-      <AppliedFilters filter={filterQuery} setFilter={setFilterQuery} />
+      <AppliedFilters />
       <Divider />
       {selectedCategory && (
         <Box>
           <PriceFilter
-            category={selectedCategory}
+            selectedCategory={selectedCategory}
             filter={filterQuery}
             setFilter={setFilterQuery}
           />
           <Divider />
         </Box>
       )}
+      {selectedCategory &&
+        selectedCategory.childrens &&
+        selectedCategory.childrens.length > 0 && (
+          <Box className={classes.filterBox}>
+            <Subcategories
+              categories={selectedCategory.childrens}
+              filter={filterQuery}
+              setFilter={setFilterQuery}
+            />
+            <Divider />
+          </Box>
+        )}
+      <Box>
+        <LocationFilter filter={filterQuery} setFilter={setFilterQuery} />
+        <Divider />
+      </Box>
     </>
   );
 
@@ -88,19 +96,23 @@ const FilterBar = () => {
             }
           />
           <Divider />
-          {content}
-          <Box display="flex" justifyContent="flex-end" px={2} py={1}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() =>
-                router.push(`/products/?${QueryString.stringify(filterQuery)}`)
-              }
-            >
-              Apply
-            </Button>
-          </Box>
+          {selectedCategory && (
+            <>
+              {filters}
+              <Box display="flex" justifyContent="flex-end" px={2} py={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() =>
+                    router.push(`?${QueryString.stringify(filterQuery)}`)
+                  }
+                >
+                  Apply
+                </Button>
+              </Box>
+            </>
+          )}
         </Card>
       </Modal>
       <IconButton
@@ -113,20 +125,26 @@ const FilterBar = () => {
         <Card>
           <CardHeader title="Filter" />
           <Divider />
-          {content}
+          {selectedCategory ? (
+            <>
+              {filters}
 
-          <CardActions>
-            <Button
-              variant="text"
-              color="primary"
-              fullWidth
-              onClick={() =>
-                router.push(`/products/?${QueryString.stringify(filterQuery)}`)
-              }
-            >
-              Apply filters
-            </Button>
-          </CardActions>
+              <CardActions>
+                <Button
+                  variant="text"
+                  color="primary"
+                  fullWidth
+                  onClick={() =>
+                    router.push(`?${QueryString.stringify(filterQuery)}`)
+                  }
+                >
+                  Apply filters
+                </Button>
+              </CardActions>
+            </>
+          ) : (
+            <SelectCategory />
+          )}
         </Card>
       </Grid>
     </>
@@ -161,15 +179,5 @@ const useStyles = makeStyles((theme) => ({
     fill: theme.palette.secondary.main,
   },
 }));
-
-FilterBar.propTypes = {
-  onMobileClose: PropTypes.func,
-  openMobile: PropTypes.bool,
-};
-
-FilterBar.defaultProps = {
-  onMobileClose: () => {},
-  openMobile: false,
-};
 
 export default FilterBar;

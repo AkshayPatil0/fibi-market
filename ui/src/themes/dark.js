@@ -1,26 +1,30 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { red } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      main: "#556cd6",
-      light: "#556cd62b",
-    },
-    secondary: {
-      main: red.A400,
-    },
-    error: {
-      main: red.A400,
-    },
-    action: {
-      main: "#4baf4b",
-    },
-    background: {
-      default: "#fff",
-      dark: "#F4F6F8",
-    },
+    type: "dark",
+    // primary: {
+    //   main: "#556cd6",
+    //   light: "#556cd62b",
+    // },
+    // secondary: {
+    //   main: red.A400,
+    // },
+    // error: {
+    //   main: red.A400,
+    // },
+    // action: {
+    //   main: "#4baf4b",
+    // },
+    // background: {
+    //   default: "#fff",
+    //   dark: "#F4F6F8",
+    // },
+    // text: {
+    //   primary: "#fff",
+    //   secondary: "#F4F6F8",
+    // },
   },
   typography: {
     fontSize: 16,
@@ -76,6 +80,11 @@ const theme = createMuiTheme({
         fontSize: ["0.75em", "!important"],
       },
     },
+    // MuiPaper: {
+    //   rounded: {
+    //     borderRadius: "1rem",
+    //   },
+    // },
     MuiCardHeader: {
       root: {
         padding: ["10px", "!important"],

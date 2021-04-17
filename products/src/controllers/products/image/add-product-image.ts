@@ -36,8 +36,6 @@ export const addProductImageController = async (
       return uri;
     })
   );
-  product.set("images", [...product.images, ...images]);
-  await product.save();
 
   await updateProduct(product, {
     images: [...product.images, ...images],

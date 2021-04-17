@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Grid,
@@ -9,6 +9,8 @@ import {
 import ProfileDetails from "./profile-details";
 import Addresses from "./addresses";
 import MyAvatar from "./my-avatar";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 const Profile = () => {
   const classes = useStyles();
@@ -18,6 +20,19 @@ const Profile = () => {
     defaultMatches: true,
   });
 
+  const user = useSelector((state) => state.auth.currentUser);
+  const router = useHistory();
+
+  console.log({ user });
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/signin");
+    }
+  });
+
+  if (!user) {
+    return <div />;
+  }
   return (
     <div className={classes.root}>
       <Grid container spacing={isMobile ? 0 : 2}>

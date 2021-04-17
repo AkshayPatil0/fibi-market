@@ -19,6 +19,7 @@ export const fetchUsers = (query) =>
   API.get(`/api/users?${qs.stringify(query)}`);
 
 export const fetchProfile = () => API.get("/api/users/profile");
+export const fetchWishlist = () => API.get("/api/users/profile/wishlist");
 export const updateProfile = (body) => API.put("/api/users/profile", body);
 export const updateProfileAvatar = (body) =>
   API.put("/api/users/profile/avatar", body);
@@ -67,6 +68,8 @@ export const deleteCategory = (id) =>
 // ------------------
 export const fetchLocations = () =>
   API.get("/api/products/categories?location=true");
+export const fetchLocation = (id) =>
+  API.get(`/api/products/categories/${id}?location=true`);
 export const addLocation = (body) =>
   API.post("/api/products/categories", { ...body, location: true });
 export const deleteLocation = (id) =>

@@ -5,7 +5,7 @@ import { getChildrenTree } from "../../helpers";
 
 export const getCategoryController = async (req: Request, res: Response) => {
   const { location } = req.query;
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findOne({ slug: req.params.slug });
 
   if (!category) {
     return new NotFoundError("category");

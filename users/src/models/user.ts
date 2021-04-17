@@ -19,6 +19,7 @@ export interface UserAttrs {
     city: string;
     state: string;
   }[];
+  wishlist?: string[];
   phoneNo?: string;
   avatar?: string;
   role: UserRoles;
@@ -43,8 +44,9 @@ export interface UserDoc extends mongoose.Document {
     city: string;
     state: string;
   }[];
-  phoneNo?: string;
-  avatar?: string;
+  wishlist: string[];
+  phoneNo: string;
+  avatar: string;
   role: UserRoles;
   version: number;
 }
@@ -72,6 +74,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     addresses: [Object],
+    wishlist: [String],
     role: {
       type: String,
       required: true,

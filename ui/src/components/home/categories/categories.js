@@ -1,58 +1,38 @@
 import React from "react";
 
-import {
-  Typography,
-  Box,
-  makeStyles,
-  Card,
-  CardContent,
-} from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 
-// import { getCategoriesState } from "../../../utils";
-import { useHistory } from "react-router";
+import CategoryItem from "./category-item";
 
 export default function Categories({ categories }) {
   const classes = useStyles();
 
-  // const categories = getCategoriesState()();
-
-  const router = useHistory();
-
   return (
-    <Box display="flex" justifyContent="space-around">
-      {categories &&
-        categories.map((category) => (
-          <Box flex={1} mx={2}>
-            <Card
-              className={classes.card}
-              onClick={() =>
-                router.push(
-                  `/products/?${
-                    category.isLocation ? "location" : "category"
-                  }=${category.id}`
-                )
-              }
-            >
-              <CardContent>
-                <Typography variant="h6" align="center">
-                  {category.title}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Box>
-        ))}
+    <Box className={classes.root}>
+      <Box className={classes.wrapper}>
+        {categories &&
+          categories.map((category, i) => (
+            <Box px={1} key={i}>
+              <CategoryItem category={category} />
+            </Box>
+          ))}
+      </Box>
     </Box>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    cursor: "pointer",
+  root: {
+    display: "flex",
+    padding: theme.spacing(1, 0),
+    overflowX: "auto",
+    "&::-webkit-scrollbar": {
+      width: 0,
+    },
   },
-  categories: {
-    padding: theme.spacing(1),
-  },
-  empty: {
-    textAlign: "center",
+  wrapper: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    flex: 1,
   },
 }));

@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { Box } from "@material-ui/core";
 
-export default function PriceFilter({ category, filter, setFilter }) {
+export default function PriceFilter({ selectedCategory, filter, setFilter }) {
   const classes = useStyles();
 
   const handleChange = (event, newValue) => {
@@ -20,10 +20,9 @@ export default function PriceFilter({ category, filter, setFilter }) {
     if (value > 999) {
       n = value / 1000 + "k";
     }
-    return `${n}${value === category.maxPrice ? "+" : ""}`;
+    return `${n}${value === selectedCategory.maxPrice ? "+" : ""}`;
   }
 
-  console.log({ filter });
   return (
     <div className={classes.root}>
       <Typography id="range-slider" variant="h6" gutterBottom>
@@ -32,25 +31,25 @@ export default function PriceFilter({ category, filter, setFilter }) {
       <Box px={2}>
         <Slider
           value={[
-            +filter.minPrice || category.minPrice,
-            +filter.maxPrice || category.maxPrice,
+            +filter.minPrice || selectedCategory.minPrice,
+            +filter.maxPrice || selectedCategory.maxPrice,
           ]}
           onChange={handleChange}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
-          step={category.minPrice}
+          step={selectedCategory.minPrice}
           min={0}
-          max={category.maxPrice}
+          max={selectedCategory.maxPrice}
           getAriaValueText={valuetext}
           valueLabelFormat={valuetext}
         />
         <Box display="flex" justifyContent="space-between">
           <Typography>
-            <b>{`Rs. ${filter.minPrice || category.minPrice} `}</b>
+            <b>{`Rs. ${filter.minPrice || selectedCategory.minPrice} `}</b>
           </Typography>
           <Typography>to</Typography>
           <Typography>
-            <b>{`Rs. ${filter.maxPrice || category.maxPrice}`}</b>
+            <b>{`Rs. ${filter.maxPrice || selectedCategory.maxPrice}`}</b>
           </Typography>
         </Box>
       </Box>

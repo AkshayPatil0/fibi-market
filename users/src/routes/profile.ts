@@ -25,7 +25,7 @@ router.put(
   requireAuth,
   [
     body("firstName").not().isEmpty().withMessage("First name is not valid !"),
-    body("lastName").not().isEmpty().withMessage("Last name is not valid !"),
+    // body("lastName").not().isEmpty().withMessage("Last name is not valid !"),
   ],
   validateRequest,
   updateProfileController
@@ -45,5 +45,11 @@ router.delete(
   requireAuth,
   deleteProfileAvatarController
 );
+
+router.get("/wishlist", currentUser, requireAuth, async (req, res) => {
+  const user = await User.findById(req.currentUser?.id);
+
+  res.status(200).json(user.wishlist);
+});
 
 export { router as profileRoute };

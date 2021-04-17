@@ -48,6 +48,11 @@ export const getImagesFormData = (images) => {
   return fData;
 };
 
+export const getObjectUrl = (image) => {
+  // console.log(image);
+  if (!image) return "";
+  return URL.createObjectURL(image);
+};
 export const getObjectUrls = (images) => {
   // console.log(images);
   if (!images || !images.length > 0) return [];

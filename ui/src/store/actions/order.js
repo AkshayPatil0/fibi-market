@@ -34,8 +34,14 @@ const setCart = (cart) => {
 
 export const getCart = () => {
   return async (dispatch) => {
-    const res = await api.fetchCart();
-    dispatch(setCart(res.data));
+    let res;
+    try {
+      res = await api.fetchCart();
+    } catch (err) {
+      throw err;
+    } finally {
+      dispatch(setCart(res?.data));
+    }
   };
 };
 

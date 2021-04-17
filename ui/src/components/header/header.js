@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import {
   fade,
@@ -8,32 +8,33 @@ import {
   IconButton,
   Button,
   Typography,
-  InputBase,
   Badge,
   Menu,
-  Avatar,
 } from "@material-ui/core";
 import {
   ShoppingCart,
   Favorite,
-  Search as SearchIcon,
   Menu as MenuIcon,
-  ExpandLess,
-  ExpandMore,
+  Person,
 } from "@material-ui/icons";
 
 import SideBar from "./sidebar";
 import { useHistory, useLocation } from "react-router";
 import { Box } from "@material-ui/core";
-import { getInitials } from "../../utils";
 import { useMenuItems } from "./menu-items-hook";
 import NavItemList from "./nav-item-list";
 import { useSelector } from "react-redux";
+import SearchBar from "./search-bar";
 
 export default function Header() {
   const classes = useStyles();
 
   const user = useSelector((state) => state.auth.currentUser);
+  const wishlist = useSelector((state) => state.auth.wishlist);
+  const cart = useSelector((state) => state.order.cart);
+
+  const cartItemCount = cart?.products?.length;
+  const wishlistItemCount = wishlist?.length;
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,24 +45,20 @@ export default function Header() {
   const menuItems = useMenuItems();
 
   const menuButton = user ? (
-    <Button
-      variant="text"
-      edge="end"
-      aria-label="account of current user"
-      aria-haspopup="true"
-      color="inherit"
-      className={classes.sectionDesktop}
-      onClick={(event) => setAnchorEl(event.currentTarget)}
-    >
-      <Box display="flex" alignItems="center">
-        <Avatar style={{ height: "1.5em", width: "1.5em" }} src={user.avatar}>
-          {getInitials(user)}
-        </Avatar>
-        <Box p={0.5} />
-        <Typography variant="h6">{user.firstName}</Typography>
-        {anchorEl ? <ExpandLess /> : <ExpandMore />}
-      </Box>
-    </Button>
+    <Box display="flex" alignItems="center">
+      <Typography variant="h6">Hi, {user.firstName}</Typography>
+      <IconButton
+        variant="text"
+        // edge="end"
+        aria-label="account of current user"
+        aria-haspopup="true"
+        color="inherit"
+        className={classes.sectionDesktop}
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+      >
+        <Person />
+      </IconButton>
+    </Box>
   ) : (
     <Button
       variant="contained"
@@ -95,30 +92,19 @@ export default function Header() {
     </Menu>
   );
 
-  const searchBar = (
-    <Toolbar color="transparent" className={classes.sectionMobile}>
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ "aria-label": "search" }}
-        />
-      </div>
-    </Toolbar>
-  );
-
   const location = useLocation();
   const router = useHistory();
 
+  const appbarRef = useRef(null);
+  const [appbarHeight, setAppbarHeight] = useState();
+
+  useEffect(() => {
+    setAppbarHeight(appbarRef.current?.offsetHeight);
+  }, [appbarRef]);
+
   return (
-    <div className={classes.grow}>
-      <AppBar position="fixed">
+    <div className={classes.root} style={{ height: appbarHeight }}>
+      <AppBar position="fixed" ref={appbarRef}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -136,38 +122,39 @@ export default function Header() {
               FIBI market
             </Typography>
           </Box>
-          <div className={clsx(classes.search, classes.sectionDesktop)}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
+          <div className={classes.sectionDesktop}>
+            <SearchBar />
           </div>
           <div className={classes.grow} />
           <div className={classes.icons}>
             {menuButton}
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+            <IconButton
+              aria-label={`show ${wishlistItemCount} wishlist items`}
+              color="inherit"
+              onClick={() => router.push("/wishlist")}
+            >
+              <Badge badgeContent={wishlistItemCount} color="secondary">
                 <Favorite />
               </Badge>
             </IconButton>
 
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton
+              aria-label={`show ${cartItemCount} cart items`}
+              color="inherit"
+              onClick={() => router.push("/cart")}
+            >
+              <Badge badgeContent={cartItemCount} color="secondary">
                 <ShoppingCart />
               </Badge>
             </IconButton>
           </div>
         </Toolbar>
+        {location.pathname === "/" && (
+          <div className={clsx(classes.sectionMobile, classes.mobileSearch)}>
+            <SearchBar />
+          </div>
+        )}
       </AppBar>
-      {/* <Toolbar /> */}
-      {location.pathname === "/" && searchBar}
 
       <SideBar
         onMobileClose={() => setIsMobileNavOpen(false)}
@@ -180,17 +167,16 @@ export default function Header() {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    maxHeight: "106px",
+    minHeight: "64px",
+    maxWidth: "100vw",
+  },
   grow: {
     flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
-  },
-  title: {
-    // display: "none",
-    // [theme.breakpoints.up("sm")]: {
-    //   display: "block",
-    // },
   },
   search: {
     position: "relative",
@@ -199,7 +185,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
@@ -241,9 +226,11 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  mobileSearch: {
+    width: "100%",
+    padding: theme.spacing(0, 2, 2, 2),
+  },
+  icons: {
+    display: "flex",
+  },
 }));
-
-//   );
-// };
-
-// export default HeaderComponent;

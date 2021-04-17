@@ -5,7 +5,7 @@ import { User } from "../../models/user";
 import { updateUser } from "../../helpers/update-user";
 
 export const updateProfileController = async (req: Request, res: Response) => {
-  const { firstName, lastName, addresses } = req.body;
+  const { firstName, lastName, addresses, wishlist } = req.body;
 
   const user = await User.findById(req.currentUser?.id);
 
@@ -21,6 +21,7 @@ export const updateProfileController = async (req: Request, res: Response) => {
     role: user.role,
     phoneNo: user.phoneNo,
     addresses: addresses || user.addresses,
+    wishlist: wishlist || user.wishlist,
     avatar: user.avatar,
   });
 

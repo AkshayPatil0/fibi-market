@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import QueryString from "qs";
-import { Box, Typography, makeStyles, Chip } from "@material-ui/core";
+import { Box, Typography, makeStyles, Chip, Button } from "@material-ui/core";
 
 const AppliedFilters = () => {
   const classes = useStyles();
@@ -20,12 +20,21 @@ const AppliedFilters = () => {
   const onDelete = (names) => {
     let newQuery = query;
     names.forEach((name) => {
-      delete newQuery[name];
-      //  = undefined;
+      const [path, subpath] = name.split(".");
+      if (subpath) {
+        newQuery = {
+          ...query,
+          [path]: query[path].filter((val, i) => i !== +subpath),
+        };
+      } else {
+        delete newQuery[name];
+      }
     });
+    router.push(`?${QueryString.stringify(newQuery)}`);
+  };
 
-    console.log({ newQuery });
-    router.push(`/products/?${QueryString.stringify(newQuery)}`);
+  const onClearFilters = () => {
+    router.push("?");
   };
 
   return (
@@ -33,16 +42,59 @@ const AppliedFilters = () => {
       <Typography variant="h6" gutterBottom>
         <b>Applied filters</b>
       </Typography>
-      <Box pb={2}>
+      <Box px={2}>
+        {query.search && (
+          <Chip
+            className={classes.chip}
+            size="small"
+            variant="outlined"
+            onDelete={() => onDelete(["search"])}
+            label={`search: ${query.search}`}
+          />
+        )}
         {(query.minPrice || query.maxPrice) && (
           <Chip
             label={`₹ ${query.minPrice} - ₹ ${query.maxPrice}`}
             onDelete={() => onDelete(["minPrice", "maxPrice"])}
             size="small"
             variant="outlined"
+            className={classes.chip}
           />
         )}
-        {Object.keys(query).length < 2 && (
+        {query.subcategories &&
+          query.subcategories.map((cat, i) => (
+            <Chip
+              label={cat}
+              onDelete={() => onDelete([`subcategories.${i}`])}
+              size="small"
+              variant="outlined"
+              className={classes.chip}
+            />
+          ))}
+        {query.locations &&
+          query.locations.map((cat, i) => (
+            <Chip
+              label={cat}
+              onDelete={() => onDelete([`locations.${i}`])}
+              size="small"
+              variant="outlined"
+              className={classes.chip}
+            />
+          ))}
+
+        {Object.keys(query).length > 1 ||
+        (Object.keys(query).length === 1 && query.sort === undefined) ? (
+          <Box className={classes.clearFilter}>
+            <Button
+              variant="outlined"
+              size="small"
+              color="secondary"
+              onClick={onClearFilters}
+            >
+              clear filters
+            </Button>
+          </Box>
+        ) : (
           <Typography>No filters applied !</Typography>
         )}
       </Box>
@@ -52,5 +104,14 @@ const AppliedFilters = () => {
 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  chip: {
+    margin: "2px",
+  },
+  clearFilter: {
+    display: "flex",
+    justifyContent: "flex-end",
+    paddingTop: theme.spacing(2),
+    fontSize: "0.7rem",
+  },
 }));
 export default AppliedFilters;

@@ -3,7 +3,7 @@ import { Button, Box, IconButton, makeStyles } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-import ToolbarLayout from "./toolbar-layout";
+import ToolbarLayout from "../toolbar-layout";
 import { useDispatch } from "react-redux";
 import { updateProduct } from "../../../store/actions/product";
 

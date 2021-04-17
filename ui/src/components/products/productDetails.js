@@ -17,19 +17,26 @@ import {
   NavigateNext,
   ShoppingCart,
 } from "@material-ui/icons";
-import { useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../store/actions/product";
 import { addToCart } from "../../store/actions/order";
 import Pricing from "../common/pricing";
 import Slider from "react-slick";
 import VariantsList from "./variantsList";
+import { setAlert } from "../../store/actions/app";
+import QueryString from "qs";
+import { onWishlist } from "../../store/actions/auth";
 
 const ProductDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
 
   const product = useSelector((state) => state.product.product);
+  const user = useSelector((state) => state.auth.currentUser);
+
+  const router = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,8 +53,46 @@ const ProductDetails = () => {
   if (!product) {
     return <LinearProgress />;
   }
-
-  const onAddToCart = () => {
+  const handleWishlist = () => {
+    if (!user) {
+      dispatch(
+        setAlert(
+          "Login required",
+          "you need to login to add product to wishlist",
+          [
+            {
+              title: "Login",
+              onClick: () =>
+                router.push(
+                  `/auth/signin?${QueryString.stringify({
+                    redirectUrl: location.pathname,
+                  })}`
+                ),
+            },
+          ]
+        )
+      );
+      return;
+    }
+    dispatch(onWishlist(id));
+  };
+  const onAddToCart = async () => {
+    if (!user) {
+      dispatch(
+        setAlert("Login required", "you need to login to add product to cart", [
+          {
+            title: "Login",
+            onClick: () =>
+              router.push(
+                `/auth/signin?${QueryString.stringify({
+                  redirectUrl: location.pathname,
+                })}`
+              ),
+          },
+        ])
+      );
+      return;
+    }
     if (product.hasVariants) {
       if (!product.selectedVariant) {
         alert("Select variant first !");
@@ -61,20 +106,15 @@ const ProductDetails = () => {
   };
 
   const buttonActions = (
-    <Box
-      display="flex"
-      alignItems="center"
-      alignContent="center"
-      flexWrap="wrap"
-      py={1}
-    >
+    <Box className={classes.buttonActions}>
       <Box>
         <Button
           variant="contained"
           color="primary"
-          size="large"
+          // size="large"
           fullWidth
           onClick={onAddToCart}
+          className={classes.addToCartButton}
         >
           <Box display="flex" alignItems="center">
             <Box mr={2} display="flex" alignItems="center">
@@ -85,12 +125,16 @@ const ProductDetails = () => {
         </Button>
       </Box>
       <Box m={1}>
-        <Button variant="outlined" color="default">
-          <Box display="flex" alignItems="center">
+        <Button variant="outlined" onClick={handleWishlist}>
+          <Box display="flex" alignItems="center" fontSize="0.7rem">
             <Box mr={1} display="flex" alignItems="center">
-              <FavoriteBorder />
+              <FavoriteBorder
+                color={user?.wishlist?.includes(id) ? "secondary" : "default"}
+              />
             </Box>
-            <Typography variant="button">Wishlist</Typography>
+            <Typography variant="button">
+              {user?.wishlist?.includes(id) ? "Wishlisted" : "Wishlist"}
+            </Typography>
           </Box>
         </Button>
       </Box>
@@ -135,7 +179,7 @@ const ProductDetails = () => {
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box p={2}>
+          <Box p={2} className={classes.details}>
             <Typography variant="h5">{product.title}</Typography>
             <Typography className={classes.description} variant="h6">
               {product.description}
@@ -190,14 +234,24 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "normal",
   },
   imageDiv: {
-    height: "80vh",
-    maxHeight: "480px",
+    maxHeight: "80vh",
     overflow: "hidden",
   },
   image: {
-    height: "100%",
     width: "100%",
+    height: "60vh",
+    minHeight: "480px",
     objectFit: "contain",
+  },
+  buttonActions: {
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
+    padding: theme.spacing(1, 0),
+    // fontSize: "0.8rem",
+  },
+  addToCartButton: {
+    padding: theme.spacing(1.5),
   },
 }));
 

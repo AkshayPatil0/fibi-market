@@ -35,7 +35,6 @@ export default function SignIn() {
 
     try {
       await dispatch(signin(formData));
-      router.push("/");
     } catch (err) {
       let newError = {};
       err.response?.data?.errors
@@ -62,9 +61,7 @@ export default function SignIn() {
           justifyContent="center"
           alignItems="center"
         >
-          <Avatar className={classes.avatar}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
+          <Avatar className={classes.avatar}></Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

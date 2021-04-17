@@ -28,6 +28,7 @@ import TextInput from "../../common/input";
 
 import { deleteCategory, editCategory } from "../../../store/actions/product";
 import CategoryList from "./category-list";
+import { getObjectUrl } from "../../../utils";
 
 function CategoryItem({ category }) {
   const classes = useStyle();
@@ -38,6 +39,7 @@ function CategoryItem({ category }) {
     title: "",
     minPrice: "",
     maxPrice: "",
+    image: "",
   });
 
   const onCloseEdit = () => {
@@ -52,23 +54,36 @@ function CategoryItem({ category }) {
         title: category.title,
         minPrice: category.minPrice || "",
         maxPrice: category.maxPrice || "",
+        image: category.image || "",
       });
     }
   }, [category]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === "image" && e.target.files.length > 0) {
+      setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(editCategory(category.id, formData));
+
+    let fData = new FormData();
+
+    for (const key of Object.keys(formData)) {
+      fData.set(key, formData[key]);
+    }
+
+    dispatch(editCategory(category.id, fData));
   };
   return (
     <>
-      <ListItem button onClick={() => setShowChildren(!showChildren)}>
+      <ListItem button>
         {showChildren ? <ExpandLess /> : <ExpandMore />}
         <ListItemText
           primary={<Typography variant="h6">{category.title}</Typography>}
+          onClick={() => setShowChildren(!showChildren)}
         ></ListItemText>
         <Edit color="primary" onClick={() => setOpenEdit(true)} />
         <Delete
@@ -94,6 +109,42 @@ function CategoryItem({ category }) {
               <Divider />
               <CardContent>
                 <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    {formData.image ? (
+                      <Box component="label">
+                        <img
+                          src={
+                            typeof formData.image === "string"
+                              ? formData.image
+                              : getObjectUrl(formData.image)
+                          }
+                          height="100%"
+                          width="100%"
+                          alt={category.title}
+                        />
+                        <input
+                          type="file"
+                          name="image"
+                          hidden
+                          onChange={handleChange}
+                        />
+                      </Box>
+                    ) : (
+                      <Button
+                        size="small"
+                        variant="contained"
+                        component="label"
+                      >
+                        <Typography>Choose image</Typography>
+                        <input
+                          type="file"
+                          name="image"
+                          hidden
+                          onChange={handleChange}
+                        />
+                      </Button>
+                    )}
+                  </Grid>
                   <TextInput
                     name="title"
                     label="Title"

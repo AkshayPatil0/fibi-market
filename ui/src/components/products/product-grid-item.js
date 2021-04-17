@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Typography,
@@ -13,16 +13,21 @@ import { useHistory } from "react-router";
 import defaultImg from "../../assets/images/image.png";
 import { Favorite } from "@material-ui/icons";
 import Pricing from "../common/pricing";
+import { useDispatch, useSelector } from "react-redux";
+import { onWishlist } from "../../store/actions/auth";
 
 function ProductGridItem({ product }) {
   const classes = useStyles();
 
   const router = useHistory();
+  const wishlist = useSelector((state) => state.auth.wishlist);
 
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const dispatch = useDispatch();
 
-  const onWishlist = () => {
-    setIsWishlisted(!isWishlisted);
+  const handleWishlist = () => {
+    dispatch(onWishlist(product.id));
+
+    // setIsWishlisted(!isWishlisted);
   };
 
   return (
@@ -58,9 +63,13 @@ function ProductGridItem({ product }) {
       <IconButton
         size="small"
         className={classes.wishlistButton}
-        onClick={onWishlist}
+        onClick={handleWishlist}
       >
-        {isWishlisted ? <Favorite color="secondary" /> : <Favorite />}
+        {wishlist && wishlist.includes(product.id) ? (
+          <Favorite color="secondary" />
+        ) : (
+          <Favorite />
+        )}
       </IconButton>
     </Card>
   );
@@ -68,6 +77,7 @@ function ProductGridItem({ product }) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    height: "100%",
     position: "relative",
     [theme.breakpoints.down("md")]: {
       borderRadius: "0px",
@@ -84,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     // height: "100%",
     height: theme.spacing(30),
     width: "100%",
-    objectFit: "contain",
+    objectFit: "cover",
   },
   wishlistButton: {
     height: 30,

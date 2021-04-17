@@ -1,23 +1,38 @@
-export const IS_LOADING = "is-loading";
-export const SET_ERROR = "set-error";
-export const RESET_ERROR = "reset-error";
+export const SET_ALERT = "set-alert";
+export const RESET_ALERT = "reset-alert";
+export const SET_SNACKBAR = "set-snackbar";
+export const RESET_SNACKBAR = "reset-snackbar";
+export const SET_THEME = "set-theme";
 
-export const setIsLoading = (key) => {
+export const setAlert = (title, description, actions) => {
   return {
-    type: IS_LOADING,
-    payload: key,
+    type: SET_ALERT,
+    payload: { title, description, actions },
   };
 };
 
-export const setError = (error) => {
+export const resetAlert = () => {
   return {
-    type: SET_ERROR,
-    payload: error,
+    type: RESET_ALERT,
   };
 };
 
-export const resetError = () => {
+export const setSnackbar = (message, type) => {
   return {
-    type: RESET_ERROR,
+    type: SET_SNACKBAR,
+    payload: { message, type },
+  };
+};
+
+export const resetSnackbar = () => {
+  return {
+    type: RESET_SNACKBAR,
+  };
+};
+
+export const setTheme = (theme) => {
+  return {
+    type: SET_THEME,
+    payload: theme,
   };
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 
-import FilterLayout from "./filter-layout";
+import FilterLayout from "../filter-layout";
 import Select from "../../common/select";
 import { userRoleOptions } from "../../common/select/options";
 import { setUserFilter, resetFilter } from "../../../store/actions/filter";

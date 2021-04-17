@@ -96,7 +96,7 @@ export const useMenuItems = (user) => {
         title: "Orders",
       },
       {
-        href: "/dashboard/settings",
+        href: "/settings",
         icon: Settings,
         title: "Settings",
       },

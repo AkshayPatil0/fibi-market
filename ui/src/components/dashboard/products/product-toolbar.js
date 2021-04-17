@@ -14,8 +14,8 @@ import {
 import { Refresh } from "@material-ui/icons";
 import { Search as SearchIcon } from "react-feather";
 
-import ToolbarLayout from "./toolbar-layout";
-import ProductDetailsForm from "../products/forms/product-details-form";
+import ToolbarLayout from "../toolbar-layout";
+import ProductDetailsForm from "./forms/product-details-form";
 import { getProducts, newProduct } from "../../../store/actions/product";
 
 const ProductToolbar = () => {

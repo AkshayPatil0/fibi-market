@@ -1,9 +1,50 @@
+import { useTheme } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import { useStyles } from "./styles";
 
-const Select = ({ name, value, placeholder, handleChange, options }) => {
+const Select = ({
+  name,
+  value,
+  placeholder,
+  handleChange,
+  options,
+  disableSearch,
+}) => {
   const classes = useStyles();
+
+  const theme = useTheme();
+  const selectStyles = {
+    menu: (base) => ({
+      ...base,
+      zIndex: 100,
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    }),
+    input: (base) => ({
+      ...base,
+      fontSize: "0.8rem",
+      color: theme.palette.text.primary,
+    }),
+    control: (base) => ({
+      ...base,
+      backgroundColor: theme.palette.background.paper,
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: theme.palette.text.primary,
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: theme.palette.text.primary,
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused
+        ? theme.palette.action.focus
+        : theme.palette.background.paper,
+    }),
+  };
 
   const [selectedOpt, setSelectedOpt] = useState();
 
@@ -28,18 +69,10 @@ const Select = ({ name, value, placeholder, handleChange, options }) => {
         setSelectedOpt(opt);
       }}
       styles={selectStyles}
+      isSearchable={!disableSearch}
+      c
     />
   );
 };
 
-const selectStyles = {
-  menu: (base) => ({
-    ...base,
-    zIndex: 100,
-  }),
-  input: (base) => ({
-    ...base,
-    fontSize: "0.8rem",
-  }),
-};
 export default Select;

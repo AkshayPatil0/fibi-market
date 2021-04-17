@@ -11,8 +11,8 @@ import {
 import { useOrderHook } from "./order-hook";
 
 import OrderListItem from "./order-list-item";
-import Toolbar from "../toolbar/order-toolbar";
-import OrderFilter from "../filter/order-filter";
+import Toolbar from "./order-toolbar";
+import OrderFilter from "./order-filter";
 import { useSelector } from "react-redux";
 import { isUser } from "../../../utils";
 

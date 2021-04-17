@@ -4,7 +4,7 @@ import { Container, Grid, makeStyles } from "@material-ui/core";
 
 import { useEditProductHook } from "./edit-product-hook";
 
-import EditProductToolbar from "../toolbar/edit-product-toolbar";
+import EditProductToolbar from "./edit-product-toolbar";
 import ProductDetailsForm from "./forms/product-details-form";
 import ProductSpecsForm from "./forms/product-specs-form";
 import ProductVariantsForm from "./forms/product-variants-form";

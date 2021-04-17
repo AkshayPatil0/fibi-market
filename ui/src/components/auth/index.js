@@ -5,6 +5,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import QueryString from "qs";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -27,7 +28,11 @@ const AuthLayout = () => {
   const user = useSelector((state) => state.auth.currentUser);
   useEffect(() => {
     if (user) {
-      router.push("/dashboard");
+      const { redirectUrl } = QueryString.parse(location.search, {
+        ignoreQueryPrefix: true,
+      });
+      console.log({ redirectUrl });
+      router.push(redirectUrl || "/");
     }
   }, [location, router, user]);
 

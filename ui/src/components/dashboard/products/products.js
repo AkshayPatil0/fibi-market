@@ -14,9 +14,9 @@ import {
 } from "@material-ui/core";
 import { Delete, Edit, Image } from "@material-ui/icons";
 
-import ProductToolbar from "../toolbar/product-toolbar";
+import ProductToolbar from "./product-toolbar";
 
-import ProductFilter from "../filter/product-filter";
+import ProductFilter from "./product-filter";
 import Table from "../../common/table";
 import { deleteProduct, getProducts } from "../../../store/actions/product";
 

@@ -14,7 +14,7 @@ export const getUsersController = async (req: Request, res: Response) => {
 
   if (email) {
     const re = `.*(${email}).*`;
-    userFilter.email = { $regex: new RegExp(re) };
+    userFilter.email = { $regex: new RegExp(re), $options: "i" };
   }
 
   const users = await User.find(userFilter);

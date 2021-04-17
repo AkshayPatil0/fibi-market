@@ -4,6 +4,7 @@ export interface CategoryAttrs {
   title: string;
   parent: string;
   slug: string;
+  image?: string;
   minPrice?: number;
   maxPrice?: number;
   isLocation?: boolean;
@@ -17,6 +18,7 @@ export interface CategoryDoc extends mongoose.Document {
   title: string;
   parent: string;
   slug: string;
+  image: string;
   minPrice: number;
   maxPrice: number;
   isLocation: boolean;
@@ -38,6 +40,7 @@ const categorySchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "categories",
     },
+    image: String,
     minPrice: Number,
     maxPrice: Number,
     isLocation: {

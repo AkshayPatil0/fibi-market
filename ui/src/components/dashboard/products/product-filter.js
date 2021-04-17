@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 
-import FilterLayout from "./filter-layout";
+import FilterLayout from "../filter-layout";
 
 import { useDispatch, useSelector } from "react-redux";
 import AsyncSelect from "../../common/select/async-select";

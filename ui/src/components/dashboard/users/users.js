@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../../store/actions/user";
-import UserFilter from "../filter/user-filter";
+import UserFilter from "./user-filter";
 import { getInitials, getName } from "../../../utils";
 import Table from "../../common/table";
 

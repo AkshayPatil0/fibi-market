@@ -1,5 +1,5 @@
 import * as api from "../../api";
-import { getImagesFormData } from "../../utils";
+import { setSnackbar } from "./app";
 
 export const SET_CATEGORIES = "set-categories";
 export const SET_LOCATIONS = "set-locations";
@@ -25,25 +25,40 @@ export const getCategories = () => {
 
 export const addCategory = (body) => {
   return async (dispatch) => {
-    await api.addCategory(body);
-    const res = await api.fetchCategories();
-    dispatch(setCategories(res.data));
+    try {
+      await api.addCategory(body);
+      const res = await api.fetchCategories();
+      dispatch(setCategories(res.data));
+      dispatch(setSnackbar("Category created successfully !", "info"));
+    } catch (err) {
+      dispatch(setSnackbar("Failed creating category !", "error"));
+    }
   };
 };
 
 export const editCategory = (id, body) => {
   return async (dispatch) => {
-    await api.editCategory(id, body);
-    const res = await api.fetchCategories();
-    dispatch(setCategories(res.data));
+    try {
+      await api.editCategory(id, body);
+      const res = await api.fetchCategories();
+      dispatch(setCategories(res.data));
+      dispatch(setSnackbar("Category updated successfully !", "info"));
+    } catch (err) {
+      dispatch(setSnackbar("Failed updating category !", "error"));
+    }
   };
 };
 
 export const deleteCategory = (id) => {
   return async (dispatch) => {
-    await api.deleteCategory(id);
-    const res = await api.fetchCategories();
-    dispatch(setCategories(res.data));
+    try {
+      await api.deleteCategory(id);
+      const res = await api.fetchCategories();
+      dispatch(setCategories(res.data));
+      dispatch(setSnackbar("Category deleted successfully !", "info"));
+    } catch (err) {
+      dispatch(setSnackbar("Failed deleting category !", "error"));
+    }
   };
 };
 
@@ -63,17 +78,27 @@ export const getLocations = () => {
 
 export const addLocation = (body) => {
   return async (dispatch) => {
-    await api.addLocation(body);
-    const res = await api.fetchLocations();
-    dispatch(setLocations(res.data));
+    try {
+      await api.addLocation(body);
+      const res = await api.fetchLocations();
+      dispatch(setLocations(res.data));
+      dispatch(setSnackbar("Location created successfully !", "info"));
+    } catch (err) {
+      dispatch(setSnackbar("Failed creating location !", "error"));
+    }
   };
 };
 
 export const deleteLocation = (id) => {
   return async (dispatch) => {
-    await api.deleteLocation(id);
-    const res = await api.fetchLocations();
-    dispatch(setLocations(res.data));
+    try {
+      await api.deleteLocation(id);
+      const res = await api.fetchLocations();
+      dispatch(setLocations(res.data));
+      dispatch(setSnackbar("Location deleted successfully !", "info"));
+    } catch (err) {
+      dispatch(setSnackbar("Failed deleting location !", "error"));
+    }
   };
 };
 
@@ -86,8 +111,12 @@ export const setProducts = (products) => {
 
 export const getProducts = (query) => {
   return async (dispatch) => {
-    const res = await api.fetchProducts(query);
-    dispatch(setProducts(res.data));
+    try {
+      const res = await api.fetchProducts(query);
+      dispatch(setProducts(res.data));
+    } catch (err) {
+      dispatch(setSnackbar("Failed fetching products, try again !", "error"));
+    }
   };
 };
 
@@ -108,58 +137,67 @@ export const setProductImages = (images) => {
 export const getProduct = (id = null) => {
   if (!id) return setProduct({});
   return async (dispatch) => {
-    const res = await api.fetchProduct(id);
-    dispatch(setProduct(res.data));
+    try {
+      const res = await api.fetchProduct(id);
+      dispatch(setProduct(res.data));
+    } catch (err) {
+      dispatch(
+        setSnackbar("Failed fetching product details, try again !", "error")
+      );
+    }
   };
 };
 
 export const newProduct = (onSuccess) => {
   return async (dispatch, getState) => {
-    let res;
-    const product = getState().product.product;
-    const productImages = getState().product.productImages;
-    res = await api.createProduct(product);
-    const imagesFormData = getImagesFormData(productImages);
-    if (imagesFormData) {
-      res = await api.updateProductImages(res.data.id, imagesFormData);
+    try {
+      const product = getState().product.product;
+      const res = await api.createProduct(product);
+      dispatch(setSnackbar("Product created successfully !", "info"));
+      dispatch(
+        setProduct({
+          ...res.data,
+          priceMrp: res.data.price.mrp,
+          priceRetail: res.data.price.retail,
+        })
+      );
+      onSuccess(res.data.id);
+    } catch (err) {
+      dispatch(setSnackbar("Failed creating product, try again !", "error"));
     }
-
-    dispatch(
-      setProduct({
-        ...res.data,
-        priceMrp: res.data.price.mrp,
-        priceRetail: res.data.price.retail,
-      })
-    );
-    onSuccess(res.data.id);
   };
 };
 
 export const updateProduct = () => {
   return async (dispatch, getState) => {
-    let res;
-    const product = getState().product.product;
-    const productImages = getState().product.productImages;
-    res = await api.updateProduct(product.id, product);
-    const imagesFormData = getImagesFormData(productImages);
-    if (imagesFormData) {
-      res = await api.updateProductImages(res.data.id, imagesFormData);
-    }
+    try {
+      const product = getState().product.product;
+      const res = await api.updateProduct(product.id, product);
 
-    dispatch(
-      setProduct({
-        ...res.data,
-        priceMrp: res.data.price.mrp,
-        priceRetail: res.data.price.retail,
-      })
-    );
+      dispatch(setSnackbar("Updated product successfully !", "success"));
+      dispatch(
+        setProduct({
+          ...res.data,
+          priceMrp: res.data.price.mrp,
+          priceRetail: res.data.price.retail,
+        })
+      );
+    } catch (err) {
+      dispatch(setSnackbar("Failed updating product, try again !", "error"));
+    }
   };
 };
 
 export const deleteProduct = (id) => {
   return async (dispatch, getState) => {
-    const products = getState().product.products;
-    await api.deleteProduct(id);
-    dispatch(setProducts(products.filter((val) => val.id !== id)));
+    try {
+      const products = getState().product.products;
+      await api.deleteProduct(id);
+
+      dispatch(setSnackbar("Deleted product successfully !", "success"));
+      dispatch(setProducts(products.filter((val) => val.id !== id)));
+    } catch (err) {
+      dispatch(setSnackbar("Failed deleting product, try again !", "error"));
+    }
   };
 };

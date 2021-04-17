@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardContent,
   Divider,
-  Container,
   makeStyles,
   Stepper,
   Step,
@@ -88,37 +87,35 @@ export default function Cart() {
   if (!cart?.products || cart.products.length < 1) {
     return (
       <div className={classes.root}>
-        <Container maxWidth="lg">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Card>
-                <CardHeader title="My cart" />
-                <Divider />
-                <CardContent className={classes.empty}>
-                  <Typography variant="subtitle1">
-                    Your cart is empty !
-                  </Typography>
-                  {!user && (
-                    <>
-                      <Typography variant="body2">
-                        Login to see the items you added previously
-                      </Typography>
-                      <Box p={2}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => router.push("/auth/signin")}
-                        >
-                          Login
-                        </Button>
-                      </Box>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card>
+              <CardHeader title="My cart" />
+              <Divider />
+              <CardContent className={classes.empty}>
+                <Typography variant="subtitle1">
+                  Your cart is empty !
+                </Typography>
+                {!user && (
+                  <>
+                    <Typography variant="body2">
+                      Login to see the items you added previously
+                    </Typography>
+                    <Box p={2}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => router.push("/auth/signin")}
+                      >
+                        Login
+                      </Button>
+                    </Box>
+                  </>
+                )}
+              </CardContent>
+            </Card>
           </Grid>
-        </Container>
+        </Grid>
       </div>
     );
   }
@@ -166,23 +163,27 @@ export default function Cart() {
   return (
     <div className={classes.root}>
       <Box className={classes.container}>
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item xs={12}>
-            <Card>
-              <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Card>
+            <Box className={classes.box}>
+              <Card>
+                <Stepper activeStep={activeStep} alternativeLabel>
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Card>
+            </Box>
           </Grid>
           <Grid item lg={8} md={7} xs={12}>
-            {getStepContent(activeStep)}
+            <Box className={classes.box}>{getStepContent(activeStep)}</Box>
           </Grid>
           <Grid item lg={4} md={5} xs={12}>
-            <PriceDetails />
+            <Box className={classes.box}>
+              <PriceDetails />
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -229,6 +230,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  box: {
+    padding: theme.spacing(1),
+
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   bottomCard: {
     padding: "10px",

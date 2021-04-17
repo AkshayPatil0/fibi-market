@@ -1,7 +1,8 @@
-import { SET_USER, SIGNOUT } from "../actions/auth";
+import { SET_USER, SET_WISHLIST, SIGNOUT } from "../actions/auth";
 
 const initialState = {
   currentUser: null,
+  wishlist: [],
 };
 export default function AuthReducer(state = initialState, action) {
   switch (action.type) {
@@ -15,6 +16,12 @@ export default function AuthReducer(state = initialState, action) {
       return {
         ...state,
         currentUser: null,
+      };
+
+    case SET_WISHLIST:
+      return {
+        ...state,
+        wishlist: action.payload,
       };
 
     default:
