@@ -6,6 +6,7 @@ export interface BlogAttrs {
   description: string;
   body: string;
   author: string;
+  cover?: string;
   relevances?: {
     products: string[];
     categories: string[];
@@ -24,6 +25,7 @@ export interface BlogDoc extends mongoose.Document {
   description: string;
   body: string;
   author: string;
+  cover: string;
   relevances: { products: string[]; categories: string[]; locations: string[] };
   images: string[];
 }
@@ -60,6 +62,7 @@ const blogSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    cover: String,
   },
   {
     timestamps: true,

@@ -12,7 +12,7 @@ export default function Locations({ locations }) {
       {locations &&
         locations.map((location, i) => (
           <Grid item xs={12} lg={6} key={i}>
-            <Box p={2}>
+            <Box p={2} height="100%">
               <LocationCard location={location} alt={!!(i % 2)} />
             </Box>
           </Grid>

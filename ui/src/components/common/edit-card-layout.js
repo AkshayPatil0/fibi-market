@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     overflow: "visible",
   },
-  actions: {
-    fontSize: "0.9em",
-  },
+  // actions: {
+  //   fontSize: "0.9em",
+  // },
 }));
 
 export default EditCardLayout;

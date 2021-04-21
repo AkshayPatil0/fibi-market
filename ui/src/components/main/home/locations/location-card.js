@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       boxShadow: theme.shadows[5],
     },
+    height: "100%",
   },
   content: {
     display: "flex",

@@ -23,7 +23,8 @@ export default function BlogCard({ blog, alt }) {
 
   return (
     <Card className={classes.root}>
-      <CardMedia image={blog.images && blog.images[0]} />
+      <CardMedia image={blog.cover} />
+      <img src={blog.cover} alt={blog.title} width="100%" />
       <Box className={classes.content}>
         <Typography variant="caption" color="textSecondary">
           {getDateTime(blog.createdAt)}

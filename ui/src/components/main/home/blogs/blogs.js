@@ -30,7 +30,7 @@ export default function Blogs() {
     <div className={classes.root}>
       {blogs &&
         blogs.map((blog, i) => (
-          <Grid item xs={12} lg={6} key={i}>
+          <Grid item xs={12} sm={3} key={i}>
             <Box p={2}>
               <BlogCard blog={blog} />
             </Box>

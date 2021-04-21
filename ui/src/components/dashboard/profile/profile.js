@@ -18,67 +18,46 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as api from "../../../api";
 import { getProfile } from "../../../store/actions/auth";
+import ImagePicker from "../../common/image-picker";
 
 const Profile = () => {
   const classes = useStyles();
 
   const user = useSelector((state) => state.auth.currentUser);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useDispatch();
 
   const uploadAvatar = async (e) => {
-    if (e.target.files.length < 1) return;
-
     const fData = new FormData();
     fData.set("avatar", e.target.files[0]);
-    setIsLoading(true);
-    try {
-      await api.updateProfileAvatar(fData);
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(), 2000);
-      });
-      await dispatch(getProfile());
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    await api.updateProfileAvatar(fData);
+    await dispatch(getProfile());
   };
+
+  const avatarPreview = (
+    <CardContent>
+      <Box alignItems="center" display="flex" flexDirection="column">
+        <Avatar className={classes.avatar} src={user.avatar}>
+          {user.firstName.charAt(0)}
+        </Avatar>
+        <Typography color="textPrimary" gutterBottom variant="h5">
+          {user.firstName + " " + user.lastName}
+        </Typography>
+        <Typography color="textSecondary" variant="body1">
+          {user.email}
+        </Typography>
+      </Box>
+    </CardContent>
+  );
   return (
     <div className={classes.root}>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item lg={4} md={6} xs={12}>
-            <Card>
-              <CardContent>
-                <Box alignItems="center" display="flex" flexDirection="column">
-                  <Avatar className={classes.avatar} src={user.avatar}>
-                    {user.firstName.charAt(0)}
-                  </Avatar>
-                  <Typography color="textPrimary" gutterBottom variant="h5">
-                    {user.firstName + " " + user.lastName}
-                  </Typography>
-                  <Typography color="textSecondary" variant="body1">
-                    {user.email}
-                  </Typography>
-                </Box>
-              </CardContent>
-              <Divider />
-              <CardActions>
-                <Button
-                  color="primary"
-                  fullWidth
-                  variant="text"
-                  component="label"
-                >
-                  Upload picture
-                  <input type="file" hidden onChange={uploadAvatar} />
-                </Button>
-              </CardActions>
-              {isLoading && <LinearProgress />}
-            </Card>
+            <ImagePicker
+              addImage={uploadAvatar}
+              previewElement={avatarPreview}
+            />
           </Grid>
           <Grid item lg={8} md={6} xs={12}>
             <ProfileDetails />

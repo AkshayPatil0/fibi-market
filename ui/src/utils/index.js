@@ -38,18 +38,18 @@ export const getCartTotal = (products) => {
   return { totalCost, totalPrice, totalDiscount };
 };
 
-export const getImageFormData = (image) => {
+export const getImageFormData = (image, name) => {
   if (!image) return null;
   var fData = new FormData();
-  fData.set("image", image);
+  fData.set(name || "image", image);
   return fData;
 };
 
-export const getImagesFormData = (images) => {
+export const getImagesFormData = (images, name) => {
   if (!images || !images.length > 0) return null;
   var fData = new FormData();
   for (const key of Object.keys(images)) {
-    fData.append("images", images[key]);
+    fData.append(name || "images", images[key]);
   }
   return fData;
 };

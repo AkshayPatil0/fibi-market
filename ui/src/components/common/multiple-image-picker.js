@@ -16,7 +16,13 @@ import {
 
 import { Cancel } from "@material-ui/icons";
 
-const MultipleImagePicker = ({ previews, onAdd, onRemove }) => {
+const MultipleImagePicker = ({
+  previews,
+  onAdd,
+  onRemove,
+  previewElement,
+  header,
+}) => {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,29 +37,38 @@ const MultipleImagePicker = ({ previews, onAdd, onRemove }) => {
     await onRemove(e);
     setIsLoading(false);
   };
+
+  const defaultPreview = (
+    <CardContent>
+      {previews && previews.length > 0 ? (
+        <GridList cellHeight={160} className={classes.gridList} cols={2}>
+          {previews.map((img) => (
+            <GridListTile key={img} cols={1}>
+              <img className={classes.image} src={img} alt={img} />
+              <IconButton
+                className={classes.delete}
+                onClick={() => handleRemove(img)}
+              >
+                <Cancel color="error" />
+              </IconButton>
+            </GridListTile>
+          ))}
+        </GridList>
+      ) : (
+        <Typography>No images selected !</Typography>
+      )}
+    </CardContent>
+  );
+
   return (
     <Card>
-      <CardHeader title="Images" />
-      <Divider />
-      <CardContent className={classes.priceDetails}>
-        {previews && previews.length > 0 ? (
-          <GridList cellHeight={160} className={classes.gridList} cols={2}>
-            {previews.map((img) => (
-              <GridListTile key={img} cols={1}>
-                <img className={classes.image} src={img} alt={img} />
-                <IconButton
-                  className={classes.delete}
-                  onClick={() => handleRemove(img)}
-                >
-                  <Cancel color="error" />
-                </IconButton>
-              </GridListTile>
-            ))}
-          </GridList>
-        ) : (
-          <Typography>No images selected !</Typography>
-        )}
-      </CardContent>
+      {header && (
+        <>
+          <CardHeader title={header} />
+          <Divider />
+        </>
+      )}
+      {previewElement || defaultPreview}
       <Divider />
       <CardActions>
         <Button color="primary" fullWidth variant="text" component="label">

@@ -11,6 +11,8 @@ import { updateBlogController } from "../controllers/update-blog";
 import { removeBlogImageController } from "../controllers/image/remove-blog-image";
 import { addBlogImageController } from "../controllers/image/add-blog-image";
 import { updateBlogImagesController } from "../controllers/image/update-blog-images";
+import { removeBlogCoverController } from "../controllers/image/remove-blog-cover";
+import { addBlogCoverController } from "../controllers/image/add-blog-cover";
 
 const router = express.Router();
 
@@ -35,6 +37,15 @@ router.put(
   upload.array("images", 10),
   updateBlogImagesController
 );
+
+router.post("/:id/cover/remove", requireAuth, removeBlogCoverController);
+router.post(
+  "/:id/cover",
+  requireAuth,
+  upload.single("cover"),
+  addBlogCoverController
+);
+
 router.delete("/:id", deleteBlogController);
 
 export { router as blogRoutes };

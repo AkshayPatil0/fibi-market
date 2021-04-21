@@ -104,6 +104,11 @@ export const createBlog = (body) => API.post(`/api/blogs/`, body);
 export const updateBlog = (id, body) => API.put(`/api/blogs/${id}`, body);
 export const deleteBlog = (id) => API.delete(`/api/blogs/${id}`);
 
+export const addBlogCover = (id, body) =>
+  API.post(`/api/blogs/${id}/cover`, body);
+export const removeBlogCover = (id) =>
+  API.post(`/api/blogs/${id}/cover/remove`);
+
 export const addBlogImage = (id, body) =>
   API.post(`/api/blogs/${id}/images`, body);
 export const removeBlogImage = (id, body) =>
