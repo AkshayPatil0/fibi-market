@@ -93,3 +93,20 @@ export const fetchCart = () => API.get("/api/orders/cart");
 export const addToCart = (body) => API.post("/api/orders/cart", body);
 export const removeFromCart = (body) =>
   API.post("/api/orders/cart/remove", body);
+
+// ------------------
+//  Blog
+// ------------------
+export const fetchBlogs = (query) =>
+  API.get(`/api/blogs?${qs.stringify(query)}`);
+export const fetchBlog = (slug) => API.get(`/api/blogs/${slug}`);
+export const createBlog = (body) => API.post(`/api/blogs/`, body);
+export const updateBlog = (id, body) => API.put(`/api/blogs/${id}`, body);
+export const deleteBlog = (id) => API.delete(`/api/blogs/${id}`);
+
+export const addBlogImage = (id, body) =>
+  API.post(`/api/blogs/${id}/images`, body);
+export const removeBlogImage = (id, body) =>
+  API.post(`/api/blogs/${id}/images/remove`, body);
+export const updateBlogImages = (id, body) =>
+  API.put(`/api/blogs/${id}/images`, body);

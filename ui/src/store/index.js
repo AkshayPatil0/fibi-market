@@ -8,6 +8,7 @@ import ProductReducer from "./reducers/product";
 import UserReducer from "./reducers/user";
 import OrderReducer from "./reducers/order";
 import FilterReducer from "./reducers/filter";
+import BlogReducer from "./reducers/blog";
 
 const logger = createLogger();
 
@@ -19,6 +20,7 @@ const store = createStore(
     user: UserReducer,
     order: OrderReducer,
     filter: FilterReducer,
+    blog: BlogReducer,
   }),
   {},
   applyMiddleware(thunk, logger)

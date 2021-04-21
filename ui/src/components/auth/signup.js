@@ -63,7 +63,7 @@ export default function SignUp() {
 
     try {
       await dispatch(signup(formData));
-      router.push("/");
+      // router.push("/");
     } catch (err) {
       let newError = {};
       err.response?.data?.errors

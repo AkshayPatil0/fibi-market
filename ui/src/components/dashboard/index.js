@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import qs from "qs";
 import {
   Redirect,
   Route,
@@ -14,12 +15,14 @@ import { useSelector } from "react-redux";
 
 import Orders from "./orders/orders";
 // import Cart from "./cart/cart";
+import Blogs from "./blogs/blogs";
 import Profile from "./profile/profile";
 import Products from "./products/products";
 import EditProduct from "./products/edit-product";
 import Users from "./users/users";
 import Categories from "./categories/categories";
 import Locations from "./locations/locations";
+import Blog from "./blogs/blog";
 
 const DashboardLayout = () => {
   const classes = useStyles();
@@ -32,7 +35,11 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     if (!user) {
-      router.push("/auth/signin");
+      router.push(
+        `/auth/signin?${qs.stringify({
+          redirectUrl: router.location.pathname,
+        })}`
+      );
     }
   }, [location, user, router]);
 
@@ -54,6 +61,8 @@ const DashboardLayout = () => {
               <Route exact path={`${path}`}>
                 <Redirect to={`${path}/account`} />
               </Route>
+              <Route path={`${path}/blogs/:slug`} component={Blog} />
+              <Route path={`${path}/blogs`} component={Blogs} />
               <Route exact path={`${path}/products`}>
                 <Products />
               </Route>

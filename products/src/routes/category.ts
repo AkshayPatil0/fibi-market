@@ -22,7 +22,7 @@ router.post(
   createCategoryController
 );
 
-router.get("/:slug", getCategoryController);
+router.get("/:id", getCategoryController);
 router.put(
   "/:id",
   requireAuth,

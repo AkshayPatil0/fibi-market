@@ -25,3 +25,31 @@ export const loadVendors = (input) => {
     resolve(vendorOptions);
   });
 };
+
+const getProducts = async (i) => {
+  const res = await api.fetchProducts({
+    search: i.toLowerCase(),
+  });
+  return res.data.map((v) => ({ value: v.id, label: v.title }));
+};
+
+export const loadProducts = (input) => {
+  return new Promise(async (resolve, reject) => {
+    const productOptions = await getProducts(input);
+    resolve(productOptions);
+  });
+};
+
+const getBlogs = async (i) => {
+  const res = await api.fetchBlogs({
+    search: i.toLowerCase(),
+  });
+  return res.data.map((v) => ({ value: v.slug, label: v.title }));
+};
+
+export const loadBlogs = (input) => {
+  return new Promise(async (resolve, reject) => {
+    const blogOptions = await getBlogs(input);
+    resolve(blogOptions);
+  });
+};

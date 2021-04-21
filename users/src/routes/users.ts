@@ -11,16 +11,16 @@ import { setUserRoleController } from "../controllers/users/set-user-role";
 
 const router = express();
 
-router.get("/api/users", currentUser, getUsersController);
+router.get("/", currentUser, getUsersController);
 
 router.post(
-  "/api/users/setrole",
+  "/setrole",
   currentUser,
   requireAuth,
   authRole(UserRoles.admin),
   setUserRoleController
 );
 
-router.delete("/api/users", currentUser, requireAuth, deleteUserController);
+router.delete("/", currentUser, requireAuth, deleteUserController);
 
 export { router as usersRoute };

@@ -29,17 +29,22 @@ import TextInput from "../../common/input";
 import { deleteCategory, editCategory } from "../../../store/actions/product";
 import CategoryList from "./category-list";
 import { getObjectUrl } from "../../../utils";
+import AsyncSelect from "../../common/select/async-select";
+import { loadBlogs } from "../../common/select/loaders";
+import * as api from "../../../api";
 
 function CategoryItem({ category }) {
   const classes = useStyle();
   const [showChildren, setShowChildren] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
+  const [blogOption, setBlogOption] = useState();
   const [formData, setFormData] = useState({
     title: "",
     minPrice: "",
     maxPrice: "",
     image: "",
+    blog: "",
   });
 
   const onCloseEdit = () => {
@@ -49,13 +54,20 @@ function CategoryItem({ category }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const getBlogOption = async () => {
+      const res = await api.fetchBlog(category.blog);
+      setBlogOption({ label: res.data.title, value: res.data.slug });
+    };
+
     if (category) {
       setFormData({
         title: category.title,
         minPrice: category.minPrice || "",
         maxPrice: category.maxPrice || "",
         image: category.image || "",
+        blog: category.blog || "",
       });
+      if (category.blog) getBlogOption();
     }
   }, [category]);
 
@@ -150,6 +162,7 @@ function CategoryItem({ category }) {
                     label="Title"
                     value={formData.title}
                     handleChange={handleChange}
+                    margin="dense"
                   />
                   <TextInput
                     name="minPrice"
@@ -157,6 +170,7 @@ function CategoryItem({ category }) {
                     value={formData.minPrice}
                     handleChange={handleChange}
                     sm={6}
+                    margin="dense"
                   />
                   <TextInput
                     name="maxPrice"
@@ -164,7 +178,17 @@ function CategoryItem({ category }) {
                     value={formData.maxPrice}
                     handleChange={handleChange}
                     sm={6}
+                    margin="dense"
                   />
+                  <Grid item xs={12}>
+                    <AsyncSelect
+                      placeholder="Select blog"
+                      loadOptions={loadBlogs}
+                      value={blogOption}
+                      handleChange={handleChange}
+                      name="blog"
+                    />
+                  </Grid>
                 </Grid>
               </CardContent>
               <Divider />

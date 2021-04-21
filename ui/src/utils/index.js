@@ -2,9 +2,15 @@ export const isAdmin = (user) => user?.role === "admin";
 export const isVendor = (user) => user?.role === "vendor";
 export const isUser = (user) => user?.role === "user";
 
+export const getDateTime = (createdAt) =>
+  new Date(createdAt || Date.now()).toDateString();
+
 export const getName = (user) => user.firstName + " " + user.lastName;
+
 export const getInitials = (user) =>
   user.firstName?.charAt(0) + user.lastName?.charAt(0);
+
+export const capitalise = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const getSavingPercentage = (mrp, retail) =>
   Math.ceil(((mrp - retail) / mrp) * 100);

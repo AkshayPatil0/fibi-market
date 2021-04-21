@@ -58,6 +58,12 @@ router.post(
   upload.array("images", 10),
   addProductImageController
 );
+router.put(
+  "/:id/images",
+  requireAuth,
+  upload.array("images", 10),
+  updateProductImagesController
+);
 
 // router.get("/:id/variants/:variantId", getProductVariantController);
 router.post(
@@ -74,13 +80,6 @@ router.post(
   "/:id/variants/remove",
   // requireAuth,
   removeProductVariantController
-);
-
-router.put(
-  "/:id/images",
-  requireAuth,
-  upload.array("images", 10),
-  updateProductImagesController
 );
 
 router.delete(

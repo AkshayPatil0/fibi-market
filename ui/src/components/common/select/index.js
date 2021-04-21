@@ -10,6 +10,8 @@ const Select = ({
   handleChange,
   options,
   disableSearch,
+  disabled,
+  multiple,
 }) => {
   const classes = useStyles();
 
@@ -36,7 +38,7 @@ const Select = ({
     }),
     placeholder: (base) => ({
       ...base,
-      color: theme.palette.text.primary,
+      color: theme.palette.text.secondary,
     }),
     option: (base, state) => ({
       ...base,
@@ -63,14 +65,20 @@ const Select = ({
       options={options}
       placeholder={placeholder}
       className={classes.select}
-      value={selectedOpt}
+      value={selectedOpt || value}
       onChange={(opt) => {
-        handleChange({ target: { name, value: opt.value } });
+        if (opt.value) {
+          handleChange({ target: { name, value: opt.value } });
+        } else {
+          const values = Object.keys(opt).map((k) => opt[k].value);
+          handleChange({ target: { name, value: values } });
+        }
         setSelectedOpt(opt);
       }}
       styles={selectStyles}
       isSearchable={!disableSearch}
-      c
+      isDisabled={!!disabled}
+      isMulti={!!multiple}
     />
   );
 };

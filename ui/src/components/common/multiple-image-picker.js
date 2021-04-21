@@ -33,7 +33,7 @@ const MultipleImagePicker = ({ previews, onAdd, onRemove }) => {
   };
   return (
     <Card>
-      <CardHeader title="Images" titleTypographyProps={{ variant: "h6" }} />
+      <CardHeader title="Images" />
       <Divider />
       <CardContent className={classes.priceDetails}>
         {previews && previews.length > 0 ? (

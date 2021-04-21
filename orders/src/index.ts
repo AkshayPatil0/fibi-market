@@ -41,16 +41,16 @@ const run = async () => {
     });
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
-  } catch (err) {
-    console.error(err);
-    // process.exit();
-  }
 
-  try {
     new ProductCreatedListener(nats.client).listen();
     new ProductUpdatedListener(nats.client).listen();
     new ProductDeletedListener(nats.client).listen();
+  } catch (err) {
+    console.error(err);
+    process.exit();
+  }
 
+  try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -63,7 +63,7 @@ const run = async () => {
   }
 
   app.listen(process.env.PORT || 4000, () => {
-    console.log("listening on 4000 !!");
+    console.log(`listening on ${process.env.PORT || 4000} !!`);
   });
 };
 

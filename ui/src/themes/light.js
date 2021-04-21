@@ -57,14 +57,17 @@ const theme = createMuiTheme({
       },
     },
     MuiTypography: {
+      h1: {
+        fontSize: ["3em", "!important"],
+      },
       h2: {
-        fontSize: ["1.5em", "!important"],
+        fontSize: ["2.5em", "!important"],
       },
       h3: {
-        fontSize: ["1.375em", "!important"],
+        fontSize: ["2em", "!important"],
       },
       h4: {
-        fontSize: ["1.25em", "!important"],
+        fontSize: ["1.5em", "!important"],
       },
       h5: {
         fontSize: ["1.125em", "!important"],
@@ -78,6 +81,9 @@ const theme = createMuiTheme({
       },
       body2: {
         fontSize: ["0.75em", "!important"],
+      },
+      button: {
+        fontSize: ["1em", "!important"],
       },
     },
     // MuiPaper: {

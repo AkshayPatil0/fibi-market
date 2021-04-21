@@ -10,6 +10,7 @@ export interface ProductAttrs {
   specs?: { name: string; value: string }[];
   stock?: number;
   images?: string[];
+  blog?: string;
   category?: string;
   location?: string;
   hasVariants?: boolean;
@@ -36,6 +37,7 @@ export interface ProductDoc extends mongoose.Document {
   specs: { name: string; value: string }[];
   stock: number;
   images: string[];
+  blog: string;
   category: string;
   location: string;
   hasVariants: boolean;
@@ -105,8 +107,9 @@ const productSchema = new mongoose.Schema(
     },
     location: {
       type: mongoose.Types.ObjectId,
-      ref: "locations",
+      ref: "categories",
     },
+    blog: String,
   },
   {
     toJSON: {

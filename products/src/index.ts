@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { nats } from "@fibimarket/common";
 
 import { app } from "./app";
-import AWS, { S3 } from "aws-sdk";
+import AWS from "aws-sdk";
 import env from "dotenv";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { VendorCreatedListener } from "./events/listeners/vendor-created-listener";

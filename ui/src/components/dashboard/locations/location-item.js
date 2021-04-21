@@ -29,12 +29,16 @@ import TextInput from "../../common/input";
 import { deleteLocation, editCategory } from "../../../store/actions/product";
 import LocationList from "./location-list";
 import { getObjectUrl } from "../../../utils";
+import AsyncSelect from "../../common/select/async-select";
+import { loadBlogs } from "../../common/select/loaders";
+import * as api from "../../../api";
 
 function LocationItem({ location }) {
   const classes = useStyle();
   const [showChildren, setShowChildren] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
+  const [blogOption, setBlogOption] = useState();
   const [formData, setFormData] = useState({
     title: "",
     image: null,
@@ -47,11 +51,19 @@ function LocationItem({ location }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const getBlogOption = async () => {
+      const res = await api.fetchBlog(location.blog);
+      setBlogOption({ label: res.data.title, value: res.data.slug });
+    };
+
     if (location) {
       setFormData({
-        title: location.title,
-        image: location.image,
+        title: location.title || "",
+        image: location.image || "",
+        description: location.description || "",
       });
+
+      if (location.blog) getBlogOption();
     }
   }, [location]);
 
@@ -105,7 +117,7 @@ function LocationItem({ location }) {
               />
               <Divider />
               <CardContent>
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                   <Grid item xs={12}>
                     {formData.image ? (
                       <Box component="label">
@@ -118,6 +130,7 @@ function LocationItem({ location }) {
                           height="100%"
                           width="100%"
                           alt={location.title}
+                          className={classes.image}
                         />
                         <input
                           type="file"
@@ -147,7 +160,26 @@ function LocationItem({ location }) {
                     label="Title"
                     value={formData.title}
                     handleChange={handleChange}
+                    margin="dense"
                   />
+                  <TextInput
+                    name="description"
+                    label="Description"
+                    value={formData.description}
+                    handleChange={handleChange}
+                    margin="dense"
+                    multiline
+                    rows={4}
+                  />
+                  <Grid item xs={12}>
+                    <AsyncSelect
+                      placeholder="Select blog"
+                      loadOptions={loadBlogs}
+                      value={blogOption}
+                      handleChange={handleChange}
+                      name="blog"
+                    />
+                  </Grid>
                 </Grid>
               </CardContent>
               <Divider />
@@ -167,8 +199,14 @@ function LocationItem({ location }) {
 const useStyle = makeStyles((theme) => ({
   editCard: {
     margin: "auto",
-    maxWidth: 256,
+    width: "50%",
+    maxWidth: 480,
+    minWidth: 256,
     outline: 0,
+  },
+  image: {
+    maxHeight: 256,
+    objectFit: "contain",
   },
 }));
 

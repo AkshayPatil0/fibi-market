@@ -14,7 +14,7 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 
 import AuthLayout from "./components/auth";
 import DashboardLayout from "./components/dashboard";
-import MainLayout from "./components/main-layout";
+import MainLayout from "./components/main";
 import { Route, Switch } from "react-router";
 import AlertDialog from "./components/common/alert";
 import Snackbar from "./components/common/snakbar";
@@ -51,7 +51,6 @@ const App = (props) => {
         await dispatch(getProfile());
         dispatch(getCategories());
         dispatch(getLocations());
-        dispatch(getCart());
       } catch (err) {
         console.log(err);
       } finally {
@@ -63,14 +62,11 @@ const App = (props) => {
 
   useEffect(() => {
     const run = async () => {
-      setIsLoading(true);
       try {
         dispatch(getCart());
         dispatch(getWishlist());
       } catch (err) {
         console.log(err);
-      } finally {
-        setIsLoading(false);
       }
     };
     run();

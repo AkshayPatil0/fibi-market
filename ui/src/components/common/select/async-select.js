@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Select from "react-select/async";
 import { useStyles } from "./styles";
 
@@ -8,8 +8,11 @@ const AsyncSelect = ({
   placeholder,
   loadOptions,
   handleChange,
+  defaultInputValue,
+  disabled,
+  multiple,
 }) => {
-  const [selectedOpt, setSelectedOpt] = useState();
+  const [selectedOpt, setSelectedOpt] = useState(value);
 
   useEffect(() => {
     if (!value) {
@@ -24,12 +27,21 @@ const AsyncSelect = ({
       loadOptions={loadOptions}
       placeholder={placeholder}
       className={classes.select}
-      value={selectedOpt}
+      value={selectedOpt || value}
       onChange={(opt) => {
-        handleChange({ target: { name, value: opt.value } });
+        if (opt.value) {
+          handleChange({ target: { name, value: opt.value } });
+        } else {
+          const values = Object.keys(opt).map((k) => opt[k].value);
+          handleChange({ target: { name, value: values } });
+        }
         setSelectedOpt(opt);
       }}
       styles={selectStyles}
+      defaultInputValue={defaultInputValue}
+      cacheOptions
+      isDisabled={!!disabled}
+      isMulti={!!multiple}
     />
   );
 };

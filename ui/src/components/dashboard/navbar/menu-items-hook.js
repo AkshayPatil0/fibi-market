@@ -7,6 +7,7 @@ import {
   Users,
   ShoppingCart,
   Grid,
+  Trello,
 } from "react-feather";
 import { isAdmin, isVendor } from "../../../utils";
 
@@ -18,6 +19,11 @@ export const useMenuItems = (user) => {
         href: "/dashboard/account",
         icon: User,
         title: "Account",
+      },
+      {
+        href: "/dashboard/blogs",
+        icon: Trello,
+        title: "Blogs",
       },
       {
         href: "/dashboard/users",

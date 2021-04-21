@@ -8,6 +8,8 @@ export interface CategoryAttrs {
   minPrice?: number;
   maxPrice?: number;
   isLocation?: boolean;
+  blog?: string;
+  description?: string;
 }
 
 interface CategoryModel extends mongoose.Model<CategoryDoc> {
@@ -22,7 +24,8 @@ export interface CategoryDoc extends mongoose.Document {
   minPrice: number;
   maxPrice: number;
   isLocation: boolean;
-  _doc: any;
+  blog: string;
+  description: string;
 }
 
 const categorySchema = new mongoose.Schema(
@@ -41,6 +44,8 @@ const categorySchema = new mongoose.Schema(
       ref: "categories",
     },
     image: String,
+    blog: String,
+    description: String,
     minPrice: Number,
     maxPrice: Number,
     isLocation: {

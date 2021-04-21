@@ -6,6 +6,7 @@ import { BadRequestError, UserRoles, nats } from "@fibimarket/common";
 import { User } from "../../models/user";
 import { UserCreatedPublisher } from "../../events/publishers/user-created-publisher";
 import { VendorCreatedPublisher } from "../../events/publishers/vendor-created-publisher";
+import { AdminCreatedPublisher } from "../../events/publishers/admin-created-publisher";
 
 export const signupController = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password, role } = req.body;
@@ -30,6 +31,7 @@ export const signupController = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      avatar: user.avatar,
       version: user.version,
     });
   } else if (user.role === UserRoles.vendor) {
@@ -38,6 +40,16 @@ export const signupController = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      avatar: user.avatar,
+      version: user.version,
+    });
+  } else if (user.role === UserRoles.admin) {
+    new AdminCreatedPublisher(nats.client).publish({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      avatar: user.avatar,
       version: user.version,
     });
   }
