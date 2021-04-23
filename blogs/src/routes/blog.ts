@@ -2,11 +2,11 @@ import express from "express";
 import multer from "multer";
 import { requireAuth } from "@fibimarket/common";
 
-import { createBlogController } from "../controllers/create-blog";
-import { getBlogController } from "../controllers/get-blog";
-import { getBlogsController } from "../controllers/get-blogs";
-import { deleteBlogController } from "../controllers/delete-blog";
-import { updateBlogController } from "../controllers/update-blog";
+import { createBlogController } from "../controllers/blog/create-blog";
+import { getBlogController } from "../controllers/blog/get-blog";
+import { getBlogsController } from "../controllers/blog/get-blogs";
+import { deleteBlogController } from "../controllers/blog/delete-blog";
+import { updateBlogController } from "../controllers/blog/update-blog";
 
 import { removeBlogImageController } from "../controllers/image/remove-blog-image";
 import { addBlogImageController } from "../controllers/image/add-blog-image";

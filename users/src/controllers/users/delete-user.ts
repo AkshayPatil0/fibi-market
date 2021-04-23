@@ -1,4 +1,9 @@
-import { deleteFromAWS, nats, UserRoles } from "@fibimarket/common";
+import {
+  deleteFromAWS,
+  nats,
+  NotFoundError,
+  UserRoles,
+} from "@fibimarket/common";
 import { Request, Response } from "express";
 import { AdminDeletedPublisher } from "../../events/publishers/admin-deleted-publisher";
 import { UserDeletedPublisher } from "../../events/publishers/user-deleted-publisher";
@@ -7,6 +12,10 @@ import { User } from "../../models/user";
 
 export const deleteUserController = async (req: Request, res: Response) => {
   const user = await User.findById(req.currentUser?.id);
+
+  if (!user) {
+    throw new NotFoundError("user");
+  }
 
   const fileType = user.avatar.split(".").slice(-1)[0];
   await deleteFromAWS(`users/${user.id}.${fileType}`);

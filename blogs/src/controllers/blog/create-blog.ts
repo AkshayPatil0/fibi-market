@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Blog } from "../models/blog";
+import { Blog } from "../../models/blog";
 import slugify from "slugify";
 
 export async function createBlogController(req: Request, res: Response) {

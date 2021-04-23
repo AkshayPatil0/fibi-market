@@ -47,6 +47,7 @@ export async function deleteChildren(
   await Promise.all(
     children.map(async (child) => {
       await deleteChildren(values, child.id);
+
       await child.delete();
     })
   );

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { FilterQuery } from "mongoose";
-import { Blog, BlogDoc } from "../models/blog";
+import { Blog, BlogDoc } from "../../models/blog";
 
 export async function getBlogsController(req: Request, res: Response) {
   const { search } = req.query;

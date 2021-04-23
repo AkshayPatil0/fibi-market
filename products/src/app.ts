@@ -8,6 +8,7 @@ import { currentUser, errorHandler, NotFoundError } from "@fibimarket/common";
 
 import { categoryRoutes } from "./routes/category";
 import { productRoutes } from "./routes/product";
+import { bannerRoutes } from "./routes/banner";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(morgan("dev"));
 app.use(currentUser);
 
 app.use("/api/products/categories", categoryRoutes);
+app.use("/api/products/banners", bannerRoutes);
 app.use("/api/products/", productRoutes);
 
 app.all("*", () => {

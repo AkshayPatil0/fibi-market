@@ -2,7 +2,12 @@ import express from "express";
 import multer from "multer";
 
 import { body } from "express-validator";
-import { validateRequest, currentUser, requireAuth } from "@fibimarket/common";
+import {
+  validateRequest,
+  currentUser,
+  requireAuth,
+  NotFoundError,
+} from "@fibimarket/common";
 import { User } from "../models/user";
 import { updateProfileController } from "../controllers/profile/update-profile";
 import { updateProfileAvatarController } from "../controllers/profile/update-profile-avatar";
@@ -48,6 +53,10 @@ router.delete(
 
 router.get("/wishlist", currentUser, requireAuth, async (req, res) => {
   const user = await User.findById(req.currentUser?.id);
+
+  if (!user) {
+    throw new NotFoundError("user");
+  }
 
   res.status(200).json(user.wishlist);
 });

@@ -23,6 +23,7 @@ import Users from "./users/users";
 import Categories from "./categories/categories";
 import Locations from "./locations/locations";
 import Blog from "./blogs/blog";
+import Banners from "./banners/banners";
 
 const DashboardLayout = () => {
   const classes = useStyles();
@@ -77,6 +78,7 @@ const DashboardLayout = () => {
               <Route path={`${path}/users`} component={Users} />
               <Route path={`${path}/categories`} component={Categories} />
               <Route path={`${path}/locations`} component={Locations} />
+              <Route path={`${path}/banners`} component={Banners} />
 
               <Route path={`${path}/*`}>
                 {/* <Redirect to={`${path}`} /> */}

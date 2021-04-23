@@ -115,3 +115,9 @@ export const removeBlogImage = (id, body) =>
   API.post(`/api/blogs/${id}/images/remove`, body);
 export const updateBlogImages = (id, body) =>
   API.put(`/api/blogs/${id}/images`, body);
+
+export const fetchBanners = () => API.get(`/api/products/banners`);
+export const addBanner = (body) => API.post(`/api/products/banners`, body);
+export const updateBanner = (id, body) =>
+  API.put(`/api/products/banners/${id}`, body);
+export const deleteBanner = (id) => API.post(`/api/products/banners/${id}`);

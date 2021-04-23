@@ -15,7 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../../store/actions/user";
 
-const Table = ({ rows, options }) => {
+const Table = ({ rows, options, checkbox }) => {
   const classes = useStyles();
 
   const [selectedIds, setSelectedIds] = useState([]);
@@ -77,35 +77,48 @@ const Table = ({ rows, options }) => {
           <MuiTable>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedIds.length === rows.length}
-                    color="primary"
-                    indeterminate={
-                      selectedIds.length > 0 && selectedIds.length < rows.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
+                {checkbox ? (
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedIds.length === rows.length}
+                      color="primary"
+                      indeterminate={
+                        selectedIds.length > 0 &&
+                        selectedIds.length < rows.length
+                      }
+                      onChange={handleSelectAll}
+                    />
+                  </TableCell>
+                ) : (
+                  <TableCell>
+                    <b>Sr. no</b>
+                  </TableCell>
+                )}
                 {options.map((opt) => (
-                  <TableCell key={opt.key}>{opt.head}</TableCell>
+                  <TableCell key={opt.key}>
+                    <b>{opt.head}</b>
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(0, limit).map((row) => (
+              {rows.slice(0, limit).map((row, i) => (
                 <TableRow
                   hover
                   key={row.id}
                   selected={selectedIds.indexOf(row.id) !== -1}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedIds.indexOf(row.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, row.id)}
-                      value="true"
-                    />
-                  </TableCell>
+                  {checkbox ? (
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedIds.indexOf(row.id) !== -1}
+                        onChange={(event) => handleSelectOne(event, row.id)}
+                        value="true"
+                      />
+                    </TableCell>
+                  ) : (
+                    <TableCell>{i + 1}</TableCell>
+                  )}
 
                   {options.map((opt) => (
                     <TableCell key={opt.key}>{row[opt.key]}</TableCell>

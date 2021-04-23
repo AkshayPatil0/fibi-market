@@ -19,6 +19,7 @@ export default function ImagePicker({
   removeImage,
   previewElement,
   header,
+  buttonText,
 }) {
   const classes = useStyles();
 
@@ -88,7 +89,7 @@ export default function ImagePicker({
       <Divider />
       <CardActions>
         <Button color="primary" fullWidth variant="text" component="label">
-          Upload image
+          {buttonText || "Upload image"}
           <input type="file" hidden onChange={onAdd} />
         </Button>
       </CardActions>

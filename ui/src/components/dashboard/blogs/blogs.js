@@ -18,6 +18,7 @@ import BlogsToolbar from "./blogs-toolbar";
 
 import Table from "../../common/table";
 import { deleteBlog, getBlogs } from "../../../store/actions/blog";
+import { fetchBlogs } from "../../../api";
 
 export default function Blogs() {
   const classes = useStyles();
@@ -58,7 +59,7 @@ export default function Blogs() {
       }
     };
     let newRows = [];
-    blogs.forEach((blog) => {
+    blogs?.forEach((blog) => {
       let row = {};
 
       row.id = blog.id;
@@ -93,10 +94,10 @@ export default function Blogs() {
 
       newRows.push(row);
     });
-
     setRows(newRows);
   }, [blogs, router, dispatch]);
 
+  console.log(blogs);
   if (isLoading) {
     return <LinearProgress />;
   }

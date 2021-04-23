@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Blog } from "../models/blog";
+import { Blog } from "../../models/blog";
 import slugify from "slugify";
 import { NotFoundError } from "@fibimarket/common";
 

@@ -3,11 +3,10 @@ import { setSnackbar } from "./app";
 
 export const SET_CATEGORIES = "set-categories";
 export const SET_LOCATIONS = "set-locations";
+export const SET_BANNERS = "set-banners";
 export const SET_PRODUCTS = "set-products";
 export const SET_PRODUCT_DETAILS = "set-product-details";
 export const SET_PRODUCT_IMAGES = "set-product-images";
-export const NEW_PRODUCT = "new-product";
-export const UPDATE_PRODUCT = "update-product";
 
 const setCategories = (categories) => {
   return {
@@ -199,5 +198,18 @@ export const deleteProduct = (id) => {
     } catch (err) {
       dispatch(setSnackbar("Failed deleting product, try again !", "error"));
     }
+  };
+};
+
+export const setBanners = (banners) => {
+  return {
+    type: SET_BANNERS,
+    payload: banners,
+  };
+};
+
+export const addBanner = (body) => {
+  return async (dispatch) => {
+    const res = await api.addBanner(body);
   };
 };

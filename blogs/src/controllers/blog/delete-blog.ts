@@ -1,6 +1,6 @@
 import { NotFoundError } from "@fibimarket/common";
 import { Request, Response } from "express";
-import { Blog } from "../models/blog";
+import { Blog } from "../../models/blog";
 
 export async function deleteBlogController(req: Request, res: Response) {
   const blog = await Blog.findById(req.params.id).populate("author");

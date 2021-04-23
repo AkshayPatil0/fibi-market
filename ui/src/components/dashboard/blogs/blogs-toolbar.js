@@ -49,7 +49,7 @@ export default function BlogsToolbar() {
             </InputAdornment>
           ),
         }}
-        placeholder="Search product"
+        placeholder="Search blog"
         variant="outlined"
       />
       <Box display="flex" alignItems="center">

@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   Grid,
   Trello,
+  Layout,
 } from "react-feather";
 import { isAdmin, isVendor } from "../../../utils";
 
@@ -22,8 +23,13 @@ export const useMenuItems = (user) => {
       },
       {
         href: "/dashboard/blogs",
-        icon: Trello,
+        icon: Layout,
         title: "Blogs",
+      },
+      {
+        href: "/dashboard/banners",
+        icon: Trello,
+        title: "Banners",
       },
       {
         href: "/dashboard/users",
