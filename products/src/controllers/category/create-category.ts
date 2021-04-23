@@ -24,7 +24,7 @@ export const createCategoryController = async (req: Request, res: Response) => {
 
   const category = Category.build({
     title,
-    parent: parentDoc?.id,
+    parent: parentDoc ? parentDoc.id : "",
     slug,
     isLocation: !!location,
   });

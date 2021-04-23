@@ -8,8 +8,10 @@ import {
   Divider,
   Container,
   makeStyles,
+  CardMedia,
 } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+
+import TextInput from "../../common/input";
 import * as api from "../../../api";
 import BannersToolbar from "./banner-toolbar";
 
@@ -31,10 +33,18 @@ export default function Categories() {
     <div className={classes.root}>
       <Container maxWidth="lg">
         <BannersToolbar />
-        <Grid container spacing={2}>
+        <Grid container>
           {banners.map((banner) => (
             <Grid item xs={12} sm={6} md={4}>
-              <img src={banner.cover} height="100%" width="100%" />{" "}
+              <Box p={1}>
+                <Card>
+                  <CardMedia image={banner.cover} />
+                  <CardContent>
+                    <Grid container></Grid>
+                    <TextInput />
+                  </CardContent>
+                </Card>
+              </Box>
             </Grid>
           ))}
         </Grid>
