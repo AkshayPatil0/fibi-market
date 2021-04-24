@@ -14,3 +14,9 @@ export const getQuizes = (query) => {
     dispatch(setQuizes(res.data));
   };
 };
+
+export const updateQuizStatus = (id, body) => {
+  return async () => {
+    await api.updateQuiz(id, body);
+  };
+};

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Container, Button, Chip } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import CancelIcon from "@material-ui/icons/Cancel";
-
-import { useDispatch, useSelector } from "react-redux";
+import PublishIcon from "@material-ui/icons/Publish";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Table from "../../common/table";
 import ViewQuiz from "./view-quiz";
-import { testQuiz } from "./sample";
 import UpdateQuiz from "./update-quiz";
-import { getQuizes } from "../../../store/actions/quizes";
+import { updateQuizStatus, getQuizes } from "../../../store/actions/quizes";
+import moment from "moment";
 
-const Quiz = () => {
+const Quiz = (props) => {
   const quizes = useSelector((state) => state.quiz.quizes);
   const [rows, setRows] = useState([]);
 
@@ -25,8 +26,7 @@ const Quiz = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     let newRows = [];
-    // later testQuiz will become quizes from redux
-    testQuiz.forEach((quiz) => {
+    quizes.forEach((quiz) => {
       let row = {};
 
       row.title = (
@@ -35,11 +35,15 @@ const Quiz = () => {
         </Box>
       );
 
-      row.createdAt = <Typography>{quiz.createdAt}</Typography>;
+      row.createdAt = (
+        <Typography>
+          {moment(quiz.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+        </Typography>
+      );
       row.size = <Typography>{quiz.questions.length}</Typography>;
       row.status = (
         <Chip
-          label={quiz.status ? "Published" : "Draft"}
+          label={quiz.status ? "Published" : "Drafted"}
           color={quiz.status ? "secondary" : "default"}
           onDelete
           deleteIcon={quiz.status ? <DoneIcon /> : <CancelIcon />}
@@ -56,8 +60,9 @@ const Quiz = () => {
             style={{ marginRight: "10px" }}
             color="primary"
             variant="contained"
+            onClick={() => draftOrPublishQuiz(quiz.id, quiz.status)}
           >
-            {quiz.status ? "Mark as Draft" : "Publish"}
+            {quiz.status ? <DraftsIcon /> : <PublishIcon />}
           </Button>
         </>
       );
@@ -68,9 +73,13 @@ const Quiz = () => {
     setRows(newRows);
   }, [quizes]);
 
+  const draftOrPublishQuiz = async (id, status) => {
+    await dispatch(updateQuizStatus(id, { status: !status }));
+    await dispatch(getQuizes({ userId: props.currentUserId }));
+  };
   useEffect(() => {
     const run = async () => {
-      await dispatch(getQuizes({}));
+      await dispatch(getQuizes({ userId: props.currentUserId }));
     };
     run();
   }, [dispatch]);
@@ -85,4 +94,8 @@ const Quiz = () => {
   );
 };
 
-export default Quiz;
+const mapStateToProps = (state) => ({
+  currentUserId: state.auth.currentUser.id,
+});
+
+export default connect(mapStateToProps)(Quiz);

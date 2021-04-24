@@ -29,4 +29,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    "/api/quizes",
+    createProxyMiddleware({
+      target: "http://localhost:4005",
+      changeOrigin: true,
+    })
+  );
 };

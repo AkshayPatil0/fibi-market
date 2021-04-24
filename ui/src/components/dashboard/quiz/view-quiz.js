@@ -7,6 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Grid, Paper, Typography } from "@material-ui/core";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,7 @@ export default function ViewQuiz({ data }) {
         variant="contained"
         onClick={handleClickOpen("body")}
       >
-        View
+        <VisibilityIcon />
       </Button>
       <Dialog
         open={open}
@@ -57,17 +58,17 @@ export default function ViewQuiz({ data }) {
         <DialogTitle id="Quiz Title">{data.title}</DialogTitle>
         <DialogContent dividers>
           <DialogContentText id="scroll-dialog-description">
-            {data.questions.map((question) => (
+            {data.questions.map((question, i) => (
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12}>
                   <Typography variant="h2" style={{ paddingBottom: "10px" }}>
-                    {question.id + ". " + question.question}
+                    {i + 1 + ". " + question.question}
                   </Typography>
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.ans === question.option1
+                          question.answer === question.option1
                             ? { color: "green" }
                             : null
                         }
@@ -79,7 +80,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.ans === question.option2
+                          question.answer === question.option2
                             ? { color: "green" }
                             : null
                         }
@@ -91,7 +92,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.ans === question.option3
+                          question.answer === question.option3
                             ? { color: "green" }
                             : null
                         }
@@ -103,7 +104,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.ans === question.option4
+                          question.answer === question.option4
                             ? { color: "green" }
                             : null
                         }

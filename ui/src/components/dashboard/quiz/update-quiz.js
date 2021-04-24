@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CreateIcon from "@material-ui/icons/Create";
 import {
   FormControl,
   Grid,
@@ -52,7 +53,7 @@ export default function UpdateQuiz({ data }) {
         variant="contained"
         onClick={handleClickOpen("body")}
       >
-        Update
+        <CreateIcon />
       </Button>
       <Dialog
         open={open}
@@ -117,7 +118,7 @@ export default function UpdateQuiz({ data }) {
                       fullWidth
                     >
                       <InputLabel>Answer</InputLabel>
-                      <Select value={question.ans} label="Answer">
+                      <Select value={question.answer} label="Answer">
                         <MenuItem value={question.option1}>
                           {question.option1}
                         </MenuItem>
