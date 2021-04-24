@@ -21,6 +21,7 @@ import Products from "./products/products";
 import EditProduct from "./products/edit-product";
 import Users from "./users/users";
 import Categories from "./categories/categories";
+import Quiz from "./quiz/quiz";
 import Locations from "./locations/locations";
 import Blog from "./blogs/blog";
 import Banners from "./banners/banners";
@@ -77,6 +78,7 @@ const DashboardLayout = () => {
               <Route path={`${path}/account`} component={Profile} />
               <Route path={`${path}/users`} component={Users} />
               <Route path={`${path}/categories`} component={Categories} />
+              <Route path={`${path}/quiz`} component={Quiz} />
               <Route path={`${path}/locations`} component={Locations} />
               <Route path={`${path}/banners`} component={Banners} />
 

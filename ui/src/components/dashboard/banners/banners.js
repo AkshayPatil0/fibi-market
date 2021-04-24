@@ -9,6 +9,7 @@ import {
   Container,
   makeStyles,
   CardMedia,
+  Box,
 } from "@material-ui/core";
 
 import TextInput from "../../common/input";

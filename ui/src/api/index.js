@@ -36,6 +36,15 @@ export const createProduct = (body) => API.post("/api/products", body);
 export const updateProduct = (id, body) => API.put(`/api/products/${id}`, body);
 export const deleteProduct = (id) => API.delete(`/api/products/${id}`);
 
+// ------------------
+//  Quizes
+// ------------------
+export const fetchQuizes = (query) =>
+  API.get(`/api/quizes?${qs.stringify(query)}`);
+export const fetchQuiz = (id) => API.get(`/api/quizes/${id}`);
+export const createQuiz = (body) => API.post("/api/quizes", body);
+export const updateQuiz = (id, body) => API.put(`/api/quizes/${id}`, body);
+
 export const addProductImage = (id, body) =>
   API.post(`/api/products/${id}/images`, body);
 export const removeProductImage = (id, body) =>

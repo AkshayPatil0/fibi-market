@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   Grid,
   Trello,
+  Airplay,
   Layout,
 } from "react-feather";
 import { isAdmin, isVendor } from "../../../utils";
@@ -45,6 +46,11 @@ export const useMenuItems = (user) => {
         href: "/dashboard/categories",
         icon: Grid,
         title: "Categories",
+      },
+      {
+        href: "/dashboard/quiz",
+        icon: Airplay,
+        title: "Quiz",
       },
       {
         href: "/dashboard/locations",
