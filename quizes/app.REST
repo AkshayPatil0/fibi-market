@@ -1,0 +1,38 @@
+GET http://localhost:4005/api/quizes?userId=6083043e9eadce6bfd80abb2
+
+###
+POST http://localhost:4005/api/quizes
+Content-Type: application/json
+
+{
+    "title":"Cristmas Special",
+    "publishedBy":"6083043e9eadce6bfd80abb2",
+    "status":10,
+    "questions":[
+        {
+            "question":"Whats is capital of India?",
+            "option1":"Mumbai",
+            "option2":"Benglore",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"Mumbai"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"Shanghai"
+        }
+    ]
+}
+
+###
+PUT http://localhost:4005/api/quizes/6083fbc7470c75eb6fecb475
+Content-Type: application/json
+
+{
+    "status":0
+}
+
