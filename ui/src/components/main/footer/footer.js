@@ -1,14 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Box,
-  Grid,
-  Button,
-  makeStyles,
-  Typography,
-  Container,
-} from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, makeStyles, Typography, Container } from "@material-ui/core";
+import { useSelector } from "react-redux";
 import { isUser } from "../../../utils";
 
 export default function Footer() {

@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  Divider,
-  FormControlLabel,
-  Grid,
-  IconButton,
-  makeStyles,
-  Modal,
-  Switch,
-} from "@material-ui/core";
+import { Box, Card, CardHeader } from "@material-ui/core";
 import { fetchProduct, fetchCategory, fetchLocation } from "../../../api";
 import ProductGridItem from "../products/product-grid-item";
 import CategoryItem from "../home/categories/category-item";

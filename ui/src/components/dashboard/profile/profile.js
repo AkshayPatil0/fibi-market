@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Avatar,
   Box,
-  Button,
-  Card,
-  CardActions,
   CardContent,
-  Divider,
   Typography,
   Container,
   Grid,
   makeStyles,
-  LinearProgress,
 } from "@material-ui/core";
 import ProfileDetails from "./profile-details";
 import { useDispatch, useSelector } from "react-redux";

@@ -54,22 +54,22 @@ const useStyles = makeStyles((theme) => ({
   //   left: 0,
   // },
   markdown: {
-    ["& > h1"]: { margin: ".67em 0" },
-    ["& > h2"]: { margin: ".75em 0" },
-    ["& > h3"]: { margin: ".83em 0" },
-    ["& > h4, p, blockquote, ul, fieldset, form, ol, dl, dir, menu"]: {
+    "& > h1": { margin: ".67em 0" },
+    "& > h2": { margin: ".75em 0" },
+    "& > h3": { margin: ".83em 0" },
+    "& > h4, p, blockquote, ul, fieldset, form, ol, dl, dir, menu": {
       margin: "1.12em 0",
     },
-    ["$ > h5"]: { margin: "1.5em 0" },
-    ["& > h6"]: { margin: "1.67em 0" },
-    ["& > pre, tt, code, kbd, samp"]: { fontFamily: "monospace" },
-    ["& > menu, dd"]: { marginLeft: "40px" },
-    ["& > blockquote"]: {
+    "$ > h5": { margin: "1.5em 0" },
+    "& > h6": { margin: "1.67em 0" },
+    "& > pre, tt, code, kbd, samp": { fontFamily: "monospace" },
+    "& > menu, dd": { marginLeft: "40px" },
+    "& > blockquote": {
       borderLeft: "5px solid #ccc",
       margin: "1.5em 10px",
       padding: "0.5em 10px",
     },
-    ["& > * > code, pre"]: {
+    "& > * > code, pre": {
       background: "#F1F1F1",
       border: "1px solid #E1E1E1",
       borderRadius: "4px",
@@ -79,14 +79,14 @@ const useStyles = makeStyles((theme) => ({
         "'Roboto Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace",
       overflow: "auto",
     },
-    ["& > pre > code"]: {
+    "& > pre > code": {
       background: "#F1F1F1",
       border: "none",
       borderRadius: "0",
       fontSize: "inherit",
       padding: "0",
     },
-    ["& > p > img, em"]: {
+    "& > p > img, em": {
       margin: "0 auto",
       display: "block",
       width: "fit-content",

@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 
 import { useHistory } from "react-router";
-import QueryString from "qs";
 
 export default function LocationCard({ location, alt }) {
   const classes = useStyles();

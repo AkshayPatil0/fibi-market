@@ -4,6 +4,7 @@ import {
   SET_PRODUCT_IMAGES,
   SET_PRODUCTS,
   SET_LOCATIONS,
+  SET_BANNERS,
 } from "../actions/product";
 
 const initialProductState = {
@@ -23,6 +24,7 @@ const initialProductState = {
 const initialState = {
   categories: [],
   locations: [],
+  banners: [],
   products: [],
   product: initialProductState,
   productImages: [],
@@ -58,6 +60,12 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         productImages: action.payload,
+      };
+
+    case SET_BANNERS:
+      return {
+        ...state,
+        banners: action.payload,
       };
 
     default:

@@ -1,29 +1,14 @@
 import React from "react";
-import {
-  Typography,
-  makeStyles,
-  Card,
-  CardContent,
-  Grid,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Button,
-  CardMedia,
-} from "@material-ui/core";
+import { Typography, makeStyles, Card, Box } from "@material-ui/core";
 
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { getDateTime } from "../../../../utils";
 
-export default function BlogCard({ blog, alt }) {
+export default function BlogCard({ blog }) {
   const classes = useStyles();
-
-  const router = useHistory();
 
   return (
     <Card className={classes.root}>
-      <CardMedia image={blog.cover} />
       <img src={blog.cover} alt={blog.title} width="100%" />
       <Box className={classes.content}>
         <Typography variant="caption" color="textSecondary">

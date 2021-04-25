@@ -45,6 +45,7 @@ const Select = ({
       backgroundColor: state.isFocused
         ? theme.palette.action.focus
         : theme.palette.background.paper,
+      color: theme.palette.text.primary,
     }),
   };
 

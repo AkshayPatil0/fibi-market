@@ -115,6 +115,7 @@ export default function Products() {
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
   },
   filterButton: {
     position: "fixed",

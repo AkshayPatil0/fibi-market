@@ -1,17 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
-  ListItem,
-  ListItemText,
-  Collapse,
   makeStyles,
-  IconButton,
-  Chip,
   Box,
   Typography,
   capitalize,
 } from "@material-ui/core";
-import { Cancel, Delete, ExpandLess, ExpandMore } from "@material-ui/icons";
 
 import Select from "../../common/select";
 import AsyncSelect from "../../common/select/async-select";
@@ -20,12 +14,6 @@ import { getCategoryOptions } from "../../common/select/options";
 import { useSelector } from "react-redux";
 
 import * as api from "../../../api";
-
-const relevanceOptions = [
-  { label: "Product", value: "product" },
-  { label: "Category", value: "category" },
-  { label: "Location", value: "location" },
-];
 
 export default function RelevanceForm({ type, ids, setIds }) {
   const classes = useStyles();
@@ -52,13 +40,12 @@ export default function RelevanceForm({ type, ids, setIds }) {
       const options = getCategoryOptions(categories).filter((opt) =>
         ids.includes(opt.value)
       );
-      console.log({ ids, options });
 
       setDefaultOptions(options);
     };
     if (type === "products") getDefaultProducts();
     if (type === "categories") getDefaultCategories();
-  }, [ids]);
+  }, [ids, categories, type]);
 
   const getRelevanceSelect = () => {
     switch (type) {
@@ -100,7 +87,7 @@ export default function RelevanceForm({ type, ids, setIds }) {
   return (
     <>
       <Grid item xs={12}>
-        <Box display="flex" width="100%" alignItems="center" gridGap="0.5rem">
+        <Box className={classes.root}>
           <Box>
             <Typography variant="h6">{capitalize(type)} :</Typography>
           </Box>
@@ -113,15 +100,9 @@ export default function RelevanceForm({ type, ids, setIds }) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    border: "1px solid lightgrey",
-    borderRadius: "0.25rem",
-    margin: theme.spacing(1),
-  },
-  listItem: {
-    padding: theme.spacing(1),
-  },
-  remove: {
-    padding: 0,
-    height: "100%",
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    gridGap: "0.5rem",
   },
 }));

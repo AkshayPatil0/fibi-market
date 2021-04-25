@@ -8,21 +8,18 @@ import {
   Box,
   Container,
   makeStyles,
-  Avatar,
   Typography,
   IconButton,
 } from "@material-ui/core";
-import { Delete, Edit, Image } from "@material-ui/icons";
+import { Delete, Edit } from "@material-ui/icons";
 
 import BlogsToolbar from "./blogs-toolbar";
 
 import Table from "../../common/table";
 import { deleteBlog, getBlogs } from "../../../store/actions/blog";
-import { fetchBlogs } from "../../../api";
 
 export default function Blogs() {
   const classes = useStyles();
-  const user = useSelector((state) => state.auth.currentUser);
 
   const [isLoading, setIsLoading] = useState(false);
 
