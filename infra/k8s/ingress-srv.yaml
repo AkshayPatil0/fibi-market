@@ -1,10 +1,45 @@
-# apiVersion: networking.k8s.io/v1beta1
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: alb
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: fibimarket.dev
+      http:
+        paths:
+          - path: /api/users/?(.*)
+            backend:
+              serviceName: users-srv
+              servicePort: 80
+
+          - path: /api/products/?(.*)
+            backend:
+              serviceName: products-srv
+              servicePort: 80
+
+          - path: /api/orders/?(.*)
+            backend:
+              serviceName: orders-srv
+              servicePort: 80
+
+          - path: /api/blogs/?(.*)
+            backend:
+              serviceName: blogs-srv
+              servicePort: 80
+
+          - path: /?(.*)
+            backend:
+              serviceName: ui-srv
+              servicePort: 3000
+# apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
 #   name: ingress-service
 #   annotations:
 #     kubernetes.io/ingress.class: nginx
-#     app.kubernetes.io/name: ingress-nginx
 #     nginx.ingress.kubernetes.io/use-regex: "true"
 # spec:
 #   rules:
@@ -12,67 +47,41 @@
 #       http:
 #         paths:
 #           - backend:
-#               serviceName: users-srv
-#               servicePort: 80
+#               service:
+#                 name: users-srv
+#                 port:
+#                   number: 4000
 #             path: /api/users/?(.*)
+#             pathType: Exact
 
 #           - backend:
-#               serviceName: products-srv
-#               servicePort: 80
+#               service:
+#                 name: products-srv
+#                 port:
+#                   number: 4000
 #             path: /api/products/?(.*)
+#             pathType: Exact
 
 #           - backend:
-#               serviceName: ui-srv
-#               servicePort: 3000
+#               service:
+#                 name: orders-srv
+#                 port:
+#                   number: 4000
+#             path: /api/orders/?(.*)
+#             pathType: Exact
+
+#           - backend:
+#               service:
+#                 name: blogs-srv
+#                 port:
+#                   number: 4000
+#             path: /api/blogs/?(.*)
+#             pathType: Exact
+
+#           - backend:
+#               service:
+#                 name: ui-srv
+#                 port:
+#                   number: 3000
 #             path: /?(.*)
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-service
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-spec:
-  rules:
-    - host: fibimarket.dev
-      http:
-        paths:
-          - backend:
-              service:
-                name: users-srv
-                port:
-                  number: 4000
-            path: /api/users/?(.*)
-            pathType: Exact
-
-          - backend:
-              service:
-                name: products-srv
-                port:
-                  number: 4000
-            path: /api/products/?(.*)
-            pathType: Exact
-
-          - backend:
-              service:
-                name: orders-srv
-                port:
-                  number: 4000
-            path: /api/orders/?(.*)
-            pathType: Exact
-
-          - backend:
-              service:
-                name: blogs-srv
-                port:
-                  number: 4000
-            path: /api/blogs/?(.*)
-            pathType: Exact
-
-          - backend:
-              service:
-                name: ui-srv
-                port:
-                  number: 3000
-            path: /?(.*)
-            pathType: Exact
+#             pathType: Exact
