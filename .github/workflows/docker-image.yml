@@ -30,16 +30,16 @@ jobs:
       run: docker push akshaypatil0/products
 
     - name: Build orders docker image
-      run: docker build -t akshaypatil0/orders .
+      run: cd orders && docker build -t akshaypatil0/orders .
     - name: Publish orders docker image
       run: docker push akshaypatil0/orders
 
     - name: Build blogs docker image
-      run: docker build -t akshaypatil0/blogs .
+      run: cd blogs && docker build -t akshaypatil0/blogs .
     - name: Publish blogs docker image
       run: docker push akshaypatil0/blogs
 
     - name: Build ui docker image
-      run: docker build -t akshaypatil0/ui .
+      run: cd ui && docker build -t akshaypatil0/ui .
     - name: Publish ui docker image
       run: docker push akshaypatil0/ui
