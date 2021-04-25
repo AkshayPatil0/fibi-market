@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build users docker image
-      run: docker build . --file ./users/Dockerfile --tag akshaypatil0/users
+      run: cd ./users && docker build -t akshaypatil0/users .
     - name: Publish users docker image
       run: docker push akshaypatil0/users
     - name: Build products docker image
