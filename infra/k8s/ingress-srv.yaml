@@ -1,39 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fibi
+
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress-service
+  namespace: fibi
   annotations:
     kubernetes.io/ingress.class: alb
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
   rules:
-    - host: fibimarket.dev
-      http:
+    - http:
         paths:
-          - path: /api/users/?(.*)
-            backend:
-              serviceName: users-srv
-              servicePort: 80
+          # - path: /api/users/*
+          #   backend:
+          #     serviceName: "users-srv"
+          #     servicePort: 4000
 
-          - path: /api/products/?(.*)
-            backend:
-              serviceName: products-srv
-              servicePort: 80
+          # - path: /api/products/*
+          #   backend:
+          #     serviceName: "products-srv"
+          #     servicePort: 4000
 
-          - path: /api/orders/?(.*)
-            backend:
-              serviceName: orders-srv
-              servicePort: 80
+          # - path: /api/orders/*
+          #   backend:
+          #     serviceName: "orders-srv"
+          #     servicePort: 4000
 
-          - path: /api/blogs/?(.*)
-            backend:
-              serviceName: blogs-srv
-              servicePort: 80
+          # - path: /api/blogs/*
+          #   backend:
+          #     serviceName: "blogs-srv"
+          #     servicePort: 4000
 
-          - path: /?(.*)
+          - path: /*
             backend:
-              serviceName: ui-srv
-              servicePort: 3000
+              serviceName: "ui-srv"
+              servicePort: 80
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:

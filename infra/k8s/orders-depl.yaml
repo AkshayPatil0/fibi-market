@@ -12,6 +12,8 @@ spec:
       labels:
         app: orders
     spec:
+      nodeSelector:
+        name: node1
       containers:
         - name: orders
           image: akshaypatil0/orders
@@ -53,6 +55,7 @@ kind: Service
 metadata:
   name: orders-srv
 spec:
+  type: NodePort
   selector:
     app: orders
   ports:

@@ -12,6 +12,8 @@ spec:
       labels:
         app: products
     spec:
+      nodeSelector:
+        name: node1
       containers:
         - name: products
           image: akshaypatil0/products
@@ -53,6 +55,7 @@ kind: Service
 metadata:
   name: products-srv
 spec:
+  type: NodePort
   selector:
     app: products
   ports:
