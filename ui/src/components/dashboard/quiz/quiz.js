@@ -10,6 +10,8 @@ import ViewQuiz from "./view-quiz";
 import UpdateQuiz from "./update-quiz";
 import { updateQuizStatus, getQuizes } from "../../../store/actions/quizes";
 import moment from "moment";
+import CreateQuiz from "./create-quiz";
+import { setSnackbar } from "../../../store/actions/app";
 
 const Quiz = (props) => {
   const quizes = useSelector((state) => state.quiz.quizes);
@@ -76,6 +78,12 @@ const Quiz = (props) => {
   const draftOrPublishQuiz = async (id, status) => {
     await dispatch(updateQuizStatus(id, { status: !status }));
     await dispatch(getQuizes({ userId: props.currentUserId }));
+    dispatch(
+      setSnackbar(
+        !status ? "Quiz published !" : "Quiz Drafted !",
+        !status ? "success" : "warning"
+      )
+    );
   };
   useEffect(() => {
     const run = async () => {
@@ -86,7 +94,7 @@ const Quiz = (props) => {
 
   return (
     <Container maxWidth={false}>
-      {/* <UserFilter /> */}
+      <CreateQuiz user={props.currentUserId} />
       <Box mt={3}>
         <Table options={options} rows={rows} />
       </Box>

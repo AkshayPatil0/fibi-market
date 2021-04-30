@@ -119,18 +119,10 @@ export default function UpdateQuiz({ data }) {
                     >
                       <InputLabel>Answer</InputLabel>
                       <Select value={question.answer} label="Answer">
-                        <MenuItem value={question.option1}>
-                          {question.option1}
-                        </MenuItem>
-                        <MenuItem value={question.option2}>
-                          {question.option2}
-                        </MenuItem>
-                        <MenuItem value={question.option3}>
-                          {question.option3}
-                        </MenuItem>
-                        <MenuItem value={question.option4}>
-                          {question.option4}
-                        </MenuItem>
+                        <MenuItem value="A">{question.option1}</MenuItem>
+                        <MenuItem value="B">{question.option2}</MenuItem>
+                        <MenuItem value="C">{question.option3}</MenuItem>
+                        <MenuItem value="D">{question.option4}</MenuItem>
                       </Select>
                     </FormControl>
                     <hr style={{ marginTop: "15px", borderColor: "gray" }} />

@@ -68,9 +68,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.answer === question.option1
-                            ? { color: "green" }
-                            : null
+                          question.answer === "A" ? { color: "green" } : null
                         }
                         variant="h5"
                       >
@@ -80,9 +78,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.answer === question.option2
-                            ? { color: "green" }
-                            : null
+                          question.answer === "B" ? { color: "green" } : null
                         }
                         variant="h5"
                       >
@@ -92,9 +88,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.answer === question.option3
-                            ? { color: "green" }
-                            : null
+                          question.answer === "C" ? { color: "green" } : null
                         }
                         variant="h5"
                       >
@@ -104,9 +98,7 @@ export default function ViewQuiz({ data }) {
                     <Grid item xs={12} sm={6}>
                       <Typography
                         style={
-                          question.answer === question.option4
-                            ? { color: "green" }
-                            : null
+                          question.answer === "D" ? { color: "green" } : null
                         }
                         variant="h5"
                       >
