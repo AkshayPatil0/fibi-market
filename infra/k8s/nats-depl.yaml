@@ -12,6 +12,8 @@ spec:
       labels:
         app: nats
     spec:
+      nodeSelector:
+        name: node1
       containers:
         - name: nats
           image: nats-streaming:0.17.0
@@ -37,6 +39,7 @@ kind: Service
 metadata:
   name: nats-srv
 spec:
+  type: NodePort
   selector:
     app: nats
   ports:

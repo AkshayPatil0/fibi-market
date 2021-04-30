@@ -16,7 +16,7 @@ export const createBannerController = async (req: Request, res: Response) => {
   }
 
   const fileType = req.file.originalname.split(".").slice(-1)[0];
-  const key = `categories/${v1()}.${fileType}`;
+  const key = `banners/${v1()}.${fileType}`;
 
   const cover = await uploadToAWS(key, req.file.buffer);
 

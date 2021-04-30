@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -11,9 +10,6 @@ import {
   Grid,
   IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
   makeStyles,
   Modal,
   Switch,
@@ -28,7 +24,7 @@ import BlogDetails from "../../common/blogDetails";
 import BlogForm from "./blogForm";
 
 import helpImage from "../../../assets/images/markdown-cheatsheet.jpg";
-import { Cancel, Close, Delete, Info } from "@material-ui/icons";
+import { Cancel, Close, Info } from "@material-ui/icons";
 import MultipleImagePicker from "../../common/multiple-image-picker";
 import { getImageFormData, getImagesFormData } from "../../../utils";
 
@@ -91,7 +87,7 @@ export default function Blog() {
       {blog.images && blog.images.length > 0 ? (
         blog.images.map((img) => (
           <Box className={classes.imageListItem}>
-            <img src={img} alt="blog image" height="50" />
+            <img src={img} alt="blog" height="50" />
             <Button
               variant="outlined"
               onClick={() => copyToClipboard(`![](${img})`)}

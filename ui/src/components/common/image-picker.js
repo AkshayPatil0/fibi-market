@@ -65,7 +65,7 @@ export default function ImagePicker({
           )}
           <img
             src={preview}
-            alt="image"
+            alt="preview"
             className={classes.image}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "rgb(255 255 255 / 50%)",
-    ["&:hover"]: {
+    "&:hover": {
       backgroundColor: "white",
     },
   },

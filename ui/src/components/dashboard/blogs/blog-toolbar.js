@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Button, Box, IconButton, makeStyles } from "@material-ui/core";
-import { ArrowBack, Refresh } from "@material-ui/icons";
+import { ArrowBack } from "@material-ui/icons";
 
 import ToolbarLayout from "../toolbar-layout";
 
-import { createBlog, getBlogs, updateBlog } from "../../../store/actions/blog";
+import { createBlog, updateBlog } from "../../../store/actions/blog";
 
 export default function BlogToolbar({ isNew }) {
   const classes = useStyles();

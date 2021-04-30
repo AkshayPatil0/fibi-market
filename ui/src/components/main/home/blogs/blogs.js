@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Grid, LinearProgress, Box, makeStyles } from "@material-ui/core";
+import { Grid, Box, makeStyles } from "@material-ui/core";
 
 import { getBlogs } from "../../../../store/actions/blog";
 
@@ -9,9 +9,8 @@ import BlogCard from "./blog-card";
 
 export default function Blogs() {
   const classes = useStyles();
-  const user = useSelector((state) => state.auth.currentUser);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const blogs = useSelector((state) => state.blog.blogs);
 
@@ -19,9 +18,9 @@ export default function Blogs() {
 
   useEffect(() => {
     const run = async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await dispatch(getBlogs());
-      setIsLoading(false);
+      // setIsLoading(false);
     };
     run();
   }, [dispatch]);

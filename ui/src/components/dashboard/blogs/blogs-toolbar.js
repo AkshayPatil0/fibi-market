@@ -8,7 +8,6 @@ import {
   SvgIcon,
   Box,
   makeStyles,
-  Modal,
   CircularProgress,
 } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
@@ -21,7 +20,6 @@ import { getBlogs } from "../../../store/actions/blog";
 export default function BlogsToolbar() {
   const classes = useStyles();
 
-  const [open, setOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useDispatch();
 

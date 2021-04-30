@@ -129,4 +129,4 @@ export const fetchBanners = () => API.get(`/api/products/banners`);
 export const addBanner = (body) => API.post(`/api/products/banners`, body);
 export const updateBanner = (id, body) =>
   API.put(`/api/products/banners/${id}`, body);
-export const deleteBanner = (id) => API.post(`/api/products/banners/${id}`);
+export const deleteBanner = (id) => API.delete(`/api/products/banners/${id}`);

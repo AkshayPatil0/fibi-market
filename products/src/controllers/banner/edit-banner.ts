@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Banner } from "../../models/banner";
-import { NotFoundError, uploadToAWS } from "@fibimarket/common";
+import { deleteFromAWS, NotFoundError, uploadToAWS } from "@fibimarket/common";
+import { v1 } from "uuid";
 
 export const editBannerController = async (req: Request, res: Response) => {
   const { title, location, category } = req.body;
@@ -13,8 +14,11 @@ export const editBannerController = async (req: Request, res: Response) => {
 
   let newCover: string | undefined = undefined;
   if (req.file) {
-    const key = req.body.uri.split(".com/").slice(-1)[0];
-    newCover = await uploadToAWS(key, req.file.buffer);
+    const key = banner.cover.split(".com/").slice(-1)[0];
+    await deleteFromAWS(key);
+    const fileType = req.file.originalname.split(".").slice(-1)[0];
+    const newKey = `banners/${v1()}.${fileType}`;
+    newCover = await uploadToAWS(newKey, req.file.buffer);
   }
 
   banner.set({

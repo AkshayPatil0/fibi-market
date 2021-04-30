@@ -12,6 +12,8 @@ spec:
       labels:
         app: orders
     spec:
+      nodeSelector:
+        name: node1
       containers:
         - name: orders
           image: akshaypatil0/orders
@@ -35,12 +37,25 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
+
+            - name: AWS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-id
+                  key: AWS_ID
+
+            - name: AWS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_SECRET
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: orders-srv
 spec:
+  type: NodePort
   selector:
     app: orders
   ports:

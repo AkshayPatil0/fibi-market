@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogs-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blogs
+  template:
+    metadata:
+      labels:
+        app: blogs
+    spec:
+      nodeSelector:
+        name: node1
+      containers:
+        - name: blogs
+          image: akshaypatil0/blogs
+          env:
+            - name: NATS_CLUSTER_ID
+              value: fibimarket
+
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+
+            - name: MONGO_URI
+              value: "mongodb://blogs-mongo-srv:27017/blogs"
+
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+
+            - name: AWS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-id
+                  key: AWS_ID
+
+            - name: AWS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blogs-srv
+spec:
+  type: NodePort
+  selector:
+    app: blogs
+  ports:
+    - name: blogs
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

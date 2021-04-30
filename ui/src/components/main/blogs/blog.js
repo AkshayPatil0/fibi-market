@@ -87,5 +87,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     border: "4px solid grey",
     fontSize: "1.4rem",
+    cursor: "pointer",
   },
 }));

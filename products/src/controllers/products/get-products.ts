@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import { ParsedQs } from "qs";
 
 import { Product, ProductDoc } from "../../models/product";
@@ -42,7 +42,12 @@ export const getProductsController = async (req: Request, res: Response) => {
     };
   } else if (category) {
     const categories = await Category.find();
-    const categoryDoc = await Category.findOne({ slug: category.toString() });
+    let categoryDoc;
+    if (mongoose.Types.ObjectId.isValid(category.toString())) {
+      categoryDoc = await Category.findById(category.toString());
+    } else {
+      categoryDoc = await Category.findOne({ slug: category.toString() });
+    }
     if (categoryDoc) {
       filterQuery.category = {
         $in: [...getChildrenIds(categories, categoryDoc.id), categoryDoc.id],

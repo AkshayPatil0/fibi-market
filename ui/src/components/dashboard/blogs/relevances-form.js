@@ -1,37 +1,14 @@
-import React, { useState } from "react";
-import { Grid, Typography, makeStyles, Button, Box } from "@material-ui/core";
+import React from "react";
+import { Grid, Typography, Box } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import RelevanceForm from "./relevance-form";
 import { setBlog } from "../../../store/actions/blog";
 
 export default function RelevancesForm() {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
-  const [newRelevance, setNewRelevance] = useState();
 
   const blog = useSelector((state) => state.blog.blog);
-
-  const initialRelevance = { type: "", id: "" };
-
-  // const addRelevance = async () => {
-  //   dispatch(
-  //     setBlog({
-  //       ...blog,
-  //       relevances: [...blog.relevances, initialRelevance],
-  //     })
-  //   );
-  // };
-
-  // const removeRelevance = (index) => {
-  //   dispatch(
-  //     setBlog({
-  //       ...blog,
-  //       relevances: blog.relevances.filter((rel, i) => index !== i),
-  //     })
-  //   );
-  // };
 
   const setRelevance = async (type, ids) => {
     dispatch(
@@ -50,28 +27,8 @@ export default function RelevancesForm() {
           <Typography variant="h6">
             <b>Relevances :</b>
           </Typography>
-
-          {/* <Button variant="text" color="primary" onClick={addRelevance}>
-            Add relevance
-          </Button> */}
         </Box>
       </Grid>
-      {/* {blog.relevances && blog.relevances.length > 0 ? (
-        blog.relevances.map((rel, i) => (
-          <RelevanceForm
-            relevance={rel}
-            setRelevance={(type, id) => setRelevance(i, type, id)}
-            removeRelevance={() => removeRelevance(i)}
-            key={i}
-          />
-        ))
-      ) : (
-        <Grid item xs={12}>
-          <Box pl={2}>
-            <Typography>No relevances defined !</Typography>
-          </Box>
-        </Grid>
-      )} */}
       <RelevanceForm
         type="products"
         ids={blog?.relevances?.products || []}
@@ -91,15 +48,3 @@ export default function RelevancesForm() {
     </>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  remove: {
-    padding: 0,
-    height: "100%",
-  },
-  variantCard: {
-    position: "relative",
-    overflow: "visible",
-  },
-}));

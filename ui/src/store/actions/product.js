@@ -208,8 +208,33 @@ export const setBanners = (banners) => {
   };
 };
 
+export const getBanners = () => {
+  return async (dispatch) => {
+    const res = await api.fetchBanners();
+    dispatch(setBanners(res.data));
+  };
+};
+
 export const addBanner = (body) => {
   return async (dispatch) => {
-    const res = await api.addBanner(body);
+    await api.addBanner(body);
+    const res = await api.fetchBanners();
+    dispatch(setBanners(res.data));
+  };
+};
+
+export const updateBanner = (id, body) => {
+  return async (dispatch) => {
+    await api.updateBanner(id, body);
+    const res = await api.fetchBanners();
+    dispatch(setBanners(res.data));
+  };
+};
+
+export const deleteBanner = (id) => {
+  return async (dispatch) => {
+    await api.deleteBanner(id);
+    const res = await api.fetchBanners();
+    dispatch(setBanners(res.data));
   };
 };

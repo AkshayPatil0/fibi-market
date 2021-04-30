@@ -1,0 +1,205 @@
+version: "3.7"
+
+networks:
+  fibi-base-net:
+    driver: bridge
+
+volumes:
+  fibi-users-db-volume:
+  fibi-products-db-volume:
+  fibi-orders-db-volume:
+  fibi-blogs-db-volume:
+
+services:
+  nginx:
+    image: nginx:1.16.0-alpine
+    container_name: fibi-nginx
+    restart: on-failure
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf.template
+      # - ./nginx/entrypoint.sh:/entrypoint.sh
+      # - ./nginx/snippets:/etc/nginx/snippets
+      # - ./ssl/authorization.js:/etc/nginx/authorization.js
+      # - ./ssl/certs/fibi-server.crt:/etc/ssl/certs/fibi-server.crt
+      # - ./ssl/certs/ca.crt:/etc/ssl/certs/ca.crt
+      # - ./ssl/certs/fibi-server.key:/etc/ssl/private/fibi-server.key
+      # - ./ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem
+    ports:
+      - "80:80"
+      # - ${MF_NGINX_HTTP_PORT}:${MF_NGINX_HTTP_PORT}
+      # - ${MF_NGINX_SSL_PORT}:${MF_NGINX_SSL_PORT}
+    networks:
+      - fibi-base-net
+    # env_file:
+    #   - .env
+    # command: /entrypoint.sh
+    depends_on:
+      - users
+      - products
+      - orders
+      - blogs
+
+  nats:
+    image: nats-streaming:0.17.0
+    container_name: fibi-nats
+    command: "nats-streaming-server -p 4222 -m 8222 -hbi 5s -hbt 5s -hbf 2 -SD -cid fibimarket"
+    restart: on-failure
+    volumes:
+      - ./nats/:/etc/nats
+    networks:
+      - fibi-base-net
+
+  users-db:
+    image: mongo
+    container_name: fibi-users-db
+    restart: on-failure
+    # environment:
+    #   POSTGRES_USER: ${MF_USERS_DB_USER}
+    #   POSTGRES_PASSWORD: ${MF_USERS_DB_PASS}
+    #   POSTGRES_DB: ${MF_USERS_DB}
+    networks:
+      - fibi-base-net
+    volumes:
+      - fibi-users-db-volume:/data/users-db
+
+  users:
+    image: akshaypatil0/users
+    container_name: fibi-users
+    # volumes:
+    #   - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+    depends_on:
+      - users-db
+    restart: on-failure
+    environment:
+      NATS_CLUSTER_ID: fibimarket
+      NATS_CLIENT_ID: users
+      NATS_URL: http://nats:4222
+      MONGO_URI: mongodb://users-db:27017/users
+      JWT_KEY: dlgiudgowifdm
+      AWS_ID: sdgfghhvc
+      AWS_SECRET: sdggdfdfb
+    ports:
+      - "4000:4000"
+    networks:
+      - fibi-base-net
+
+  products-db:
+    image: mongo
+    container_name: fibi-products-db
+    restart: on-failure
+    # environment:
+    #   POSTGRES_USER: ${MF_USERS_DB_USER}
+    #   POSTGRES_PASSWORD: ${MF_USERS_DB_PASS}
+    #   POSTGRES_DB: ${MF_USERS_DB}
+    networks:
+      - fibi-base-net
+    volumes:
+      - fibi-products-db-volume:/data/products-db
+
+  products:
+    image: akshaypatil0/products
+    container_name: fibi-products
+    # volumes:
+    #   - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+    depends_on:
+      - products-db
+    restart: on-failure
+    environment:
+      NATS_CLUSTER_ID: fibimarket
+      NATS_CLIENT_ID: products
+      NATS_URL: http://nats:4222
+      MONGO_URI: mongodb://products-db:27017/products
+      JWT_KEY: dlgiudgowifdm
+      AWS_ID: sdgfghhvc
+      AWS_SECRET: sdggdfdfb
+    ports:
+      - "4001:4000"
+    networks:
+      - fibi-base-net
+
+  orders-db:
+    image: mongo
+    container_name: fibi-orders-db
+    restart: on-failure
+    # environment:
+    #   POSTGRES_USER: ${MF_USERS_DB_USER}
+    #   POSTGRES_PASSWORD: ${MF_USERS_DB_PASS}
+    #   POSTGRES_DB: ${MF_USERS_DB}
+    networks:
+      - fibi-base-net
+    volumes:
+      - fibi-orders-db-volume:/data/orders-db
+
+  orders:
+    image: akshaypatil0/orders
+    container_name: fibi-orders
+    # volumes:
+    #   - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+    depends_on:
+      - orders-db
+    restart: on-failure
+    environment:
+      NATS_CLUSTER_ID: fibimarket
+      NATS_CLIENT_ID: orders
+      NATS_URL: http://nats:4222
+      MONGO_URI: mongodb://orders-db:27017/orders
+      JWT_KEY: dlgiudgowifdm
+      AWS_ID: sdgfghhvc
+      AWS_SECRET: sdggdfdfb
+    ports:
+      - "4002:4000"
+    networks:
+      - fibi-base-net
+
+  blogs-db:
+    image: mongo
+    container_name: fibi-blogs-db
+    restart: on-failure
+    # environment:
+    #   POSTGRES_USER: ${MF_USERS_DB_USER}
+    #   POSTGRES_PASSWORD: ${MF_USERS_DB_PASS}
+    #   POSTGRES_DB: ${MF_USERS_DB}
+    networks:
+      - fibi-base-net
+    volumes:
+      - fibi-blogs-db-volume:/data/blogs-db
+
+  blogs:
+    image: akshaypatil0/blogs
+    container_name: fibi-blogs
+    # volumes:
+    #   - ./templates/${MF_USERS_RESET_PWD_TEMPLATE}:/${MF_EMAIL_TEMPLATE}
+    depends_on:
+      - blogs-db
+    restart: on-failure
+    environment:
+      NATS_CLUSTER_ID: fibimarket
+      NATS_CLIENT_ID: blogs
+      NATS_URL: http://nats:4222
+      MONGO_URI: mongodb://blogs-db:27017/blogs
+      JWT_KEY: dlgiudgowifdm
+      AWS_ID: sdgfghhvc
+      AWS_SECRET: sdggdfdfb
+    ports:
+      - "4003:4000"
+    networks:
+      - fibi-base-net
+
+  # http-adapter:
+  #   image: fibi/http:${MF_RELEASE_TAG}
+  #   container_name: fibi-http
+  #   depends_on:
+  #     - things
+  #     - nats
+  #   restart: on-failure
+  #   environment:
+  #     MF_HTTP_ADAPTER_LOG_LEVEL: debug
+  #     MF_HTTP_ADAPTER_PORT: ${MF_HTTP_ADAPTER_PORT}
+  #     MF_NATS_URL: ${MF_NATS_URL}
+  #     MF_JAEGER_URL: ${MF_JAEGER_URL}
+  #     MF_THINGS_AUTH_GRPC_URL: ${MF_THINGS_AUTH_GRPC_URL}
+  #     MF_THINGS_AUTH_GRPC_TIMEOUT: ${MF_THINGS_AUTH_GRPC_TIMEOUT}
+  #   ports:
+  #     - ${MF_HTTP_ADAPTER_PORT}:${MF_HTTP_ADAPTER_PORT}
+  #   networks:
+  #     - fibi-base-net

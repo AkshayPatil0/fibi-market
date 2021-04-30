@@ -1,37 +1,22 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  Button,
-  TextField,
-  InputAdornment,
-  SvgIcon,
-  Box,
-  makeStyles,
-  Modal,
-  CircularProgress,
-} from "@material-ui/core";
+import { Button, Box, makeStyles } from "@material-ui/core";
 
 import ToolbarLayout from "../toolbar-layout";
 
-import ImagePicker from "../../common/image-picker";
-
-import * as api from "../../../api";
-import { getImageFormData } from "../../../utils";
+import { addBanner } from "../../../store/actions/product";
+import BannerForm from "./banner-form";
 
 export default function BannersToolbar() {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
-  const router = useHistory();
+  const dispatch = useDispatch();
 
-  const addBanner = async (e) => {
-    const res = await api.addBanner(
-      getImageFormData(e.target.files[0], "cover")
-    );
+  const onSubmit = async (fData) => {
+    dispatch(addBanner(fData));
     setOpen(false);
-    // dispatch(setBlog(res.data));
   };
 
   return (
@@ -47,15 +32,7 @@ export default function BannersToolbar() {
           Add new banner
         </Button>
       </Box>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <div className={classes.modal}>
-          <ImagePicker
-            buttonText="Select banner cover"
-            addImage={addBanner}
-            preview
-          />
-        </div>
-      </Modal>
+      <BannerForm open={open} setOpen={setOpen} onSubmit={onSubmit} />
     </ToolbarLayout>
   );
 }
@@ -72,5 +49,9 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: `translate(-50%, -50%)`,
     position: "absolute",
+  },
+
+  card: {
+    overflow: "visible",
   },
 }));
