@@ -44,6 +44,11 @@ export interface UserDoc extends mongoose.Document {
     city: string;
     state: string;
   }[];
+  rewardPoints: number;
+  quizes: {
+    id: string;
+    points: number;
+  }[];
   wishlist: string[];
   phoneNo: string;
   avatar: string;
@@ -74,6 +79,11 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     addresses: [Object],
+    rewardPoints: {
+      type: Number,
+      default: 0,
+    },
+    quizes: [Object],
     wishlist: [String],
     role: {
       type: String,

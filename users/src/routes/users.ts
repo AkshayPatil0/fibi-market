@@ -8,6 +8,7 @@ import {
 import { deleteUserController } from "../controllers/users/delete-user";
 import { getUsersController } from "../controllers/users/get-users";
 import { setUserRoleController } from "../controllers/users/set-user-role";
+import { submitQuiz } from "../controllers/users/submit-quiz";
 
 const router = express();
 
@@ -20,6 +21,8 @@ router.post(
   authRole(UserRoles.admin),
   setUserRoleController
 );
+
+router.post("/collectReward", currentUser, submitQuiz);
 
 router.delete("/", currentUser, requireAuth, deleteUserController);
 
