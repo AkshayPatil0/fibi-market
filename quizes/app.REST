@@ -7,7 +7,7 @@ Content-Type: application/json
 {
     "title":"Cristmas Special",
     "publishedBy":"6083043e9eadce6bfd80abb2",
-    "status":10,
+    "status":1,
     "questions":[
         {
             "question":"Whats is capital of India?",
@@ -15,7 +15,7 @@ Content-Type: application/json
             "option2":"Benglore",
             "option3":"Delhi",
             "option4":"Kolkata",
-            "answer":"Mumbai"
+            "answer":"A"
         },
         {
             "question":"Whats is capital of China?",
@@ -23,7 +23,151 @@ Content-Type: application/json
             "option2":"Test",
             "option3":"Delhi",
             "option4":"Kolkata",
-            "answer":"Shanghai"
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
+        },
+        {
+            "question":"Whats is capital of China?",
+            "option1":"Shanghai",
+            "option2":"Test",
+            "option3":"Delhi",
+            "option4":"Kolkata",
+            "answer":"C"
         }
     ]
 }
@@ -36,3 +180,12 @@ Content-Type: application/json
     "status":0
 }
 
+###
+POST http://localhost:4001/api/users/collectReward/
+Content-Type: application/json
+
+{
+    "userId":"6083043e9eadce6bfd80abb2",
+    "quizId":"6083043e9eadce6bfd80abb2",
+    "points":10
+}
