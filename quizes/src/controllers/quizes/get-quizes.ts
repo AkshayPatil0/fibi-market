@@ -14,3 +14,10 @@ export const getQuizesController = async (req: Request, res: Response) => {
     res.status(200).json({ error: "userId is required" });
   }
 };
+
+export const getAllQuizesController = async (_: Request, res: Response) => {
+  var quizFilter: FilterQuery<QuizDoc> = {};
+  quizFilter.status = 1;
+  const quizes = await Quiz.find(quizFilter);
+  res.status(200).json(quizes);
+};
