@@ -123,12 +123,13 @@ const CreateQuiz = ({ user }) => {
                     autoComplete="off"
                     variant="outlined"
                     name="title"
+                    size="small"
                     value={quiz.title}
                     onChange={handleQuizChange}
                   />
                 </Grid>
                 <Grid item xs={6} sm={6}>
-                  <FormControl variant="outlined" fullWidth>
+                  <FormControl size="small" variant="outlined" fullWidth>
                     <InputLabel>Status</InputLabel>
                     <Select
                       onChange={handleQuizChange}
@@ -146,6 +147,7 @@ const CreateQuiz = ({ user }) => {
                     onChange={handleChange}
                     name="question"
                     fullWidth
+                    size="small"
                     value={question.question}
                     label="Question"
                     variant="outlined"
@@ -154,40 +156,48 @@ const CreateQuiz = ({ user }) => {
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="A."
                         name="option1"
                         onChange={handleChange}
                         value={question.option1}
+                        autoComplete="off"
                         variant="outlined"
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="B."
                         name="option2"
                         onChange={handleChange}
                         value={question.option2}
+                        autoComplete="off"
                         variant="outlined"
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="C."
                         name="option3"
                         onChange={handleChange}
                         value={question.option3}
+                        autoComplete="off"
                         variant="outlined"
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
+                        size="small"
                         label="D."
                         name="option4"
                         onChange={handleChange}
                         value={question.option4}
+                        autoComplete="off"
                         variant="outlined"
                       />
                     </Grid>

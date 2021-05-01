@@ -69,11 +69,4 @@ const ProfileDetails = () => {
   );
 };
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {},
-//   card: {
-//     fontSize: theme.spacing(1),
-//   },
-// }));
-
 export default ProfileDetails;

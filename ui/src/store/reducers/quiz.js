@@ -1,9 +1,9 @@
-import { SET_QUIZES } from "../actions/quizes";
-import { ADD_QUIZ } from "../actions/quizes";
+import { SET_QUIZES, ADD_QUIZ, SET_ALL_QUIZES } from "../actions/quizes";
 
 const initialState = {
   quizes: [],
   quiz: {},
+  all_quizes: [],
 };
 
 export default function QuizReducer(state = initialState, action) {
@@ -12,6 +12,11 @@ export default function QuizReducer(state = initialState, action) {
       return {
         ...state,
         quizes: action.payload,
+      };
+    case SET_ALL_QUIZES:
+      return {
+        ...state,
+        all_quizes: action.payload,
       };
     case ADD_QUIZ:
       return {

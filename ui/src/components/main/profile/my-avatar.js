@@ -6,6 +6,7 @@ import {
   Typography,
   makeStyles,
   LinearProgress,
+  Chip,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -47,12 +48,19 @@ const MyAvatar = () => {
           <Avatar className={classes.avatar} src={user.avatar}>
             {user.firstName.charAt(0)}
           </Avatar>
-          <Typography color="textPrimary" gutterBottom variant="h5">
+          <Typography
+            className={classes.userFullName}
+            color="textPrimary"
+            gutterBottom
+            variant="h5"
+          >
             {user.firstName + " " + user.lastName}
           </Typography>
           <Typography color="textSecondary" variant="body1">
             {user.email}
           </Typography>
+          <Button cla> Reward points</Button>
+          <Chip label={user.rewardPoints} />
         </Box>
         {isLoading && <LinearProgress />}
       </>
@@ -80,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 100,
     width: 100,
+  },
+  userFullName: {
+    marginTop: 10,
   },
 }));
 

@@ -11,6 +11,8 @@ import Orders from "./orders/orders";
 import ProductDetails from "./products/productDetails";
 import Products from "./products/products";
 import Profile from "./profile/profile";
+import Quiz from "./quiz/quiz";
+import QuizDetails from "./quiz/quiz-details";
 import Settings from "./settings/settings";
 import Wishlist from "./wishlist/wishlist";
 
@@ -27,6 +29,8 @@ const MainLayout = () => {
         <Switch>
           <Route path="/products/:id" component={ProductDetails} />
           <Route path="/cart" component={Cart} />
+          <Route exact path="/quiz" component={Quiz} />
+          <Route exact path="/quiz/:id" component={QuizDetails} />
           <Route path="/wishlist" component={Wishlist} />
           <Route path="/orders" component={Orders} />
           <Route path="/profile" component={Profile} />

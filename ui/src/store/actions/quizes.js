@@ -1,11 +1,19 @@
 import * as api from "../../api";
 import { setSnackbar } from "./app";
 export const SET_QUIZES = "set-quizes";
+export const SET_ALL_QUIZES = "set-all-quizes";
 export const ADD_QUIZ = "add-quiz";
 
 const setQuizes = (quizes) => {
   return {
     type: SET_QUIZES,
+    payload: quizes,
+  };
+};
+
+const setAllQuizes = (quizes) => {
+  return {
+    type: SET_ALL_QUIZES,
     payload: quizes,
   };
 };
@@ -22,6 +30,19 @@ export const getQuizes = (query) => {
     try {
       const res = await api.fetchQuizes(query);
       dispatch(setQuizes(res.data));
+    } catch (error) {
+      dispatch(
+        setSnackbar("Oops! Quiz service is down, Try after sometime", "error")
+      );
+    }
+  };
+};
+
+export const getAllQuizes = () => {
+  return async (dispatch) => {
+    try {
+      const res = await api.fetchAllQuizes();
+      dispatch(setAllQuizes(res.data));
     } catch (error) {
       dispatch(
         setSnackbar("Oops! Quiz service is down, Try after sometime", "error")

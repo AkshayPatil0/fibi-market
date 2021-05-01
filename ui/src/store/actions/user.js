@@ -14,3 +14,9 @@ export const getUsers = (query) => {
     dispatch(setUsers(res.data));
   };
 };
+
+export const submitQuiz = (body) => {
+  return async () => {
+    await api.submitQuiz(body);
+  };
+};

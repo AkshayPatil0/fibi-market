@@ -21,6 +21,7 @@ export const fetchUsers = (query) =>
 export const fetchProfile = () => API.get("/api/users/profile");
 export const fetchWishlist = () => API.get("/api/users/profile/wishlist");
 export const updateProfile = (body) => API.put("/api/users/profile", body);
+export const submitQuiz = (body) => API.post("/api/users/collectReward", body);
 export const updateProfileAvatar = (body) =>
   API.put("/api/users/profile/avatar", body);
 export const deleteProfileAvatar = () =>
@@ -41,6 +42,7 @@ export const deleteProduct = (id) => API.delete(`/api/products/${id}`);
 // ------------------
 export const fetchQuizes = (query) =>
   API.get(`/api/quizes?${qs.stringify(query)}`);
+export const fetchAllQuizes = () => API.get(`/api/quizes/all`);
 export const fetchQuiz = (id) => API.get(`/api/quizes/${id}`);
 export const createQuiz = (body) => API.post("/api/quizes", body);
 export const updateQuiz = (id, body) => API.put(`/api/quizes/${id}`, body);

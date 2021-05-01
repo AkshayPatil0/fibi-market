@@ -28,7 +28,7 @@ const Quiz = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     let newRows = [];
-    quizes.forEach((quiz) => {
+    quizes.reverse().forEach((quiz) => {
       let row = {};
 
       row.title = (

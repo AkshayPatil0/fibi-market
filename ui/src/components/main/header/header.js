@@ -11,6 +11,7 @@ import {
   Badge,
   Menu,
 } from "@material-ui/core";
+import AirplayIcon from "@material-ui/icons/Airplay";
 import {
   ShoppingCart,
   Favorite,
@@ -136,6 +137,15 @@ export default function Header() {
             >
               <Badge badgeContent={wishlistItemCount} color="secondary">
                 <Favorite />
+              </Badge>
+            </IconButton>
+            <IconButton
+              aria-label={`shows quiz`}
+              color="inherit"
+              onClick={() => router.push("/quiz")}
+            >
+              <Badge color="secondary">
+                <AirplayIcon />
               </Badge>
             </IconButton>
 
