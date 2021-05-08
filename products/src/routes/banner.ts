@@ -9,7 +9,14 @@ import { getBannersController } from "../controllers/banner/get-banners";
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: "uploads/banners",
+  filename: (req, file, cb) => {
+    const fileType = file.originalname.split(".").slice(-1)[0];
+    cb(null, new Date(Date.now()).toISOString() + "." + fileType);
+  },
+});
 const upload = multer({ storage: storage });
 
 router.get("/", getBannersController);

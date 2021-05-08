@@ -45,7 +45,7 @@ export default function Products() {
       const query = qs.parse(location.search, { ignoreQueryPrefix: true });
       setIsLoading(true);
       try {
-        await dispatch(getProducts({ ...params, ...query }));
+        await dispatch(getProducts({ ...params, ...query, ifPublish: true }));
       } catch (err) {
         console.error(err);
       } finally {

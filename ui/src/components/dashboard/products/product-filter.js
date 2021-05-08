@@ -34,12 +34,14 @@ const ProductFilter = () => {
     const handleChange = (e) => {
       dispatch(setProductFilter(e.target.name, e.target.value));
     };
+
+    console.log(filter);
     const selectCategory = (
       <Select
         options={getCategoryOptions(categories)}
         placeholder="Category"
         name="category"
-        value={filter.category}
+        value={filter.category || ""}
         handleChange={handleChange}
       />
     );
@@ -49,7 +51,7 @@ const ProductFilter = () => {
         loadOptions={loadVendors}
         placeholder="Vendor"
         name="vendor"
-        value={filter.vendor}
+        value={filter.vendor || ""}
         handleChange={handleChange}
       />
     );
@@ -60,7 +62,7 @@ const ProductFilter = () => {
 
     if (isAdmin(user)) setFilterOptions(adminOptions);
     else setFilterOptions(vendorOptions);
-  }, [user, categories, filter.category, filter.vendor, dispatch]);
+  }, [user, categories, filter, dispatch]);
 
   return (
     <FilterLayout applyFilters={applyFilters} clearFilters={clearFilters}>

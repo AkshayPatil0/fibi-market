@@ -3,13 +3,13 @@ import { BadRequestError, NotFoundError, UserRoles } from "@fibimarket/common";
 import { User } from "../../models/user";
 
 export const setUserRoleController = async (req: Request, res: Response) => {
-  const { userId, role } = req.body;
+  const { id, role } = req.body;
 
   if (!Object.values(UserRoles).includes(role)) {
     throw new BadRequestError("Role is not valid !");
   }
 
-  let user = await User.findById(userId);
+  let user = await User.findById(id);
 
   if (!user) {
     throw new NotFoundError("user");

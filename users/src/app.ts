@@ -26,6 +26,8 @@ app.use(morgan("dev"));
 
 app.use(cookieParser());
 
+app.use("/api/users/uploads", express.static("uploads"))
+
 app.use("/api/users/profile", profileRoute);
 app.use("/api/users/", usersRoute);
 app.use("/api/users/", authRoutes);

@@ -1,0 +1,33 @@
+# version: 1
+# task_definition:
+#   services:
+#     ui:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     nats:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     users-db:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     users:
+#       cpu_shares: 10
+#       mem_limit: 104857
+#     products-db:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     products:
+#       cpu_shares: 10
+#       mem_limit: 104857
+#     orders-db:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     orders:
+#       cpu_shares: 10
+#       mem_limit: 104857
+#     blogs-db:
+#       cpu_shares: 10
+#       mem_limit: 10485
+#     blogs:
+#       cpu_shares: 10
+#       mem_limit: 10485

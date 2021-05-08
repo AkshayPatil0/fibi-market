@@ -22,6 +22,7 @@ export interface ProductAttrs {
     sku: string;
     stock: number;
   }[];
+  ifPublish?: boolean;
 }
 
 interface ProductModel extends mongoose.Model<ProductDoc> {
@@ -50,6 +51,7 @@ export interface ProductDoc extends mongoose.Document {
     stock: number;
   }[];
   version: number;
+  ifPublish?: boolean;
 }
 
 const productSchema = new mongoose.Schema(
@@ -110,6 +112,7 @@ const productSchema = new mongoose.Schema(
       ref: "categories",
     },
     blog: String,
+    ifPublish: Boolean,
   },
   {
     toJSON: {

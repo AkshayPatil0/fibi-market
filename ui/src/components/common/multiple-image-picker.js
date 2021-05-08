@@ -29,13 +29,23 @@ const MultipleImagePicker = ({
 
   const handleAdd = async (e) => {
     setIsLoading(true);
-    await onAdd(e);
-    setIsLoading(false);
+    try {
+      await onAdd(e);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+    }
   };
   const handleRemove = async (e) => {
     setIsLoading(true);
-    await onRemove(e);
-    setIsLoading(false);
+    try {
+      await onRemove(e);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+    }
   };
 
   const defaultPreview = (

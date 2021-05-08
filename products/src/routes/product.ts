@@ -17,17 +17,19 @@ import { addProductImageController } from "../controllers/products/image/add-pro
 import { removeProductImageController } from "../controllers/products/image/remove-product-image";
 import { updateProductImagesController } from "../controllers/products/image/update-product-images";
 
-import { addProductVariantController } from "../controllers/products/variant/add-product-variant";
-import { removeProductVariantController } from "../controllers/products/variant/remove-product-variant";
-
 import { createProductValidator } from "../validators/product/create-product-validator";
 import { updateProductValidator } from "../validators/product/update-product-validator";
-import { getProductVariantController } from "../controllers/products/variant/get-product-variant";
-import { updateProductVariantController } from "../controllers/products/variant/update-product-variant";
+import { publishProductController } from "../controllers/products/publish-product";
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: "uploads/products",
+  filename: (req, file, cb) => {
+    const fileType = file.originalname.split(".").slice(-1)[0];
+    cb(null, new Date(Date.now()).toISOString() + "." + fileType);
+  },
+});
 const upload = multer({ storage: storage });
 
 router.get("/:id", getProductControlller);
@@ -37,7 +39,7 @@ router.post(
   "/",
   requireAuth,
   authRole(UserRoles.vendor),
-  // createProductValidator,
+  createProductValidator,
   validateRequest,
   createProductController
 );
@@ -46,40 +48,30 @@ router.put(
   "/:id",
   requireAuth,
   authRole(UserRoles.vendor),
-  // updateProductValidator,
-  // validateRequest,
+  updateProductValidator,
+  validateRequest,
   updateProductController
 );
 
-router.post("/:id/images/remove", requireAuth, removeProductImageController);
+router.post(
+  "/:id/images/remove",
+  requireAuth,
+  authRole(UserRoles.vendor),
+  removeProductImageController
+);
 router.post(
   "/:id/images",
   requireAuth,
+  authRole(UserRoles.vendor),
   upload.array("images", 10),
   addProductImageController
 );
 router.put(
   "/:id/images",
   requireAuth,
+  authRole(UserRoles.vendor),
   upload.array("images", 10),
   updateProductImagesController
-);
-
-// router.get("/:id/variants/:variantId", getProductVariantController);
-router.post(
-  "/:id/variants",
-  // requireAuth,
-  addProductVariantController
-);
-router.put(
-  "/:id/variants/:variantId",
-  // requireAuth,
-  updateProductVariantController
-);
-router.post(
-  "/:id/variants/remove",
-  // requireAuth,
-  removeProductVariantController
 );
 
 router.delete(
@@ -87,6 +79,12 @@ router.delete(
   requireAuth,
   authRole(UserRoles.vendor),
   deleteProductController
+);
+router.put(
+  "/publish/:id",
+  requireAuth,
+  authRole(UserRoles.admin),
+  publishProductController
 );
 
 export { router as productRoutes };

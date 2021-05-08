@@ -15,7 +15,14 @@ import { deleteProfileAvatarController } from "../controllers/profile/delete-pro
 
 const router = express();
 
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: "uploads/users",
+  filename: (req, file, cb) => {
+    const fileType = file.originalname.split(".").slice(-1)[0];
+    cb(null, new Date(Date.now()).toISOString() + "." + fileType);
+  },
+});
 const upload = multer({ storage: storage });
 
 router.get("/", currentUser, async (req, res) => {
@@ -28,10 +35,7 @@ router.put(
   "/",
   currentUser,
   requireAuth,
-  [
-    body("firstName").not().isEmpty().withMessage("First name is not valid !"),
-    // body("lastName").not().isEmpty().withMessage("Last name is not valid !"),
-  ],
+  [body("firstName").not().isEmpty().withMessage("First name is not valid !")],
   validateRequest,
   updateProfileController
 );

@@ -54,24 +54,26 @@ const run = async () => {
     process.exit();
   }
 
-  if (!process.env.AWS_ID) {
-    throw new Error("AWS_ID must be provided !");
-  }
-  if (!process.env.AWS_SECRET) {
-    throw new Error("AWS_SECRET must be provided !");
-  }
-  if (!process.env.AWS_BUCKET_NAME) {
-    throw new Error("AWS_BUCKET_NAME must be provided !");
-  }
-  AWS.config.update({
-    credentials: {
-      accessKeyId: process.env.AWS_ID,
-      secretAccessKey: process.env.AWS_SECRET,
-    },
-  });
+  // if (!process.env.AWS_ID) {
+  //   throw new Error("AWS_ID must be provided !");
+  // }
+  // if (!process.env.AWS_SECRET) {
+  //   throw new Error("AWS_SECRET must be provided !");
+  // }
+  // if (!process.env.AWS_BUCKET_NAME) {
+  //   throw new Error("AWS_BUCKET_NAME must be provided !");
+  // }
+  // AWS.config.update({
+  //   credentials: {
+  //     accessKeyId: process.env.AWS_ID,
+  //     secretAccessKey: process.env.AWS_SECRET,
+  //   },
+  // });
 
-  app.listen(process.env.PORT || 4000, () => {
-    console.log("listening on 4001 !!");
+  const port = process.env.PORT || 4000;
+
+  app.listen(port, () => {
+    console.log(`listening on ${port} !!`);
   });
 };
 

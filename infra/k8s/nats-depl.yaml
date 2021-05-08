@@ -12,11 +12,10 @@ spec:
       labels:
         app: nats
     spec:
-      nodeSelector:
-        name: node1
       containers:
         - name: nats
           image: nats-streaming:0.17.0
+          imagePullPolicy: Never
           args:
             [
               "-p",
@@ -39,7 +38,7 @@ kind: Service
 metadata:
   name: nats-srv
 spec:
-  type: NodePort
+  # type: NodePort
   selector:
     app: nats
   ports:

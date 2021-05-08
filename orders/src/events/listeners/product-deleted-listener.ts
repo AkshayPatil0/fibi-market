@@ -12,7 +12,7 @@ class ProductDeletedListener extends Listener<ProductDeletedEvent> {
       console.log(msg.getSequence(), data);
       const product = await Product.findOne({
         _id: data.id,
-        version: data.version - 1,
+        // version: data.version - 1,
       });
       if (!product) {
         return;

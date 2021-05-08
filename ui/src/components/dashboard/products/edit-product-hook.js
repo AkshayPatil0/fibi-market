@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import * as api from "../../../api";
@@ -9,7 +9,7 @@ import {
   setProductImages,
   updateProduct,
 } from "../../../store/actions/product";
-import { getImagesFormData } from "../../../utils";
+import { getImagesFormData, isAdmin } from "../../../utils";
 
 export function useEditProductHook() {
   const location = useLocation();
@@ -20,6 +20,19 @@ export function useEditProductHook() {
   const product = useSelector((state) => state.product.product);
 
   const { id } = useParams();
+
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    if (isAdmin(user)) {
+      const inputs = rootRef.current.querySelectorAll(".MuiInputBase-input");
+      console.log(inputs);
+      for (let input of inputs) {
+        input.setAttribute("disabled", true);
+        input.setAttribute("style", "color: grey");
+      }
+    }
+  });
 
   useEffect(() => {
     return () => {
@@ -72,5 +85,6 @@ export function useEditProductHook() {
     product,
     addProductImage,
     removeProductImage,
+    rootRef,
   };
 }

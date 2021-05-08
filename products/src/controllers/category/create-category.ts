@@ -9,6 +9,12 @@ export const createCategoryController = async (req: Request, res: Response) => {
 
   let parentDoc;
   let slug = "";
+
+  const ifExists = await Category.findOne({ title: title });
+
+  if (ifExists) {
+    throw new BadRequestError("Category already exists");
+  }
   if (parent) {
     if (!mongoose.Types.ObjectId.isValid(parent))
       throw new BadRequestError("Parent is not valid");
@@ -24,7 +30,7 @@ export const createCategoryController = async (req: Request, res: Response) => {
 
   const category = Category.build({
     title,
-    parent: parentDoc ? parentDoc.id : "",
+    parent: parentDoc ? parentDoc.id : undefined,
     slug,
     isLocation: !!location,
   });

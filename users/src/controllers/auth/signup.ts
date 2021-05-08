@@ -17,7 +17,7 @@ export const signupController = async (req: Request, res: Response) => {
     throw new BadRequestError("Email already exists !");
   }
 
-  if (!Object.values(UserRoles).includes(role)) {
+  if (role && !Object.values(UserRoles).includes(role)) {
     throw new BadRequestError("Role is invalid !");
   }
 

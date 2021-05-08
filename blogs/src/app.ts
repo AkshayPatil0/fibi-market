@@ -24,6 +24,8 @@ app.use(morgon("dev"));
 
 app.use(currentUser);
 
+app.use("/api/blogs/uploads", express.static("uploads"))
+
 app.use("/api/blogs", blogRoutes);
 
 app.all("*", () => {

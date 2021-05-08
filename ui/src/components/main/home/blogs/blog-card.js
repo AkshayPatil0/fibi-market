@@ -9,7 +9,7 @@ export default function BlogCard({ blog }) {
 
   return (
     <Card className={classes.root}>
-      <img src={blog.cover} alt={blog.title} width="100%" />
+      <img src={blog.cover} alt={blog.title} className={classes.image} />
       <Box className={classes.content}>
         <Typography variant="caption" color="textSecondary">
           {getDateTime(blog.createdAt)}
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
   image: {
     height: "100%",
 
-    maxHeight: "256px",
+    height: "256px",
     width: "100%",
-    objectFit: "contain",
+    objectFit: "cover",
   },
 }));

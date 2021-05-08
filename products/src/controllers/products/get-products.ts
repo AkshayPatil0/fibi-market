@@ -18,6 +18,7 @@ export const getProductsController = async (req: Request, res: Response) => {
     maxPrice,
     search,
     sort,
+    ifPublish,
   } = req.query;
   let filterQuery: FilterQuery<ProductDoc> = {};
 
@@ -60,16 +61,21 @@ export const getProductsController = async (req: Request, res: Response) => {
     filterQuery.location = {
       $in: await getChildrenIdsFromArray(locations, allLocations),
     };
+  } else if (location) {
+    const locations = await Category.find({ isLocation: true });
+    let locationDoc;
+    if (mongoose.Types.ObjectId.isValid(location.toString())) {
+      locationDoc = await Category.findById(location.toString());
+    } else {
+      locationDoc = await Category.findOne({ slug: location.toString() });
+    }
+
+    if (locationDoc) {
+      filterQuery.location = {
+        $in: [...getChildrenIds(locations, locationDoc.id), locationDoc.id],
+      };
+    }
   }
-  // if (location) {
-  //   const locations = await Category.find({ isLocation: true });
-  //   const locationDoc = await Category.findById(location);
-  //   if (locationDoc) {
-  //     filterQuery.location = {
-  //       $in: [...getChildrenIds(locations, locationDoc.id), locationDoc.id],
-  //     };
-  //   }
-  // }
 
   if (vendor) {
     filterQuery.vendor = { $eq: vendor.toString() };
@@ -96,6 +102,10 @@ export const getProductsController = async (req: Request, res: Response) => {
         { description: { $regex: re, $options: "i" } },
       ],
     };
+  }
+
+  if (ifPublish) {
+    filterQuery.ifPublish = true;
   }
 
   console.log({ filterQuery });

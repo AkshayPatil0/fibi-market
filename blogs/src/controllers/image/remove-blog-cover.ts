@@ -5,6 +5,7 @@ import {
   deleteFromAWS,
   NotFoundError,
 } from "@fibimarket/common";
+import fs from "fs";
 import { Blog } from "../../models/blog";
 import { updateBlog } from "../../helpers/update-blog";
 
@@ -25,9 +26,19 @@ export const removeBlogCoverController = async (
     throw new NotFoundError("blog");
   }
 
-  const key = blog.cover.split(".com/").slice(-1)[0];
+  // const key = blog.cover.split(".com/").slice(-1)[0];
 
-  await deleteFromAWS(key);
+  // await deleteFromAWS(key);
+
+  await new Promise<void>((resolve, reject) => {
+    const filename = blog.cover.split("/").slice(-1)[0];
+    fs.unlink(`uploads/blogs/${filename}`, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
 
   await updateBlog(blog, {
     cover: undefined,

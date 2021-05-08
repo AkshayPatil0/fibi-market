@@ -23,11 +23,13 @@ export const addBlogImageController = async (req: Request, res: Response) => {
 
   const images = await Promise.all(
     files.map(async (file, i) => {
-      const fileType = file.originalname.split(".").slice(-1)[0];
-      const key = `blogs/${blog.id}/${uuidv1()}.${fileType}`;
+      // const fileType = file.originalname.split(".").slice(-1)[0];
+      // const key = `blogs/${blog.id}/${uuidv1()}.${fileType}`;
 
-      const uri = await uploadToAWS(key, file.buffer);
-      return uri;
+      // const uri = await uploadToAWS(key, file.buffer);
+      // return uri;
+
+      return "/api/blogs/" + file.path
     })
   );
 

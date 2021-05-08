@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import fs from "fs";
 import {
   BadRequestError,
   deleteFromAWS,
@@ -7,7 +8,6 @@ import {
   uploadToAWS,
 } from "@fibimarket/common";
 import { Product } from "../../../models/product";
-import { v1 as uuidv1 } from "uuid";
 import { updateProduct } from "../../../helpers/update-product";
 
 export const removeProductImageController = async (
@@ -26,9 +26,18 @@ export const removeProductImageController = async (
   if (!req.body.uri) {
     throw new BadRequestError("Invalid image uri");
   }
-  const key = req.body.uri.split(".com/").slice(-1)[0];
+  // const key = req.body.uri.split(".com/").slice(-1)[0];
 
-  await deleteFromAWS(key);
+  // await deleteFromAWS(key);
+  await new Promise<void>((resolve, reject) => {
+    const filename = req.body.uri.split("/").slice(-1)[0]
+    fs.unlink(`uploads/products/${filename}`, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
 
   await updateProduct(product, {
     images: product.images.filter((uri) => uri !== req.body.uri),

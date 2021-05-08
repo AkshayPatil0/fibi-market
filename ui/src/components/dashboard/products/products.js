@@ -12,13 +12,25 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import { Delete, Edit, Image } from "@material-ui/icons";
+import {
+  Archive,
+  Delete,
+  Edit,
+  Image,
+  Unarchive,
+  Visibility,
+} from "@material-ui/icons";
 
 import ProductToolbar from "./product-toolbar";
 
 import ProductFilter from "./product-filter";
 import Table from "../../common/table";
-import { deleteProduct, getProducts } from "../../../store/actions/product";
+import {
+  deleteProduct,
+  getProducts,
+  publishProduct,
+} from "../../../store/actions/product";
+import { isAdmin } from "../../../utils";
 
 export default function Products() {
   const classes = useStyles();
@@ -45,8 +57,8 @@ export default function Products() {
         setIsLoading(false);
       }
     };
-    if (!products.length > 0) run();
-  }, [dispatch, user.role, user.id, products.length]);
+    run();
+  }, [dispatch, user.role, user.id]);
 
   const options = [
     { head: "Title", key: "title" },
@@ -54,8 +66,9 @@ export default function Products() {
     { head: "Retail price", key: "retail" },
     { head: "Stock", key: "stock" },
     { head: "Category", key: "category" },
-    { head: "Edit", key: "edit" },
-    { head: "Delete", key: "delete" },
+    // { head: "Edit", key: "edit" },
+    // { head: "Delete", key: "delete" },
+    { head: "Actions", key: "actions" },
   ];
 
   const router = useHistory();
@@ -64,6 +77,13 @@ export default function Products() {
     const onDelete = async (id) => {
       try {
         await dispatch(deleteProduct(id));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    const onPublish = async (id, ifPublish) => {
+      try {
+        await dispatch(publishProduct(id, ifPublish));
       } catch (err) {
         console.error(err);
       }
@@ -90,21 +110,48 @@ export default function Products() {
       row.retail = <Typography>{"₹ " + product?.price.retail}</Typography>;
       row.stock = <Typography>{product?.stock}</Typography>;
       row.category = <Typography>{product.category?.title || "NA"}</Typography>;
-      row.edit = (
-        <IconButton
-          size="small"
-          onClick={() =>
-            router.push(`/dashboard/products/update/${product.id}`)
-          }
-        >
-          <Edit color="primary" />
-        </IconButton>
-      );
-      row.delete = (
-        <IconButton size="small" onClick={() => onDelete(product.id)}>
-          <Delete color="secondary" />
-        </IconButton>
-      );
+      if (isAdmin(user)) {
+        row.actions = (
+          <>
+            <IconButton
+              size="small"
+              onClick={() => onPublish(product.id, product.ifPublish)}
+            >
+              {
+                (row.actions = product.ifPublish ? (
+                  <Archive color="error" />
+                ) : (
+                  <Unarchive color="primary" />
+                ))
+              }
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() =>
+                router.push(`/dashboard/products/update/${product.id}`)
+              }
+            >
+              <Visibility color="primary" />
+            </IconButton>
+          </>
+        );
+      } else {
+        row.actions = (
+          <>
+            <IconButton
+              size="small"
+              onClick={() =>
+                router.push(`/dashboard/products/update/${product.id}`)
+              }
+            >
+              <Edit color="primary" />
+            </IconButton>
+            <IconButton size="small" onClick={() => onDelete(product.id)}>
+              <Delete color="secondary" />
+            </IconButton>
+          </>
+        );
+      }
 
       newRows.push(row);
     });

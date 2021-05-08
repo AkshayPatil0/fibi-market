@@ -68,7 +68,7 @@ export default function Blog() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={4} className={classes.relevances}>
-          <Relevances relevances={blog.relevances} />
+          {blog.relevances && <Relevances relevances={blog.relevances} />}
         </Grid>
       </Grid>
     </div>

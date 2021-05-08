@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "visible",
   },
   checked: {
-    color: theme.palette.action.main,
+    color: theme.palette.success,
     position: "absolute",
     top: "-0.8rem",
     right: "-0.8rem",

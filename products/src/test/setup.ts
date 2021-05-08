@@ -1,9 +1,21 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { nats } from "@fibimarket/common";
 
 import jwt from "jsonwebtoken";
 import { Product } from "../models/product";
+
+import * as Common from "@fibimarket/common";
+
+jest.mock("@fibimarket/common", () => ({
+  ...(jest.requireActual("@fibimarket/common") as typeof Common),
+  nats: {
+    client: {
+      publish: async (subject: string, data: any, cb: () => void) => {
+        cb();
+      },
+    },
+  },
+}));
 
 let mongo: any;
 
@@ -18,17 +30,13 @@ declare global {
 
 beforeAll(async () => {
   process.env.JWT_KEY = "dsflirfp9g$^Yugv";
-  process.env.NATS_CLUSTER_ID = "fibimarket";
-  process.env.NATS_CLIENT_ID = `test${Math.random().toString(36).substr(2, 5)}`;
-  process.env.NATS_URL = "http://localhost:4223";
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   });
-
-  // await nats.connect("fibimarket-test", `test${Math.random().toString(36).substr(2, 5)}`, "http://localhost:4223")
 });
 
 beforeEach(async () => {
@@ -40,12 +48,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  nats.client.close();
-  await new Promise<void>((resolve) => {
-    nats.client.on("close", () => {
-      resolve();
-    });
-  });
   await mongo.stop();
   await mongoose.connection.close();
 });
@@ -67,7 +69,9 @@ global.signin = async (role: string) => {
 global.createProduct = async () => {
   const product = Product.build({
     title: "product",
-    price: 50,
+    description: "product description",
+    sku: "PR" + Math.random(),
+    price: { mrp: 100, retail: 50 },
     stock: 10,
     vendor: new mongoose.Types.ObjectId().toHexString(),
   });

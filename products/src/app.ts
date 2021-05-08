@@ -26,6 +26,8 @@ app.use(
 app.use(morgan("dev"));
 app.use(currentUser);
 
+app.use("/api/products/uploads", express.static('uploads'));
+
 app.use("/api/products/categories", categoryRoutes);
 app.use("/api/products/banners", bannerRoutes);
 app.use("/api/products/", productRoutes);

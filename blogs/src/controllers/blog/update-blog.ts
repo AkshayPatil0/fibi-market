@@ -24,3 +24,4 @@ export async function updateBlogController(req: Request, res: Response) {
 
   res.status(201).json(blog);
 }
+ 

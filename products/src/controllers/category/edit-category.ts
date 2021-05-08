@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Category } from "../../models/category";
 import { NotFoundError, uploadToAWS } from "@fibimarket/common";
+import fs from "fs";
 
 export const editCategoryController = async (req: Request, res: Response) => {
   const {
@@ -20,11 +21,23 @@ export const editCategoryController = async (req: Request, res: Response) => {
   }
 
   let newImage = image;
+  // if (category.image) {
+  //   await new Promise<void>((resolve, reject) => {
+  //     const filename = category.image.split("/").slice(-1)[0];
+  //     fs.unlink(`uploads/categories/${filename}`, (err) => {
+  //       if (err) {
+  //         reject(err);
+  //       }
+  //       resolve();
+  //     });
+  //   });
+  // }
   if (req.file) {
-    const fileType = req.file.originalname.split(".").slice(-1)[0];
-    const key = `categories/${category.id}.${fileType}`;
+    // const fileType = req.file.originalname.split(".").slice(-1)[0];
+    // const key = `categories/${category.id}.${fileType}`;
 
-    newImage = await uploadToAWS(key, req.file.buffer);
+    // newImage = await uploadToAWS(key, req.file.buffer);
+    newImage = "/api/products/" + req.file.path;
   }
 
   category.set({

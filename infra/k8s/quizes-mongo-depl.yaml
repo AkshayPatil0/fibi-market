@@ -1,0 +1,61 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: quizes-mongo-pv
+  labels:
+    type: local
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 0.1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/quizes_mongo_data"
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: quizes-mongo
+spec:
+  serviceName: "local-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quizes-mongo
+  template:
+    metadata:
+      labels:
+        app: quizes-mongo
+    spec:
+      containers:
+        - name: quizes-mongo
+          image: mongo
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: local-vol
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: local-vol
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "local-storage"
+        resources:
+          requests:
+            storage: 0.1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quizes-mongo-srv
+spec:
+  selector:
+    app: quizes-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

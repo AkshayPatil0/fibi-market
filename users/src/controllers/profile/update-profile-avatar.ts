@@ -4,6 +4,7 @@ import {
   NotFoundError,
   uploadToAWS,
 } from "@fibimarket/common";
+import fs from 'fs';
 
 import { User } from "../../models/user";
 import { updateUser } from "../../helpers/update-user";
@@ -20,10 +21,22 @@ export const updateProfileAvatarController = async (
 
   if (!req.file) throw new BadRequestError("Avatar is not valid");
 
-  const fileType = req.file.originalname.split(".").slice(-1)[0];
-  const key = `users/${user.id}.${fileType}`;
+  // const fileType = req.file.originalname.split(".").slice(-1)[0];
+  // const key = `users/${user.id}.${fileType}`;
 
-  const avatar = await uploadToAWS(key, req.file.buffer);
+  // const avatar = await uploadToAWS(key, req.file.buffer);
+  if(user.avatar){
+    await new Promise<void>((resolve, reject) => {
+      const filename = user.avatar.split("/").slice(-1)[0]
+      fs.unlink(`uploads/users/${filename}`, (err) => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
+  }
+  const avatar = "/api/users/" + req.file.path;
 
   await updateUser(user, {
     email: user.email,

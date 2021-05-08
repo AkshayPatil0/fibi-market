@@ -34,7 +34,11 @@ export default function Banners() {
     <Box p={1}>
       <Slider slidesPerRow={1} arrows={false} dots infinite>
         {banners.map((banner) => (
-          <Box className={classes.banner} onClick={() => handleClick(banner)}>
+          <Box
+            key={banner.cover}
+            className={classes.banner}
+            onClick={() => handleClick(banner)}
+          >
             <img
               src={banner.cover}
               alt={banner.title || "banner"}

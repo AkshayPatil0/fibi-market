@@ -201,6 +201,26 @@ export const deleteProduct = (id) => {
   };
 };
 
+export const publishProduct = (id, ifPublish) => {
+  return async (dispatch, getState) => {
+    try {
+      const products = getState().product.products;
+      await api.publishProduct(id);
+      if (ifPublish)
+        dispatch(setSnackbar("Unpublished product successfully !", "success"));
+      else dispatch(setSnackbar("Published product successfully !", "success"));
+      const res = await api.fetchProduct(id);
+      dispatch(
+        setProducts(
+          products.map((product) => (product.id === id ? res.data : product))
+        )
+      );
+    } catch (err) {
+      dispatch(setSnackbar("Failed publishing product, try again !", "error"));
+    }
+  };
+};
+
 export const setBanners = (banners) => {
   return {
     type: SET_BANNERS,

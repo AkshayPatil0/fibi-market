@@ -44,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
+    display: "flex",
+    flexWrap: "wrap",
   },
   productCard: {
     height: "100%",

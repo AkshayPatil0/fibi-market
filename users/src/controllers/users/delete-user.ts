@@ -4,6 +4,7 @@ import {
   NotFoundError,
   UserRoles,
 } from "@fibimarket/common";
+import fs from "fs";
 import { Request, Response } from "express";
 import { AdminDeletedPublisher } from "../../events/publishers/admin-deleted-publisher";
 import { UserDeletedPublisher } from "../../events/publishers/user-deleted-publisher";
@@ -17,8 +18,16 @@ export const deleteUserController = async (req: Request, res: Response) => {
     throw new NotFoundError("user");
   }
 
-  const fileType = user.avatar.split(".").slice(-1)[0];
-  await deleteFromAWS(`users/${user.id}.${fileType}`);
+  // const fileType = user.avatar.split(".").slice(-1)[0];
+  // await deleteFromAWS(`users/${user.id}.${fileType}`);
+  new Promise<void>((resolve, reject) => {
+    fs.unlink(user.avatar, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
 
   await user.delete();
 

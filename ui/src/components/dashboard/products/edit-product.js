@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Container, Grid, makeStyles } from "@material-ui/core";
 
@@ -13,10 +13,15 @@ import MultipleImagePicker from "../../common/multiple-image-picker";
 export default function EditProduct() {
   const classes = useStyles();
 
-  const { product, addProductImage, removeProductImage } = useEditProductHook();
+  const {
+    product,
+    addProductImage,
+    removeProductImage,
+    rootRef,
+  } = useEditProductHook();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} ref={rootRef}>
       <Container maxWidth="lg">
         <Grid container spacing={2} alignItems="flex-start">
           <Grid item xs={12}>

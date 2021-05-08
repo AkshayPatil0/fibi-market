@@ -45,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
   //   position: "relative",
   // },
   blogCover: {
-    maxHeight: 256,
+    maxHeight: 360,
     width: "100%",
+    objectFit: "contain",
   },
   // blogDetails: {
   //   position: "absolute",

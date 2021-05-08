@@ -15,15 +15,15 @@ export const updateProfileController = async (req: Request, res: Response) => {
 
   await updateUser(user, {
     email: user.email,
-    firstName: firstName || user.firstName,
-    lastName: lastName || user.lastName,
     password: user.password,
     role: user.role,
     phoneNo: user.phoneNo,
+    avatar: user.avatar,
+    firstName: firstName || user.firstName,
+    lastName: lastName || user.lastName,
     addresses: addresses || user.addresses,
     wishlist: wishlist || user.wishlist,
-    avatar: user.avatar,
   });
 
-  res.status(201).json(user);
+  res.status(200).json(user);
 };

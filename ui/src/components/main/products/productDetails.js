@@ -116,6 +116,14 @@ const ProductDetails = () => {
           fullWidth
           onClick={onAddToCart}
           className={classes.addToCartButton}
+          disabled={
+            product.hasVariants
+              ? !(
+                  product.selectedVariant !== null &&
+                  product.selectedVariant?.stock > 0
+                )
+              : false
+          }
         >
           <Box display="flex" alignItems="center">
             <Box mr={2} display="flex" alignItems="center">
@@ -131,7 +139,7 @@ const ProductDetails = () => {
           onClick={handleWishlist}
           color={wishlist?.includes(id) ? "secondary" : "default"}
         >
-          <Box display="flex" alignItems="center" fontSize="0.7rem">
+          <Box display="flex" alignItems="center">
             <Box mr={1} display="flex" alignItems="center">
               <FavoriteBorder />
             </Box>
@@ -206,7 +214,9 @@ const ProductDetails = () => {
               product.selectedVariant &&
               (product.selectedVariant.stock < 10 ? (
                 <Typography variant="body1" color="secondary">
-                  hurry up only {product.selectedVariant.stock} left !
+                  {product.selectedVariant.stock > 0
+                    ? `hurry up only ${product.selectedVariant.stock} left !`
+                    : "out of stock !"}
                 </Typography>
               ) : (
                 <Typography variant="body1" style={{ color: "green" }}>

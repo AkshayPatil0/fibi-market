@@ -21,6 +21,7 @@ const UserFilter = () => {
 
   const clearFilters = () => {
     dispatch(resetFilter("user"));
+    dispatch(getUsers());
   };
   const [filterOptions, setFilterOptions] = useState([]);
 
@@ -34,7 +35,7 @@ const UserFilter = () => {
         options={userRoleOptions}
         placeholder="Role"
         name="role"
-        value={filter.role}
+        value={filter.role || ""}
         handleChange={handleChange}
       />
     );
@@ -44,7 +45,7 @@ const UserFilter = () => {
 
     if (isAdmin(user)) setFilterOptions(adminOptions);
     else setFilterOptions(vendorOptions);
-  }, [user, filter.role, dispatch]);
+  }, [user, filter, dispatch]);
 
   return (
     <FilterLayout applyFilters={applyFilters} clearFilters={clearFilters}>

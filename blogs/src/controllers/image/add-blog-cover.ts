@@ -6,7 +6,7 @@ import {
   uploadToAWS,
 } from "@fibimarket/common";
 import { Blog } from "../../models/blog";
-import { v1 as uuidv1 } from "uuid";
+import fs from "fs"; 
 import { updateBlog } from "../../helpers/update-blog";
 
 export const addBlogCoverController = async (req: Request, res: Response) => {
@@ -23,10 +23,22 @@ export const addBlogCoverController = async (req: Request, res: Response) => {
     throw new BadRequestError("Invalid blog cover !");
   }
 
-  const fileType = req.file.originalname.split(".").slice(-1)[0];
-  const key = `blogs/${blog.id}/${uuidv1()}.${fileType}`;
+  // if(blog.cover){
+  //   await new Promise<void>((resolve, reject) => {
+  //     const filename = blog.cover.split("/").slice(-1)[0]
+  //     fs.unlink(`uploads/users/${filename}`, (err) => {
+  //       if (err) {
+  //         reject(err);
+  //       }
+  //       resolve();
+  //     });
+  //   });
+  // }
+  // const fileType = req.file.originalname.split(".").slice(-1)[0];
+  // const key = `blogs/${blog.id}/${uuidv1()}.${fileType}`;
 
-  const cover = await uploadToAWS(key, req.file.buffer);
+  // const cover = await uploadToAWS(key, req.file.buffer);
+  const cover = "/api/blogs/" + req.file.path;
 
   await updateBlog(blog, {
     cover,

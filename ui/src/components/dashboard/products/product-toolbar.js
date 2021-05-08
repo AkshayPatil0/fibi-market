@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   TextField,
@@ -17,10 +17,12 @@ import { Search as SearchIcon } from "react-feather";
 import ToolbarLayout from "../toolbar-layout";
 import ProductDetailsForm from "./forms/product-details-form";
 import { getProducts, newProduct } from "../../../store/actions/product";
+import { isVendor } from "../../../utils";
 
 const ProductToolbar = () => {
   const classes = useStyles();
 
+  const user = useSelector((state) => state.auth.currentUser);
   const [open, setOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch = useDispatch();
@@ -39,7 +41,9 @@ const ProductToolbar = () => {
     await new Promise((resolve) => {
       setTimeout(resolve, 2000);
     });
-    await dispatch(getProducts());
+    await dispatch(
+      getProducts({ vendor: isVendor(user) ? user.id : undefined })
+    );
     setIsRefreshing(false);
   };
 
@@ -78,14 +82,16 @@ const ProductToolbar = () => {
             <Refresh />
           </Button>
         )}
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          Add product
-        </Button>
+        {isVendor(user) && (
+          <Button
+            className={classes.button}
+            color="primary"
+            variant="contained"
+            onClick={() => setOpen(true)}
+          >
+            Add product
+          </Button>
+        )}
       </Box>
       <Modal open={open} onClose={() => setOpen(false)}>
         <div className={classes.modal}>

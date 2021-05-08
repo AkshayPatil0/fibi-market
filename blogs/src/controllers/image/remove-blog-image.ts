@@ -5,6 +5,7 @@ import {
   deleteFromAWS,
   NotFoundError,
 } from "@fibimarket/common";
+import fs from "fs";
 import { Blog } from "../../models/blog";
 import { updateBlog } from "../../helpers/update-blog";
 
@@ -24,9 +25,19 @@ export const removeBlogImageController = async (
   if (!req.body.uri) {
     throw new BadRequestError("Invalid image uri");
   }
-  const key = req.body.uri.split(".com/").slice(-1)[0];
+  // const key = req.body.uri.split(".com/").slice(-1)[0];
 
-  await deleteFromAWS(key);
+  // await deleteFromAWS(key);
+
+  // await new Promise<void>((resolve, reject) => {
+  //   const filename = req.body.uri.split("/").slice(-1)[0];
+  //   fs.unlink(`uploads/blogs/${filename}`, (err) => {
+  //     if (err) {
+  //       reject(err);
+  //     }
+  //     resolve();
+  //   });
+  // });
 
   await updateBlog(blog, {
     images: blog.images.filter((uri: string) => uri !== req.body.uri),

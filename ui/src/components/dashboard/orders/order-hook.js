@@ -13,10 +13,10 @@ export function useOrderHook() {
     const run = async () => {
       try {
         // if (user.role === "user") {
-        await dispatch(getMyOrders());
+        // await dispatch(getMyOrders());
         // }
 
-        // await dispatch(getOrders({}));
+        await dispatch(getOrders({}));
       } catch (err) {
         console.error(err);
       }

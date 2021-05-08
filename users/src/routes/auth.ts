@@ -22,7 +22,23 @@ router.post(
   signinController
 );
 
-router.post("/googlesignin", googleSigninController);
+router.post(
+  "/googlesignin",
+  [
+    body("profile.givenName")
+      .not()
+      .isEmpty()
+      .withMessage("First name is not valid !"),
+    body("profile.email").isEmail().withMessage("Email is not valid !"),
+    body("profile.googleId")
+      .isLength({ min: 6, max: 20 })
+      .withMessage(
+        "Password must be at least 6 and at most 20 characters long !"
+      ),
+  ],
+  validateRequest,
+  googleSigninController
+);
 
 router.post(
   "/signup",

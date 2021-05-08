@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { deleteFromAWS, NotFoundError } from "@fibimarket/common";
 import { User } from "../../models/user";
 import { updateUser } from "../../helpers/update-user";
+import fs from "fs";
 
 export const deleteProfileAvatarController = async (
   req: Request,
@@ -13,8 +14,18 @@ export const deleteProfileAvatarController = async (
     throw new NotFoundError("user");
   }
 
-  const fileType = user.avatar.split(".").slice(-1)[0];
-  await deleteFromAWS(`users/${user.id}.${fileType}`);
+  // const fileType = user.avatar.split(".").slice(-1)[0];
+  // await deleteFromAWS(`users/${user.id}.${fileType}`);
+
+  await new Promise<void>((resolve, reject) => {
+    const filename = user.avatar.split("/").slice(-1)[0];
+    fs.unlink(`uploads/users/${filename}`, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
 
   await updateUser(user, {
     email: user.email,

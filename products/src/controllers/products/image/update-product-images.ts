@@ -33,11 +33,12 @@ export const updateProductImagesController = async (
 
   const images = await Promise.all(
     files.map(async (file, i) => {
-      const fileType = file.originalname.split(".").slice(-1)[0];
-      const key = `products/${product.id}/${uuidv1()}.${fileType}`;
+      // const fileType = file.originalname.split(".").slice(-1)[0];
+      // const key = `products/${product.id}/${uuidv1()}.${fileType}`;
 
-      const uri = await uploadToAWS(key, file.buffer);
-      return uri;
+      // const uri = await uploadToAWS(key, file.buffer);
+      // return uri;
+      return file.path;
     })
   );
 

@@ -32,28 +32,30 @@ export const updateProductController = async (req: Request, res: Response) => {
 
   let newVariants = new Array<ProductVariant>();
 
-  variants.map((variant: ProductVariant) => {
-    if (variant.id) {
-      newVariants.push(variant);
-    } else {
-      const id = Object.values(variant.variation).sort().join("_");
-      newVariants.push({ ...variant, id });
-    }
-  });
+  if (variants) {
+    variants.map((variant: ProductVariant) => {
+      if (variant.id) {
+        newVariants.push(variant);
+      } else {
+        const id = Object.values(variant.variation).sort().join("_");
+        newVariants.push({ ...variant, id });
+      }
+    });
+  }
 
   await updateProduct(product, {
-    title,
-    sku,
-    description,
-    price,
-    specs,
-    stock,
+    title: title || product.title,
+    sku: sku || product.sku,
+    description: description || product.description,
+    price: price || product.price,
+    specs: specs || product.specs,
+    stock: stock || product.stock,
     vendor: product.vendor,
-    images,
-    category,
-    location,
-    hasVariants: variants.length > 0,
-    variations,
+    images: images || product.images,
+    category: category || product.category,
+    location: location || product.location,
+    hasVariants: newVariants.length > 0,
+    variations: variations || product.variations,
     variants: newVariants,
   });
 

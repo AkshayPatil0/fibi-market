@@ -10,13 +10,19 @@ import { updateBlogController } from "../controllers/blog/update-blog";
 
 import { removeBlogImageController } from "../controllers/image/remove-blog-image";
 import { addBlogImageController } from "../controllers/image/add-blog-image";
-import { updateBlogImagesController } from "../controllers/image/update-blog-images";
 import { removeBlogCoverController } from "../controllers/image/remove-blog-cover";
 import { addBlogCoverController } from "../controllers/image/add-blog-cover";
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: "uploads/blogs",
+  filename: (req, file, cb) => {
+    const fileType = file.originalname.split(".").slice(-1)[0];
+    cb(null, new Date(Date.now()).toISOString() + "." + fileType);
+  },
+});
 const upload = multer({ storage: storage });
 
 router.get("/", getBlogsController);
@@ -30,12 +36,6 @@ router.post(
   requireAuth,
   upload.array("images", 10),
   addBlogImageController
-);
-router.put(
-  "/:id/images",
-  requireAuth,
-  upload.array("images", 10),
-  updateBlogImagesController
 );
 
 router.post("/:id/cover/remove", requireAuth, removeBlogCoverController);

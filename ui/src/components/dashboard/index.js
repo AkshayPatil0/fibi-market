@@ -25,6 +25,7 @@ import Quiz from "./quiz/quiz";
 import Locations from "./locations/locations";
 import Blog from "./blogs/blog";
 import Banners from "./banners/banners";
+import { isUser } from "../../utils";
 
 const DashboardLayout = () => {
   const classes = useStyles();
@@ -43,9 +44,12 @@ const DashboardLayout = () => {
         })}`
       );
     }
+    if (isUser(user)) {
+      router.replace("/");
+    }
   }, [location, user, router]);
 
-  if (!user) {
+  if (!user || isUser(user)) {
     return <div />;
   }
 

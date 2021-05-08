@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
@@ -23,6 +23,14 @@ export default function PriceFilter({ selectedCategory, filter, setFilter }) {
     return `${n}${value === selectedCategory.maxPrice ? "+" : ""}`;
   }
 
+  useEffect(() => {
+    setFilter((filter) => ({
+      ...filter,
+      minPrice: 0,
+      maxPrice: selectedCategory.maxPrice || 10000,
+    }));
+  }, []);
+
   return (
     <div className={classes.root}>
       <Typography id="range-slider" variant="h6" gutterBottom>
@@ -30,26 +38,27 @@ export default function PriceFilter({ selectedCategory, filter, setFilter }) {
       </Typography>
       <Box px={2}>
         <Slider
-          value={[
-            +filter.minPrice || selectedCategory.minPrice,
-            +filter.maxPrice || selectedCategory.maxPrice,
-          ]}
+          value={[+filter.minPrice, +filter.maxPrice]}
           onChange={handleChange}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
-          step={selectedCategory.minPrice}
+          step={selectedCategory.minPrice || 500}
           min={0}
-          max={selectedCategory.maxPrice}
+          max={selectedCategory.maxPrice || 10000}
           getAriaValueText={valuetext}
           valueLabelFormat={valuetext}
         />
         <Box display="flex" justifyContent="space-between">
           <Typography>
-            <b>{`Rs. ${filter.minPrice || selectedCategory.minPrice} `}</b>
+            <b>{`Rs. ${filter.minPrice} `}</b>
           </Typography>
           <Typography>to</Typography>
           <Typography>
-            <b>{`Rs. ${filter.maxPrice || selectedCategory.maxPrice}`}</b>
+            <b>{`Rs. ${
+              +filter.maxPrice === (+selectedCategory.maxPrice || 10000)
+                ? filter.maxPrice + "+"
+                : filter.maxPrice
+            }`}</b>
           </Typography>
         </Box>
       </Box>

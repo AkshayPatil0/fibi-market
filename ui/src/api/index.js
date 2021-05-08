@@ -17,7 +17,6 @@ export const signout = () => API.get("/api/users/signout");
 // ------------------
 export const fetchUsers = (query) =>
   API.get(`/api/users?${qs.stringify(query)}`);
-
 export const fetchProfile = () => API.get("/api/users/profile");
 export const fetchWishlist = () => API.get("/api/users/profile/wishlist");
 export const updateProfile = (body) => API.put("/api/users/profile", body);
@@ -26,6 +25,8 @@ export const updateProfileAvatar = (body) =>
   API.put("/api/users/profile/avatar", body);
 export const deleteProfileAvatar = () =>
   API.delete("/api/users/profile/avatar");
+export const setRole = (id, role) =>
+  API.post("/api/users/setrole", { id, role });
 
 // ------------------
 //  Products
@@ -36,16 +37,7 @@ export const fetchProduct = (id) => API.get(`/api/products/${id}`);
 export const createProduct = (body) => API.post("/api/products", body);
 export const updateProduct = (id, body) => API.put(`/api/products/${id}`, body);
 export const deleteProduct = (id) => API.delete(`/api/products/${id}`);
-
-// ------------------
-//  Quizes
-// ------------------
-export const fetchQuizes = (query) =>
-  API.get(`/api/quizes?${qs.stringify(query)}`);
-export const fetchAllQuizes = () => API.get(`/api/quizes/all`);
-export const fetchQuiz = (id) => API.get(`/api/quizes/${id}`);
-export const createQuiz = (body) => API.post("/api/quizes", body);
-export const updateQuiz = (id, body) => API.put(`/api/quizes/${id}`, body);
+export const publishProduct = (id) => API.put(`/api/products/publish/${id}`);
 
 export const addProductImage = (id, body) =>
   API.post(`/api/products/${id}/images`, body);
@@ -132,3 +124,13 @@ export const addBanner = (body) => API.post(`/api/products/banners`, body);
 export const updateBanner = (id, body) =>
   API.put(`/api/products/banners/${id}`, body);
 export const deleteBanner = (id) => API.delete(`/api/products/banners/${id}`);
+
+// ------------------
+//  Quizes
+// ------------------
+export const fetchQuizes = (query) =>
+  API.get(`/api/quizes?${qs.stringify(query)}`);
+export const fetchAllQuizes = () => API.get(`/api/quizes/all`);
+export const fetchQuiz = (id) => API.get(`/api/quizes/${id}`);
+export const createQuiz = (body) => API.post("/api/quizes", body);
+export const updateQuiz = (id, body) => API.put(`/api/quizes/${id}`, body);

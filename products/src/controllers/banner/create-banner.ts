@@ -15,10 +15,12 @@ export const createBannerController = async (req: Request, res: Response) => {
     throw new BadRequestError("Cover image not provided !");
   }
 
-  const fileType = req.file.originalname.split(".").slice(-1)[0];
-  const key = `banners/${v1()}.${fileType}`;
+  // const fileType = req.file.originalname.split(".").slice(-1)[0];
+  // const key = `banners/${v1()}.${fileType}`;
 
-  const cover = await uploadToAWS(key, req.file.buffer);
+  // const cover = await uploadToAWS(key, req.file.buffer);
+
+  const cover = "/api/products/" + req.file.path;
 
   const banner = Banner.build({
     title,
