@@ -9,7 +9,7 @@ export const getOrderController = async (req: Request, res: Response) => {
     throw new NotFoundError("order");
   }
 
-  if (order.userId !== req.currentUser!.id) {
+  if (order.user !== req.currentUser!.id) {
     throw new NotAuthorizedError();
   }
 

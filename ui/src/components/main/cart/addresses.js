@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   selectAddress: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.action.selected,
   },
 }));
 

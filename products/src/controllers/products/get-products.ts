@@ -109,7 +109,10 @@ export const getProductsController = async (req: Request, res: Response) => {
   }
 
   console.log({ filterQuery });
-  const products = await Product.find(filterQuery).sort(sort);
+  const products = await Product.find(filterQuery)
+    .populate("category")
+    .populate("vendor")
+    .sort(sort);
 
   res.status(200).json(products);
 };

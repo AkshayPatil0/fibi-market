@@ -4,7 +4,7 @@ import { Order } from "../../models/order";
 
 export const getMyOrdersController = async (req: Request, res: Response) => {
   const orders = await Order.find({
-    userId: req.currentUser!.id,
+    user: req.currentUser!.id,
     isGroup: true,
   })
     .populate("orders")

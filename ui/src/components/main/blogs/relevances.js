@@ -4,6 +4,7 @@ import { fetchProduct, fetchCategory, fetchLocation } from "../../../api";
 import ProductGridItem from "../products/product-grid-item";
 import CategoryItem from "../home/categories/category-item";
 import HorizontalList from "../../common/horizontalList";
+import { NavLink } from "react-router-dom";
 
 export default function Relevances({ relevances }) {
   const [products, setProducts] = useState([]);
@@ -11,11 +12,16 @@ export default function Relevances({ relevances }) {
   const [locations, setLocations] = useState([]);
 
   const getProductCard = (product) => (
-    <Box minWidth={"12em"}>
+    <Box minWidth={"12em"} maxWidth={"15em"}>
       <ProductGridItem product={product} />
     </Box>
   );
   const getCategoryCard = (category) => <CategoryItem category={category} />;
+  const getLocationCard = (location) => (
+    <Box component={NavLink} to={`/locations/${location.slug}`}>
+      <CategoryItem category={location} />
+    </Box>
+  );
 
   useEffect(() => {
     const run = async (ids, setItems, getItem, getCard) => {
@@ -40,7 +46,7 @@ export default function Relevances({ relevances }) {
       relevances.locations || [],
       setLocations,
       fetchLocation,
-      getCategoryCard
+      getLocationCard
     );
   }, [relevances]);
 

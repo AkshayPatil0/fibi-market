@@ -122,3 +122,20 @@ export const placeOrder = () => {
     dispatch(setOrder(res.data));
   };
 };
+
+export const updateOrderStatus = (id, status) => {
+  return async (dispatch, getState) => {
+    const res = await api.updateOrderStatus(id, { status });
+    const orders = getState().order.orders;
+    dispatch(
+      setOrders(orders.map((order) => (order.id === id ? res.data : order)))
+    );
+  };
+};
+
+export const cancelOrder = (id) => {
+  return async (dispatch) => {
+    await api.cancelOrder(id);
+    dispatch(getMyOrders());
+  };
+};

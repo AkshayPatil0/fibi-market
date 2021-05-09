@@ -6,6 +6,13 @@ import {
   Typography,
   Container,
   makeStyles,
+  Box,
+  Avatar,
+  Link,
+  IconButton,
+  Button,
+  Menu,
+  Popover,
 } from "@material-ui/core";
 
 import { useOrderHook } from "./order-hook";
@@ -14,10 +21,16 @@ import OrderListItem from "./order-list-item";
 import Toolbar from "./order-toolbar";
 import OrderFilter from "./order-filter";
 import { useDispatch, useSelector } from "react-redux";
-import { isUser } from "../../../utils";
+import { isAdmin, isUser } from "../../../utils";
 
-import { getMyOrders, getOrders } from "../../../store/actions/order";
+import {
+  getMyOrders,
+  getOrders,
+  updateOrderStatus,
+} from "../../../store/actions/order";
 import { useHistory } from "react-router";
+import { Image, Visibility } from "@material-ui/icons";
+import Table from "../../common/table";
 
 export default function Orders() {
   const classes = useStyles();
@@ -48,98 +61,51 @@ export default function Orders() {
   }, [dispatch]);
 
   const options = [
-    { head: "Title", key: "title" },
-    { head: "MRP", key: "mrp" },
-    { head: "Retail price", key: "retail" },
-    { head: "Stock", key: "stock" },
-    { head: "Category", key: "category" },
-    { head: "Actions", key: "actions" },
+    { head: "Product", key: "product" },
+    { head: "Quantity", key: "quantity" },
+    { head: "Amount", key: "amount" },
+    { head: "Address", key: "address" },
+    { head: "User", key: "user" },
+    { head: "Vendor", key: "vendor" },
+    { head: "Status", key: "status" },
   ];
 
   const router = useHistory();
 
   useEffect(() => {
-    // const onDelete = async (id) => {
-    //   try {
-    //     await dispatch(deleteProduct(id));
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
-    // const onPublish = async (id, ifPublish) => {
-    //   try {
-    //     await dispatch(publishProduct(id, ifPublish));
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
     let newRows = [];
     orders.forEach((order) => {
+      if (order.isGroup) {
+        return;
+      }
       console.log(order);
-      // let row = {};
+      let row = {};
 
-      // row.id = product.id;
-      // row.title = (
-      //   <Box alignItems="center" display="flex">
-      //     <Box ml={2} mr={2}>
-      //       <Avatar src={product?.images[0]} variant="square">
-      //         <Image />
-      //       </Avatar>
-      //     </Box>
-      //     <Typography color="textPrimary" variant="body1">
-      //       <Link to={`/products/${product.id}`}>{product?.title}</Link>
-      //     </Typography>
-      //   </Box>
-      // );
+      row.id = order.id;
+      row.product = (
+        <Box alignItems="center" display="flex">
+          <Box ml={2} mr={2}>
+            <Avatar src={order.product?.images?.[0]} variant="square">
+              <Image />
+            </Avatar>
+          </Box>
+          <Typography color="textPrimary" variant="body1">
+            <Link to={`/products/${order?.product?.id}`}>
+              {order.product?.title}
+            </Link>
+          </Typography>
+        </Box>
+      );
 
-      // row.mrp = <Typography>{"₹ " + product?.price.mrp}</Typography>;
-      // row.retail = <Typography>{"₹ " + product?.price.retail}</Typography>;
-      // row.stock = <Typography>{product?.stock}</Typography>;
-      // row.category = <Typography>{product.category?.title || "NA"}</Typography>;
-      // if (isAdmin(user)) {
-      //   row.actions = (
-      //     <>
-      //       <IconButton
-      //         size="small"
-      //         onClick={() => onPublish(product.id, product.ifPublish)}
-      //       >
-      //         {
-      //           (row.actions = product.ifPublish ? (
-      //             <Archive color="error" />
-      //           ) : (
-      //             <Unarchive color="primary" />
-      //           ))
-      //         }
-      //       </IconButton>
-      //       <IconButton
-      //         size="small"
-      //         onClick={() =>
-      //           router.push(`/dashboard/products/update/${product.id}`)
-      //         }
-      //       >
-      //         <Visibility color="primary" />
-      //       </IconButton>
-      //     </>
-      //   );
-      // } else {
-      //   row.actions = (
-      //     <>
-      //       <IconButton
-      //         size="small"
-      //         onClick={() =>
-      //           router.push(`/dashboard/products/update/${product.id}`)
-      //         }
-      //       >
-      //         <Edit color="primary" />
-      //       </IconButton>
-      //       <IconButton size="small" onClick={() => onDelete(product.id)}>
-      //         <Delete color="secondary" />
-      //       </IconButton>
-      //     </>
-      //   );
-      // }
+      row.quantity = <Typography>{order?.quantity}</Typography>;
+      row.amount = <Typography>{"₹ " + order?.price?.retail}</Typography>;
 
-      // newRows.push(row);
+      row.status = <SetStatusMenu order={order} />;
+      row.user = <Typography>{order.user?.email}</Typography>;
+      row.vendor = <Typography>{order.vendor?.email}</Typography>;
+      row.address = <AddressMenu address={order.address} />;
+
+      newRows.push(row);
     });
 
     setRows(newRows);
@@ -148,13 +114,129 @@ export default function Orders() {
   return (
     <div className={classes.root}>
       <Container maxWidth="lg">
-        {!isUser(user) && <Toolbar />}
-        {!isUser(user) && <OrderFilter />}
-        <Grid container></Grid>
+        <Toolbar />
+        <OrderFilter />
+        <Box mt={3}>
+          <Table rows={rows} options={options} />
+        </Box>
+        <Box p={3} />
       </Container>
     </div>
   );
 }
+
+const SetStatusMenu = ({ order }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const dispatch = useDispatch();
+
+  const statuses = ["dispatched", "cancelled", "delivered"];
+
+  const onSetStatus = (status) => {
+    dispatch(updateOrderStatus(order.id, status));
+  };
+
+  return (
+    <>
+      <Button
+        size="small"
+        edge="end"
+        aria-label="set status of order"
+        aria-haspopup="true"
+        color="primary"
+        variant="contained"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+      >
+        {order.status}
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          horizontal: "center",
+          vertical: "bottom",
+        }}
+        transformOrigin={{
+          horizontal: "center",
+          vertical: "top",
+        }}
+        // keepMounted
+        onClick={handleCloseMenu}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <Box display="flex" flexDirection="column" px={2}>
+          {statuses.map((status) => (
+            <Button size="small" onClick={() => onSetStatus(status)}>
+              {status}
+            </Button>
+          ))}
+        </Box>
+      </Menu>
+    </>
+  );
+};
+
+const AddressMenu = ({ address }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  return (
+    <div>
+      <IconButton
+        aria-describedby={"id"}
+        variant="contained"
+        color="primary"
+        onClick={handleClick}
+      >
+        <Visibility />
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Box className={classes.addressRoot}>
+          <Box flex={1} className={classes.addressContent}>
+            <Typography variant="body1">
+              <b>{address?.name}</b>
+            </Typography>
+            <Typography>{address?.phone}</Typography>
+            <Typography>{address?.address}</Typography>
+            <Typography>
+              {address?.locality}, {address?.pincode}{" "}
+            </Typography>
+            <Typography>
+              {address?.city}, {address?.state}
+            </Typography>
+          </Box>
+        </Box>
+      </Popover>
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -173,5 +255,10 @@ const useStyles = makeStyles((theme) => ({
   empty: {
     padding: theme.spacing(2),
     textAlign: "center",
+  },
+  addressRoot: {
+    padding: theme.spacing(1, 2, 1, 1),
+    display: "flex",
+    flex: 1,
   },
 }));

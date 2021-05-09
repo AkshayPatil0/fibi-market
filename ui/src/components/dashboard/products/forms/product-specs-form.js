@@ -24,11 +24,12 @@ const ProductSpecsForm = ({ header }) => {
 
   const handleSpecChange = (e) => {
     const [index, name] = e.target.name.split("_");
+
     dispatch(
       setProduct({
         ...product,
         specs: product.specs.map((spec, i) => {
-          if (index === i) {
+          if (+index === +i) {
             return { ...spec, [name]: e.target.value };
           }
           return spec;

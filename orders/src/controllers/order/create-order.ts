@@ -18,7 +18,7 @@ export const createOrderController = async (req: Request, res: Response) => {
   const { address, price, productId, quantity, orders } = req.body;
 
   let orderAttrs: OrderAttrs = {
-    userId: req.currentUser?.id!,
+    user: req.currentUser?.id!,
     price,
     status: OrderStatus.created,
   };
@@ -30,6 +30,7 @@ export const createOrderController = async (req: Request, res: Response) => {
       throw new NotFoundError("product");
     }
     orderAttrs.product = product.id;
+    orderAttrs.vendor = product.vendor;
     orderAttrs.quantity = quantity;
     orderAttrs.isGroup = false;
   }

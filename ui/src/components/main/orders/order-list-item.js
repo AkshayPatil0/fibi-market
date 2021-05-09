@@ -9,49 +9,77 @@ import {
 } from "@material-ui/core";
 import Pricing from "../../common/pricing";
 import * as defaultImage from "../../../assets/images/image.png";
+import { useDispatch } from "react-redux";
+import { cancelOrder } from "../../../store/actions/order";
 
 function OrderListItem({ order }) {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
+  const onCancelOrder = (id) => {
+    dispatch(cancelOrder(id));
+  };
+
   return (
     <Box display="flex" flexWrap="wrap" p={1}>
-      <Box className={classes.products}>
-        {order.orders?.map(({ product, quantity }) => {
-          return (
-            <Box mt={1} mb={1} key={product.id}>
-              <div className={classes.root}>
-                <CardContent className={classes.content}>
-                  <CardMedia
-                    className={classes.media}
-                    image={product.images ? product.images[0] : defaultImage}
-                    title={product.title}
-                  />
-                  <div className={classes.details}>
-                    <Typography component="h6" variant="body1">
-                      {product.title}
-                    </Typography>
-                    <Pricing {...product.price} small />
-                    <Box flex="1" />
-                    <Typography
-                      component="p"
-                      variant="subtitle2"
-                      color="textSecondary"
-                      className={classes.quantityText}
-                    >
-                      {quantity}
-                    </Typography>
-                  </div>
-                </CardContent>
-              </div>
+      {/* <Box className={classes.products}> */}
+      {order.orders?.map(({ product, quantity, id, status }) => {
+        return (
+          <Box
+            mt={1}
+            mb={1}
+            px={2}
+            key={product.id}
+            display="flex"
+            justifyContent="space-between"
+            width="100%"
+          >
+            <div className={classes.root}>
+              <CardContent className={classes.content}>
+                <CardMedia
+                  className={classes.media}
+                  image={product.images ? product.images[0] : defaultImage}
+                  title={product.title}
+                />
+                <div className={classes.details}>
+                  <Typography component="h6" variant="body1">
+                    {product.title}
+                  </Typography>
+                  <Pricing {...product.price} small />
+                  <Box flex="1" />
+                  <Typography
+                    component="p"
+                    variant="subtitle2"
+                    color="textSecondary"
+                    className={classes.quantityText}
+                  >
+                    {quantity}
+                  </Typography>
+                </div>
+              </CardContent>
+            </div>
+            <Box>
+              {status === "cancelled" ? (
+                <Typography color="textSecondary" variant="h6">
+                  <b>
+                    <i>Cancelled</i>
+                  </b>
+                </Typography>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => onCancelOrder(id)}
+                >
+                  Cancel order
+                </Button>
+              )}
             </Box>
-          );
-        })}
-      </Box>
-      <Box ml="auto">
-        <Button variant="contained" color="secondary">
-          Cancel order
-        </Button>
-      </Box>
+          </Box>
+        );
+      })}
+      {/* </Box> */}
     </Box>
   );
 }

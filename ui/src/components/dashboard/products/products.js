@@ -66,6 +66,7 @@ export default function Products() {
     { head: "Retail price", key: "retail" },
     { head: "Stock", key: "stock" },
     { head: "Category", key: "category" },
+    { head: "Vendor", key: "vendor" },
     // { head: "Edit", key: "edit" },
     // { head: "Delete", key: "delete" },
     { head: "Actions", key: "actions" },
@@ -110,6 +111,7 @@ export default function Products() {
       row.retail = <Typography>{"₹ " + product?.price.retail}</Typography>;
       row.stock = <Typography>{product?.stock}</Typography>;
       row.category = <Typography>{product.category?.title || "NA"}</Typography>;
+      row.vendor = <Typography>{product.vendor?.email || "NA"}</Typography>;
       if (isAdmin(user)) {
         row.actions = (
           <>

@@ -153,7 +153,7 @@ const ProductDetails = () => {
   );
 
   return (
-    <Container>
+    <Container className={classes.root}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Box p={2}>
@@ -233,6 +233,29 @@ const ProductDetails = () => {
               </Typography>
             )}
             {buttonActions}
+            <Box p={1} />
+            <Divider />
+            <Box p={1.5} />
+            {product.specs && (
+              <Box>
+                <Typography variant="h5">
+                  <b>Product specifications</b>
+                </Typography>
+                <Box p={1} />
+                {product.specs.map((spec, i) => (
+                  <Box key={i} py={1} px={2} display="flex">
+                    <Box flex={1}>
+                      <Typography variant="h6" color="textSecondary">
+                        <b>{spec.name}</b>
+                      </Typography>
+                    </Box>
+                    <Box flex={2}>
+                      <Typography>{spec.value}</Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>
@@ -241,6 +264,9 @@ const ProductDetails = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingBottom: theme.spacing(3),
+  },
   description: {
     color: "grey",
     textTransform: "capitalize",

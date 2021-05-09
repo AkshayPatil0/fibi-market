@@ -185,25 +185,29 @@ export default function Cart() {
               <PriceDetails />
             </Box>
           </Grid>
+          <Grid item xs={12}>
+            <Box className={classes.box}>
+              <Card className={classes.bottomCard}>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.backButton}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  disabled={isNextDisabled()}
+                >
+                  {getStepAction(activeStep)}
+                </Button>
+              </Card>
+            </Box>
+          </Grid>
         </Grid>
       </Box>
-      <Card className={classes.bottomCard}>
-        <Button
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          className={classes.backButton}
-        >
-          Back
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleNext}
-          disabled={isNextDisabled()}
-        >
-          {getStepAction(activeStep)}
-        </Button>
-      </Card>
     </div>
   );
 }
@@ -212,7 +216,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100%",
     paddingTop: theme.spacing(2),
-    paddingBottom: `calc(64px + ${theme.spacing(2)}px)`,
+    paddingBottom: theme.spacing(2),
   },
   emptyRoot: {
     minHeight: "100%",
@@ -251,7 +255,7 @@ const useStyles = makeStyles((theme) => ({
   bottomCard: {
     padding: "10px",
     backgroundColor: "#fff",
-    position: "fixed",
+    // position: "absolute",
     bottom: "0",
     right: "0",
     width: "100%",

@@ -32,7 +32,7 @@ export default function Banners() {
 
   return (
     <Box p={1}>
-      <Slider slidesPerRow={1} arrows={false} dots infinite>
+      <Slider slidesPerRow={1} arrows={false} dots infinite autoplay>
         {banners.map((banner) => (
           <Box
             key={banner.cover}
@@ -54,8 +54,8 @@ export default function Banners() {
 
 const useStyles = makeStyles((theme) => ({
   banner: {
-    maxHeight: 300,
-    margin: theme.spacing(1),
+    // maxHeight: 300,
+    // margin: theme.spacing(-1),
     cursor: "pointer",
   },
 }));

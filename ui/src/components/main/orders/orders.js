@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Grid,
@@ -10,16 +10,29 @@ import {
   CardContent,
 } from "@material-ui/core";
 
-import { useOrderHook } from "./order-hook";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyOrders } from "../../../store/actions/order";
 
 import OrderListItem from "./order-list-item";
 
 export default function Orders() {
   const classes = useStyles();
 
-  const { orders } = useOrderHook();
+  const orders = useSelector((state) => state.order.orders);
+  const user = useSelector((state) => state.auth.currentUser);
 
-  // const user = useSelector((state) => state.auth.currentUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const run = async () => {
+      try {
+        await dispatch(getMyOrders());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    run();
+  }, [dispatch]);
 
   return (
     <div className={classes.root}>
@@ -29,7 +42,7 @@ export default function Orders() {
             <CardHeader title="My orders" />
             <Divider />
 
-            {orders.length > 0 ? (
+            {user && orders.length > 0 ? (
               orders.map((order) => {
                 return (
                   <div key={order.id}>

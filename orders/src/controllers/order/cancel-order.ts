@@ -22,7 +22,7 @@ export const cancelOrderController = async (req: Request, res: Response) => {
     throw new NotFoundError("order");
   }
 
-  if (order.userId !== req.currentUser!.id) {
+  if (order.user != req.currentUser!.id) {
     throw new NotAuthorizedError();
   }
 
@@ -35,7 +35,7 @@ export const cancelOrderController = async (req: Request, res: Response) => {
 
   new OrderCancelledPublisher(nats.client).publish({
     id: order.id,
-    userId: order.userId,
+    userId: order.user,
     address: order.address,
     status: order.status,
     price: order.price,

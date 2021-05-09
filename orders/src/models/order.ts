@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { ProductDoc } from "./product";
 
 export interface OrderAttrs {
-  userId: string;
+  user: string;
   status: OrderStatus;
   price: { mrp: number; retail: number };
   address?: {
@@ -15,6 +15,7 @@ export interface OrderAttrs {
     city: string;
     state: string;
   };
+  vendor?: string;
   payment?: {
     method: string;
     transactionId?: string;
@@ -30,7 +31,7 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 export interface OrderDoc extends mongoose.Document {
-  userId: string;
+  user: string;
   address: {
     name: string;
     phone: string;
@@ -42,6 +43,7 @@ export interface OrderDoc extends mongoose.Document {
   };
   status: OrderStatus;
   price: { mrp: number; retail: number };
+  vendor: string;
   payment: {
     method: string;
     transactionId: string;
@@ -54,8 +56,9 @@ export interface OrderDoc extends mongoose.Document {
 
 const orderSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "users",
       required: true,
     },
     address: {},
@@ -78,6 +81,7 @@ const orderSchema = new mongoose.Schema(
       ref: "products",
     },
     quantity: Number,
+    vendor: { type: mongoose.Types.ObjectId, ref: "vendors" },
     payment: {
       method: String,
       transactionId: String,

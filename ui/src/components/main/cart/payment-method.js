@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   selectedMethod: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.action.selected,
   },
   radio: {
     "& > *": {

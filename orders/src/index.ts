@@ -9,6 +9,12 @@ import { ProductCreatedListener } from "./events/listeners/product-created-liste
 import env from "dotenv";
 import { ProductUpdatedListener } from "./events/listeners/product-updated-listener";
 import { ProductDeletedListener } from "./events/listeners/product-deleted-listener";
+import { VendorCreatedListener } from "./events/listeners/vendor-created-listener";
+import { VendorUpdatedListener } from "./events/listeners/vendor-updated-listner";
+import { VendorDeletedListener } from "./events/listeners/vendor-deleted-listener";
+import { UserCreatedListener } from "./events/listeners/user-created-listener";
+import { UserUpdatedListener } from "./events/listeners/user-updated-listner";
+import { UserDeletedListener } from "./events/listeners/user-deleted-listener";
 env.config();
 
 const run = async () => {
@@ -45,6 +51,12 @@ const run = async () => {
     new ProductCreatedListener(nats.client).listen();
     new ProductUpdatedListener(nats.client).listen();
     new ProductDeletedListener(nats.client).listen();
+    new VendorCreatedListener(nats.client).listen();
+    new VendorUpdatedListener(nats.client).listen();
+    new VendorDeletedListener(nats.client).listen();
+    new UserCreatedListener(nats.client).listen();
+    new UserUpdatedListener(nats.client).listen();
+    new UserDeletedListener(nats.client).listen();
   } catch (err) {
     console.error(err);
     process.exit();

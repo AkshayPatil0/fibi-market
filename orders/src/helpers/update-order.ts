@@ -14,7 +14,7 @@ export function updateOrder(
 
       await new OrderUpdatedPublisher(nats.client).publish({
         id: order.id,
-        userId: order.userId,
+        userId: order.user,
         address: order.address,
         status: order.status,
         price: order.price,

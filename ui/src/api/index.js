@@ -87,6 +87,8 @@ export const fetchMyOrders = () => API.get(`/api/orders/myorders`);
 export const placeOrder = (body) => API.post("/api/orders", body);
 export const fetchOrder = (id) => API.get(`/api/orders/${id}`);
 export const updateOrder = (id, body) => API.put(`/api/orders/${id}`, body);
+export const updateOrderStatus = (id, body) =>
+  API.put(`/api/orders/status/${id}`, body);
 export const cancelOrder = (id) => API.delete(`/api/orders/${id}`);
 
 // ------------------
